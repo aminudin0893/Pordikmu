@@ -124,14 +124,27 @@
     box-shadow: none !important;
     width: 100% !important;
     max-width: none !important;
+    min-height: 0 !important;
+    background: transparent !important;
   }
 
   .prose {
     max-width: none !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    color: black !important;
   }
 
+  .prose h1 { @apply text-center text-3xl font-bold mb-6 text-black; border-bottom: 2pt solid black !important; }
+  .prose h2 { @apply text-xl font-bold mt-8 mb-4 text-black; border-bottom: 1pt solid black !important; }
+  .prose h3 { @apply text-lg font-bold mt-6 mb-2 text-black border-l-0 pl-0; }
+  .prose p { @apply text-justify text-black; }
+  .prose table { border-collapse: collapse !important; border: 1pt solid black !important; }
+  .prose th, .prose td { border: 1pt solid black !important; }
+  .prose th { background-color: #f1f5f9 !important; }
+
   /* Prevent page breaks inside elements */
-  .prose table, .prose blockquote, .prose pre {
+  .prose table, .prose blockquote, .prose pre, .prose p, .prose h1, .prose h2, .prose h3 {
     page-break-inside: avoid;
     break-inside: avoid;
   }
@@ -139,11 +152,6 @@
   .prose tr {
     page-break-inside: avoid;
     break-inside: avoid;
-  }
-
-  .prose h1, .prose h2, .prose h3 {
-    page-break-after: avoid;
-    break-after: avoid;
   }
 
   /* Force display of tables */

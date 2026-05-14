@@ -76,8 +76,12 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
   const form = useForm<SoalFormData>({
     resolver: zodResolver(soalSchema),
     defaultValues: {
+      name: "Aminudin, S.Pd",
+      school: "SMP Muhammadiyah 1 Probolinggo",
+      subject: "Pendidikan Agama Islam",
+      phaseGrade: "Fase D (Kelas 7) SMP/MTs",
       schoolYear: "2025/2026",
-      assessmentType: "Sumatif Harian",
+      assessmentType: "Asesmen Sumatif Akhir Semester",
       optionsCount: "4 Opsi (A, B, C, D)",
       cognitiveLevels: ["C3", "C4"],
       easyPerc: 30,

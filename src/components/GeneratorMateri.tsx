@@ -65,11 +65,11 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
   const form = useForm<MateriFormData>({
     resolver: zodResolver(materiSchema),
     defaultValues: {
-      school: '',
-      subject: '',
-      phaseGrade: '',
+      school: "SMP Muhammadiyah 1 Probolinggo",
+      subject: "Pendidikan Agama Islam",
+      phaseGrade: "Fase D (Kelas 7) SMP/MTs",
       topics: [""],
-      depthLevel: 'intermediate',
+      depthLevel: 'advanced',
       includeAnalogy: true,
       includeIllustration: true,
       includeQuiz: true,

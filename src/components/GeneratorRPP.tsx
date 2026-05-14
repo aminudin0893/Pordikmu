@@ -66,18 +66,18 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
   const form = useForm<RPPFormData>({
     resolver: zodResolver(rppSchema),
     defaultValues: {
-      name: "",
-      nip: "",
-      school: "",
-      subject: "",
-      phaseGrade: "",
+      name: "Aminudin, S.Pd",
+      nip: "1640634",
+      school: "SMP Muhammadiyah 1 Probolinggo",
+      subject: "Pendidikan Agama Islam",
+      phaseGrade: "Fase D (Kelas 7) SMP/MTs",
       topics: [""],
-      timeAllocation: "",
-      useLetterhead: false,
-      useValidationPage: false,
+      timeAllocation: "3 X 40 Menit",
+      useLetterhead: true,
+      useValidationPage: true,
       schoolYear: "2025/2026",
       semester: "Ganjil",
-      learningModel: "Discovery Learning",
+      learningModel: "Problem Based Learning",
       meetingsCount: "1 Pertemuan"
     } as any
   });
@@ -152,7 +152,7 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         | Aspek Identitas | Keterangan Informasi |
         |---|---|
         | Nama Penyusun | ${data.name} |
-        | NIP | ${data.nip || "-"} |
+        | NBM / NIP | ${data.nip || "-"} |
         | Satuan Pendidikan | ${data.school} |
         | Tahun Pelajaran | ${data.schoolYear} |
         | Semester | ${data.semester} |
@@ -202,7 +202,7 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         | | |
         | | |
         | **(..........................)** | **(${data.name})** |
-        | NIP. ....................... | ${data.nip ? `NIP. ${data.nip}` : "NIP. ......................."} |
+        | NIP. ....................... | ${data.nip ? `NBM. ${data.nip}` : "NBM. ......................."} |
         ` : ""}
 
         INSTRUKSI TEKNIS:
@@ -320,8 +320,8 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
                       {form.formState.errors.name && <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>}
                     </div>
                     <div className="space-y-1.5 md:space-y-2">
-                      <Label htmlFor="nip" className="font-bold text-sm">NIP Guru (Opsional)</Label>
-                      <Input id="nip" placeholder="Contoh: 19901031..." {...form.register('nip')} className="h-10 md:h-12" />
+                      <Label htmlFor="nip" className="font-bold text-sm">NBM / NIP Guru</Label>
+                      <Input id="nip" placeholder="Contoh: 1640634" {...form.register('nip')} className="h-10 md:h-12" />
                     </div>
                     <div className="space-y-1.5 md:space-y-2">
                       <Label className="font-bold text-sm">Tahun Pelajaran</Label>
