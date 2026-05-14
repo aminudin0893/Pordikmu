@@ -11,20 +11,20 @@ import {
   Layers,
   Settings
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Textarea } from './ui/textarea';
+import { Switch } from './ui/switch';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { generateEducationContent } from '@/lib/gemini';
+} from './ui/select';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
+import { generateEducationContent } from '../lib/gemini';
 import { toast } from 'sonner';
 
 const rppSchema = z.object({
@@ -40,8 +40,8 @@ const rppSchema = z.object({
   meetingsCount: z.string().min(1, "Jumlah Pertemuan harus diisi"),
   schoolYear: z.string().min(1, "Tahun Pelajaran harus diisi"),
   additionalNotes: z.string().optional(),
-  useLetterhead: z.boolean().default(false),
-  useValidationPage: z.boolean().default(false),
+  useLetterhead: z.boolean(),
+  useValidationPage: z.boolean(),
 });
 
 type RPPFormData = z.infer<typeof rppSchema>;
