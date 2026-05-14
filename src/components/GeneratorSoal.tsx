@@ -12,22 +12,22 @@ import {
   Zap,
   Settings
 } from 'lucide-react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { Checkbox } from './ui/checkbox';
-import { Slider } from './ui/slider';
-import { Badge } from './ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Slider } from '@/components/ui/slider';
+import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './ui/select';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
-import { generateEducationContent } from '../lib/gemini';
+} from '@/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { generateEducationContent } from '@/lib/gemini';
 import { toast } from 'sonner';
 
 const soalSchema = z.object({
