@@ -128,39 +128,39 @@ export default function GeneratorMateri({ onSuccess }: Props) {
   };
 
   return (
-    <Card className="border-none shadow-2xl shadow-emerald-100 bg-white overflow-hidden">
-      <CardHeader className="bg-emerald-600 text-white p-8">
-        <div className="flex items-center gap-4 mb-2">
-          <BookOpen className="w-10 h-10" />
+    <Card className="border-none shadow-2xl shadow-emerald-100 bg-white overflow-hidden rounded-t-none md:rounded-t-3xl">
+      <CardHeader className="bg-emerald-600 text-white p-6 md:p-8">
+        <div className="flex items-center gap-3 md:gap-4 mb-2">
+          <BookOpen className="w-8 h-8 md:w-10 md:h-10" />
           <div>
-            <CardTitle className="text-2xl font-black">Generator Materi Ajar Digital</CardTitle>
-            <CardDescription className="text-emerald-100 font-medium">Ubah topik sulit menjadi penjelasan yang mudah dipahami dan mendalam.</CardDescription>
+            <CardTitle className="text-xl md:text-2xl font-black">Generator Materi Ajar Digital</CardTitle>
+            <CardDescription className="text-emerald-100 font-medium text-xs md:text-sm">Ubah topik sulit menjadi penjelasan yang mudah dipahami.</CardDescription>
           </div>
         </div>
       </CardHeader>
       
-      <CardContent className="p-8">
-        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             <div className="space-y-2">
-                <Label className="font-bold">Mata Pelajaran</Label>
-                <Input placeholder="Contoh: IPA / Biologi" {...form.register('subject')} />
+      <CardContent className="p-4 md:p-8">
+        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-6 md:space-y-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+             <div className="space-y-1.5 md:space-y-2">
+                <Label className="font-bold text-sm">Mata Pelajaran</Label>
+                <Input placeholder="Contoh: IPA / Biologi" {...form.register('subject')} className="h-10 md:h-12" />
              </div>
-             <div className="space-y-2">
-                <Label className="font-bold">Sekolah</Label>
-                <Input placeholder="Nama Sekolah" {...form.register('school')} />
+             <div className="space-y-1.5 md:space-y-2">
+                <Label className="font-bold text-sm">Sekolah</Label>
+                <Input placeholder="Nama Sekolah" {...form.register('school')} className="h-10 md:h-12" />
              </div>
-             <div className="space-y-2">
-                <Label className="font-bold">Fase / Kelas</Label>
-                <div className="flex gap-2">
+             <div className="space-y-1.5 md:space-y-2">
+                <Label className="font-bold text-sm">Fase / Kelas</Label>
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Select onValueChange={(val: string) => {
                     if (val !== "manual") form.setValue('phaseGrade', val);
                   }}>
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-full sm:w-[150px] h-10 md:h-12">
                       <SelectValue placeholder="Pilih..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Fase A (Kelas 1-2) SD">Fase A (1-2)</SelectItem>
+                      <SelectItem value="Fase A ( Kelas 1-2) SD">Fase A (1-2)</SelectItem>
                       <SelectItem value="Fase B (Kelas 3-4) SD">Fase B (3-4)</SelectItem>
                       <SelectItem value="Fase C (Kelas 5-6) SD">Fase C (5-6)</SelectItem>
                       <SelectItem value="Fase D (Kelas 7-9) SMP">Fase D (7-9)</SelectItem>
@@ -170,17 +170,17 @@ export default function GeneratorMateri({ onSuccess }: Props) {
                     </SelectContent>
                   </Select>
                   <Input 
-                    placeholder="Input manual..." 
+                    placeholder="Manual..." 
                     {...form.register('phaseGrade')} 
-                    className="flex-grow"
+                    className="flex-grow h-10 md:h-12"
                   />
                 </div>
              </div>
-             <div className="col-span-full space-y-4">
+             <div className="col-span-full space-y-3 md:space-y-4">
                 <div className="flex items-center justify-between">
-                  <Label className="font-bold">Topik Materi / Bab (Dapat ditambahkan)</Label>
-                  <Button type="button" variant="outline" size="sm" onClick={addTopic} className="h-8 gap-1">
-                    <Plus className="w-3 h-3" /> Tambah Topik
+                  <Label className="font-bold text-sm">Topik Materi / Bab</Label>
+                  <Button type="button" variant="outline" size="sm" onClick={addTopic} className="h-8 gap-1 text-xs px-2 py-0">
+                    <Plus className="w-3 h-3" /> Tambah
                   </Button>
                 </div>
                 <div className="space-y-2">
@@ -190,9 +190,10 @@ export default function GeneratorMateri({ onSuccess }: Props) {
                         placeholder={`Topik Materi ${idx + 1}`} 
                         value={t} 
                         onChange={(e) => updateTopic(idx, e.target.value)}
+                        className="h-10 md:h-11"
                       />
                       {topics.length > 1 && (
-                        <Button type="button" variant="ghost" size="icon" onClick={() => removeTopic(idx)} className="text-red-500">
+                        <Button type="button" variant="ghost" size="icon" onClick={() => removeTopic(idx)} className="text-red-500 h-10 w-10 md:h-11 md:w-11">
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       )}
@@ -202,66 +203,66 @@ export default function GeneratorMateri({ onSuccess }: Props) {
              </div>
           </div>
 
-          <div className="space-y-6 p-6 bg-slate-50 rounded-3xl border border-slate-200">
+          <div className="space-y-4 md:space-y-6 p-4 md:p-6 bg-slate-50 rounded-2xl md:rounded-3xl border border-slate-200">
              <div className="flex items-center gap-2 border-b border-emerald-100 pb-2">
-                <Sparkles className="w-5 h-5 text-emerald-600" />
-                <h3 className="font-bold text-lg italic">Gaya Penulisan & Kedalaman</h3>
+                <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-emerald-600" />
+                <h3 className="font-bold text-base md:text-lg italic">Gaya Penulisan & Kedalaman</h3>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-4">
-                   <Label className="font-bold">Tingkat Kedalaman Materi</Label>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+                <div className="space-y-2 md:space-y-4">
+                   <Label className="font-bold text-sm">Kedalaman Materi</Label>
                    <Select onValueChange={(val: any) => form.setValue('depthLevel', val)} defaultValue="intermediate">
-                     <SelectTrigger>
+                     <SelectTrigger className="h-10 md:h-12">
                         <SelectValue />
                      </SelectTrigger>
                      <SelectContent>
-                        <SelectItem value="basic">Dasar (Perkenalan Konsep)</SelectItem>
-                        <SelectItem value="intermediate">Menengah (Pemahaman Komprehensif)</SelectItem>
-                        <SelectItem value="advanced">Lanjut (Analisis Mendalam & HOTS)</SelectItem>
+                        <SelectItem value="basic">Dasar (Perkenalan)</SelectItem>
+                        <SelectItem value="intermediate">Menengah (Komprehensif)</SelectItem>
+                        <SelectItem value="advanced">Lanjut (Analisis & HOTS)</SelectItem>
                      </SelectContent>
                    </Select>
                 </div>
-                <div className="space-y-2 text-right">
-                   <Label className="font-bold">Fitur Tambahan</Label>
-                   <div className="flex flex-wrap justify-end gap-4 pt-2">
+                <div className="space-y-2 text-left md:text-right">
+                   <Label className="font-bold text-sm">Fitur Tambahan</Label>
+                   <div className="flex flex-wrap md:justify-end gap-3 md:gap-4 pt-1 md:pt-2">
                       <div className="flex items-center space-x-2">
                         <Checkbox id="analog" checked={form.watch('includeAnalogy')} onCheckedChange={(val) => form.setValue('includeAnalogy', !!val)} />
-                        <label htmlFor="analog" className="text-sm font-medium">Analogi</label>
+                        <label htmlFor="analog" className="text-xs md:text-sm font-medium">Analogi</label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox id="illus" checked={form.watch('includeIllustration')} onCheckedChange={(val) => form.setValue('includeIllustration', !!val)} />
-                        <label htmlFor="illus" className="text-sm font-medium">Ilustrasi</label>
+                        <label htmlFor="illus" className="text-xs md:text-sm font-medium">Ilustrasi</label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox id="quiz" checked={form.watch('includeQuiz')} onCheckedChange={(val) => form.setValue('includeQuiz', !!val)} />
-                        <label htmlFor="quiz" className="text-sm font-medium">Kuis</label>
+                        <label htmlFor="quiz" className="text-xs md:text-sm font-medium">Kuis</label>
                       </div>
                    </div>
                 </div>
                 <div className="col-span-full space-y-2">
-                   <Label className="font-bold flex items-center gap-2">
-                      <Target className="w-4 h-4 text-emerald-600" /> Fokus Target Pembelajaran
+                   <Label className="font-bold text-sm flex items-center gap-2">
+                      <Target className="w-3.5 h-3.5 text-emerald-600" /> Fokus Target Pembelajaran
                    </Label>
-                   <Textarea placeholder="Contoh: Tekankan pada bagaimana proses osmosis terjadi secara biologis..." {...form.register('targetFocus')} />
+                   <Textarea placeholder="Contoh: Tekankan pada proses osmosis..." {...form.register('targetFocus')} className="text-sm min-h-[90px]" />
                 </div>
              </div>
           </div>
 
           <Button 
             type="submit" 
-            className="w-full h-16 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-emerald-100 transition-all active:scale-[0.98]"
+            className="w-full h-14 md:h-16 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-lg md:text-xl rounded-xl md:rounded-2xl shadow-xl shadow-emerald-100 transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading ? (
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Meramu Materi... Sesaat lagi!
+                <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Processing...
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Zap className="w-6 h-6 fill-white" />
-                GENERATE MATERI SEKARANG
+                <Zap className="w-5 h-5 md:w-6 md:h-6 fill-white" />
+                GENERATE SEKARANG
               </div>
             )}
           </Button>

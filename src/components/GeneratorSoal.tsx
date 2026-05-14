@@ -85,7 +85,70 @@ export default function GeneratorSoal({ onSuccess }: Props) {
   });
 
   const handleDifficultyChange = (type: 'easy' | 'medium' | 'hard', newVal: number) => {
-    form.setValue(type === 'easy' ? 'easyPerc' : type === 'medium' ? 'mediumPerc' : 'hardPerc', newVal);
+    const currentVals = {
+      easy: form.getValues('easyPerc') || 0,
+      medium: form.getValues('mediumPerc') || 0,
+      hard: form.getValues('hardPerc') || 0
+    };
+
+    const oldVal = currentVals[type];
+    const diff = newVal - oldVal;
+
+    if (diff === 0) return;
+
+    const others: ('easy' | 'medium' | 'hard')[] = 
+      type === 'easy' ? ['medium', 'hard'] : 
+      type === 'medium' ? ['easy', 'hard'] : ['easy', 'medium'];
+
+    let remainingDiff = diff;
+
+    // Try to take from the first other
+    const firstOther = others[0];
+    const firstOtherVal = currentVals[firstOther];
+    const takeFromFirst = Math.min(Math.max(remainingDiff, -currentVals[type]), firstOtherVal);
+    
+    // Simplest logic: prioritize taking from the "next" slider first, then the other one
+    // to keep total at 100.
+    
+    let nextVals = { ...currentVals };
+    nextVals[type] = newVal;
+
+    if (type === 'easy') {
+      // Easy changes, adjust Medium first, then Hard
+      const medChange = Math.min(nextVals.medium, diff);
+      nextVals.medium -= medChange;
+      const remaining = diff - medChange;
+      nextVals.hard -= remaining;
+    } else if (type === 'medium') {
+      // Medium changes, adjust Hard first, then Easy
+      const hardChange = Math.min(nextVals.hard, diff);
+      nextVals.hard -= hardChange;
+      const remaining = diff - hardChange;
+      nextVals.easy -= remaining;
+    } else {
+      // Hard changes, adjust Medium first, then Easy
+      const medChange = Math.min(nextVals.medium, diff);
+      nextVals.medium -= medChange;
+      const remaining = diff - medChange;
+      nextVals.easy -= remaining;
+    }
+
+    // Ensure no negatives and sum is 100
+    nextVals.easy = Math.max(0, nextVals.easy);
+    nextVals.medium = Math.max(0, nextVals.medium);
+    nextVals.hard = Math.max(0, nextVals.hard);
+    
+    const sum = nextVals.easy + nextVals.medium + nextVals.hard;
+    if (sum !== 100) {
+      // Adjust the largest one to make it 100
+      const diffTo100 = 100 - sum;
+      if (type !== 'easy') nextVals.easy += diffTo100;
+      else nextVals.medium += diffTo100;
+    }
+
+    form.setValue('easyPerc', nextVals.easy);
+    form.setValue('mediumPerc', nextVals.medium);
+    form.setValue('hardPerc', nextVals.hard);
   };
 
   const currentEasy = form.watch('easyPerc') || 0;
@@ -194,30 +257,30 @@ export default function GeneratorSoal({ onSuccess }: Props) {
   ];
 
   return (
-    <Card className="border-none shadow-2xl shadow-indigo-100 bg-white overflow-hidden">
-      <CardHeader className="bg-orange-600 text-white p-8">
-        <div className="flex items-center gap-4 mb-2">
-          <GraduationCap className="w-10 h-10" />
+    <Card className="border-none shadow-2xl shadow-indigo-100 bg-white overflow-hidden rounded-t-none md:rounded-t-3xl">
+      <CardHeader className="bg-orange-600 text-white p-6 md:p-8">
+        <div className="flex items-center gap-3 md:gap-4 mb-2">
+          <GraduationCap className="w-8 h-8 md:w-10 md:h-10" />
           <div>
-            <CardTitle className="text-2xl font-black">APLIKASI GENERATOR SOAL UJIAN AI</CardTitle>
-            <CardDescription className="text-orange-100 font-medium">Bank soal HOTS yang terstruktur, rapi, dan disesuaikan Kurikulum Nasional.</CardDescription>
+            <CardTitle className="text-xl md:text-2xl font-black leading-tight">APLIKASI GENERATOR SOAL UJIAN AI</CardTitle>
+            <CardDescription className="text-orange-100 font-medium text-xs md:text-sm">Bank soal HOTS yang terstruktur dan rapi.</CardDescription>
           </div>
         </div>
       </CardHeader>
       
-      <CardContent className="p-8">
-        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-10">
-          <div className="space-y-6">
+      <CardContent className="p-4 md:p-8">
+        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-6 md:space-y-10">
+          <div className="space-y-4 md:space-y-6">
              <div className="flex items-center gap-2 border-b border-orange-100 pb-2">
-                <Brain className="w-5 h-5 text-orange-600" />
-                <h3 className="font-bold text-lg italic">Identitas Asesmen & Kurikulum</h3>
+                <Brain className="w-4 h-4 md:w-5 md:h-5 text-orange-600" />
+                <h3 className="font-bold text-base md:text-lg italic">Identitas Asesmen & Kurikulum</h3>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div className="space-y-2">
-                  <Label className="font-bold">Model Kurikulum</Label>
+                  <Label className="font-bold text-sm">Model Kurikulum</Label>
                   <Select defaultValue="Kurikulum Merdeka (Deep Learning)">
-                    <SelectTrigger className="font-semibold text-orange-700 bg-orange-50/50 border-orange-100">
+                    <SelectTrigger className="font-semibold text-orange-700 bg-orange-50/50 border-orange-100 h-10 md:h-12">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -227,24 +290,24 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="font-bold">Nama Guru</Label>
-                  <Input placeholder="Aminudin" {...form.register('name')} />
+                  <Label htmlFor="name" className="font-bold text-sm">Nama Guru</Label>
+                  <Input placeholder="Aminudin" {...form.register('name')} className="h-10 md:h-12" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="school" className="font-bold">Nama Sekolah</Label>
-                  <Input placeholder="SMP Negeri..." {...form.register('school')} />
+                  <Label htmlFor="school" className="font-bold text-sm">Nama Sekolah</Label>
+                  <Input placeholder="SMP Negeri..." {...form.register('school')} className="h-10 md:h-12" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="subject" className="font-bold">Mata Pelajaran</Label>
-                  <Input placeholder="Bahasa Indonesia" {...form.register('subject')} />
+                  <Label htmlFor="subject" className="font-bold text-sm">Mata Pelajaran</Label>
+                  <Input placeholder="Bahasa Indonesia" {...form.register('subject')} className="h-10 md:h-12" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="font-bold">Fase / Kelas</Label>
-                  <div className="flex gap-2">
+                  <Label className="font-bold text-sm">Fase / Kelas</Label>
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <Select onValueChange={(val: string) => {
                       if (val !== "manual") form.setValue('phaseGrade', val);
                     }}>
-                      <SelectTrigger className="w-[180px]">
+                      <SelectTrigger className="w-full sm:w-[180px] h-10 md:h-12">
                         <SelectValue placeholder="Pilih..." />
                       </SelectTrigger>
                       <SelectContent>
@@ -258,21 +321,21 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                       </SelectContent>
                     </Select>
                     <Input 
-                      placeholder="Input manual di sini..." 
+                      placeholder="Manual..." 
                       {...form.register('phaseGrade')} 
-                      className="flex-grow"
+                      className="flex-grow h-10 md:h-12"
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
-                   <Label className="font-bold">Tahun Pelajaran</Label>
-                   <Input placeholder="2025/2026" {...form.register('schoolYear')} />
+                   <Label className="font-bold text-sm">Tahun Pelajaran</Label>
+                   <Input placeholder="2025/2026" {...form.register('schoolYear')} className="h-10 md:h-12" />
                 </div>
-                <div className="col-span-full space-y-4">
+                <div className="col-span-full space-y-3 md:space-y-4">
                    <div className="flex items-center justify-between">
-                     <Label className="font-bold italic">Topik / Materi Utama Ujian (Dapat ditambahkan lebih dari satu)</Label>
-                     <Button type="button" variant="outline" size="sm" onClick={addTopic} className="h-8 gap-1">
-                       <Plus className="w-3 h-3" /> Tambah Topik
+                     <Label className="font-bold text-sm italic">Topik / Materi Utama Ujian</Label>
+                     <Button type="button" variant="outline" size="sm" onClick={addTopic} className="h-8 md:h-9 gap-1 text-xs px-2 py-0">
+                       <Plus className="w-3 h-3" /> Tambah
                      </Button>
                    </div>
                    <div className="space-y-2">
@@ -282,9 +345,10 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                            placeholder={`Topik ${idx + 1}`} 
                            value={t} 
                            onChange={(e) => updateTopic(idx, e.target.value)}
+                           className="h-10 md:h-11"
                          />
                          {topics.length > 1 && (
-                           <Button type="button" variant="ghost" size="icon" onClick={() => removeTopic(idx)} className="text-red-500">
+                           <Button type="button" variant="ghost" size="icon" onClick={() => removeTopic(idx)} className="text-red-500 h-10 w-10 md:h-11 md:w-11">
                              <Trash2 className="w-4 h-4" />
                            </Button>
                          )}
@@ -295,18 +359,18 @@ export default function GeneratorSoal({ onSuccess }: Props) {
              </div>
           </div>
 
-          <div className="space-y-8 p-6 bg-slate-50 rounded-3xl border border-slate-200">
+          <div className="space-y-6 md:space-y-8 p-4 md:p-6 bg-slate-50 rounded-2xl md:rounded-3xl border border-slate-200">
              <div className="flex items-center gap-2 border-b border-orange-200 pb-2">
-                <Settings className="w-5 h-5 text-orange-600" />
-                <h3 className="font-bold text-lg">Konfigurasi Detail Soal</h3>
+                <Settings className="w-4 h-4 md:w-5 md:h-5 text-orange-600" />
+                <h3 className="font-bold text-base md:text-lg">Konfigurasi Detail Soal</h3>
              </div>
              
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-6">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <div className="space-y-4 md:space-y-6">
                    <div className="space-y-2">
-                      <Label className="font-bold">Jenis Asesmen / Ujian</Label>
+                      <Label className="font-bold text-sm">Jenis Asesmen / Ujian</Label>
                       <Select onValueChange={(val) => form.setValue('assessmentType', val)} defaultValue="Sumatif Harian">
-                        <SelectTrigger>
+                        <SelectTrigger className="h-10 md:h-12">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -317,9 +381,9 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                       </Select>
                    </div>
                    <div className="space-y-2">
-                      <Label className="font-bold">Jumlah Opsi Pilihan Ganda</Label>
+                      <Label className="font-bold text-sm">Jumlah Opsi Pilihan Ganda</Label>
                       <Select onValueChange={(val) => form.setValue('optionsCount', val)} defaultValue="4 Opsi (A, B, C, D)">
-                        <SelectTrigger>
+                        <SelectTrigger className="h-10 md:h-12">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -329,9 +393,9 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                         </SelectContent>
                       </Select>
                    </div>
-                   <div className="space-y-4">
-                      <Label className="font-bold">Level Kognitif Soal (Taksonomi Bloom)</Label>
-                      <div className="grid grid-cols-2 gap-3">
+                   <div className="space-y-3 md:space-y-4">
+                      <Label className="font-bold text-sm">Level Kognitif Soal</Label>
+                      <div className="grid grid-cols-2 gap-2 md:gap-3">
                          {cognitiveLevelOptions.map(opt => (
                            <div key={opt.id} className="flex items-center space-x-2">
                               <Checkbox 
@@ -343,7 +407,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                                   else form.setValue('cognitiveLevels', current.filter(c => c !== opt.id));
                                 }}
                               />
-                              <label htmlFor={opt.id} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-orange-900">
+                              <label htmlFor={opt.id} className="text-xs md:text-sm font-medium leading-none text-slate-700">
                                 {opt.label}
                               </label>
                            </div>
@@ -352,11 +416,11 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                    </div>
                 </div>
 
-                <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200">
-                   <Label className="font-bold">Proporsi Tingkat Kesulitan (%)</Label>
-                   <div className="space-y-8 py-4">
+                <div className="space-y-4 bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-slate-200">
+                   <Label className="font-bold text-sm">Proporsi Kesulitan (%)</Label>
+                   <div className="space-y-6 md:space-y-8 py-2 md:py-4">
                       <div className="space-y-2">
-                        <div className="flex justify-between text-xs font-bold uppercase text-emerald-600">
+                        <div className="flex justify-between text-[10px] md:text-xs font-bold uppercase text-emerald-600">
                           <span>Mudah</span>
                           <span>{form.watch('easyPerc') || 30}%</span>
                         </div>
@@ -364,11 +428,10 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                            value={[form.watch('easyPerc') || 30]} 
                            onValueChange={(val) => handleDifficultyChange('easy', val[0])}
                            max={100} step={5} 
-                           className="bg-emerald-100"
                         />
                       </div>
                       <div className="space-y-2">
-                        <div className="flex justify-between text-xs font-bold uppercase text-amber-600">
+                        <div className="flex justify-between text-[10px] md:text-xs font-bold uppercase text-amber-600">
                           <span>Sedang</span>
                           <span>{form.watch('mediumPerc') || 50}%</span>
                         </div>
@@ -379,7 +442,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                         />
                       </div>
                       <div className="space-y-2">
-                        <div className="flex justify-between text-xs font-bold uppercase text-red-600">
+                        <div className="flex justify-between text-[10px] md:text-xs font-bold uppercase text-red-600">
                           <span>Sulit (HOTS)</span>
                           <span>{form.watch('hardPerc') || 20}%</span>
                         </div>
@@ -389,14 +452,14 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                            max={100} step={5} 
                         />
                       </div>
-                      <div className={`pt-3 p-3 rounded-2xl text-center transition-all duration-300 ${isTotalCorrect ? "bg-emerald-500 text-white shadow-lg scale-[1.02]" : "bg-red-50 text-red-600 border border-red-100"}`}>
-                         <span className="text-sm font-black flex items-center justify-center gap-2">
+                      <div className={`pt-3 p-3 rounded-xl md:rounded-2xl text-center transition-all duration-300 ${isTotalCorrect ? "bg-emerald-500 text-white shadow-lg scale-[1.02]" : "bg-red-50 text-red-600 border border-red-100"}`}>
+                         <span className="text-xs md:text-sm font-black flex items-center justify-center gap-2">
                            {isTotalCorrect ? (
-                             <Zap className="w-4 h-4 fill-white animate-pulse" />
+                             <Zap className="w-3 h-3 md:w-4 md:h-4 fill-white animate-pulse" />
                            ) : (
-                             <Info className="w-4 h-4" />
+                             <Info className="w-3 h-3 md:w-4 md:h-4" />
                            )}
-                           TOTAL PROPORSI: {totalPerc}% {isTotalCorrect ? "(PAS 100%)" : `(HARUS 100%)`}
+                           TOTAL: {totalPerc}% {isTotalCorrect ? "✓" : `!`}
                          </span>
                       </div>
                    </div>
@@ -404,13 +467,13 @@ export default function GeneratorSoal({ onSuccess }: Props) {
              </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
              <div className="flex items-center gap-2 border-b border-orange-100 pb-2">
-                <ListTodo className="w-5 h-5 text-orange-600" />
-                <h3 className="font-bold text-lg">Distribusi Tipe Soal</h3>
+                <ListTodo className="w-4 h-4 md:w-5 md:h-5 text-orange-600" />
+                <h3 className="font-bold text-base md:text-lg">Distribusi Tipe Soal</h3>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                 {[
                   { label: "PG BIASA", field: "mcqCount" as const, color: "blue" },
                   { label: "PG KOMPLEKS", field: "multiResponseCount" as const, color: "indigo" },
@@ -419,22 +482,22 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                   { label: "ESSAY / URAIAN", field: "essayCount" as const, color: "red" },
                   { label: "MENJODOHKAN", field: "matchTableCount" as const, color: "cyan" },
                 ].map((item) => (
-                  <div key={item.field} className={`p-4 rounded-2xl border bg-${item.color}-50 border-${item.color}-100 flex items-center justify-between`}>
-                     <div className="space-y-1">
-                        <span className={`text-[10px] font-black uppercase text-${item.color}-700`}>{item.label}</span>
-                        <p className="text-[10px] text-slate-400">Jumlah Soal:</p>
+                  <div key={item.field} className={`p-3 md:p-4 rounded-xl md:rounded-2xl border bg-${item.color}-50 border-${item.color}-100 flex flex-col sm:flex-row items-center justify-between gap-2`}>
+                     <div className="space-y-0.5 text-center sm:text-left">
+                        <span className={`text-[10px] md:text-[11px] font-black uppercase text-${item.color}-700`}>{item.label}</span>
+                        <p className="text-[8px] md:text-[10px] text-slate-400 hidden sm:block">Jumlah:</p>
                      </div>
                      <Input 
                        type="number" 
-                       className="w-16 h-10 text-center font-bold" 
+                       className="w-12 h-8 md:w-16 md:h-10 text-center font-bold text-sm md:text-base border-slate-200 bg-white" 
                        value={form.watch(item.field)}
                        onChange={(e) => form.setValue(item.field, parseInt(e.target.value) || 0)}
                      />
                   </div>
                 ))}
              </div>
-             <div className="bg-indigo-600 p-3 rounded-2xl text-center shadow-lg">
-                <span className="text-white font-black">Total Soal Di-generate: {
+             <div className="bg-indigo-600 p-2 md:p-3 rounded-xl md:rounded-2xl text-center shadow-lg">
+                <span className="text-white font-black text-sm md:text-base">Total Soal Di-generate: {
                  (form.watch('mcqCount') || 0) + 
                  (form.watch('multiResponseCount') || 0) + 
                  (form.watch('trueFalseCount') || 0) + 
@@ -445,51 +508,47 @@ export default function GeneratorSoal({ onSuccess }: Props) {
              </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
              <div className="flex items-center gap-2 border-b border-orange-100 pb-2">
-                <ImageIcon className="w-5 h-5 text-orange-600" />
-                <h3 className="font-bold text-lg">Visual, Referensi & Instruksi Khusus</h3>
+                <ImageIcon className="w-4 h-4 md:w-5 md:h-5 text-orange-600" />
+                <h3 className="font-bold text-base md:text-lg">Instruksi Khusus</h3>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 <div className="space-y-4 p-4 border-2 border-dashed border-slate-200 rounded-3xl">
-                    <Label className="font-bold text-xs uppercase tracking-wider text-slate-500">Kebutuhan Multimedia Soal</Label>
-                    <div className="space-y-3">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                 <div className="space-y-3 md:space-y-4 p-4 border-2 border-dashed border-slate-200 rounded-2xl md:rounded-3xl">
+                    <Label className="font-bold text-[10px] md:text-xs uppercase tracking-wider text-slate-500">Multimedia Soal</Label>
+                    <div className="space-y-2 md:space-y-3">
                        <div className="flex items-center justify-between p-2 bg-blue-50 rounded-xl border border-blue-100">
-                          <span className="text-sm font-bold text-blue-800">Sisipkan Gambar</span>
-                          <Input type="number" className="w-12 h-8 text-center" defaultValue={1} />
+                          <span className="text-xs md:text-sm font-bold text-blue-800">Sisipkan Gambar</span>
+                          <Input type="number" className="w-10 h-8 md:w-12 md:h-8 text-center text-xs" defaultValue={1} />
                        </div>
                        <div className="flex items-center justify-between p-2 bg-pink-50 rounded-xl border border-pink-100">
-                          <span className="text-sm font-bold text-pink-800">Grafik/Visual</span>
-                          <Input type="number" className="w-12 h-8 text-center" defaultValue={0} />
-                       </div>
-                       <div className="flex items-center justify-between p-2 bg-amber-50 rounded-xl border border-amber-100">
-                          <span className="text-sm font-bold text-amber-800">Pemicu Refleksi</span>
-                          <Input type="number" className="w-12 h-8 text-center" defaultValue={0} />
+                          <span className="text-xs md:text-sm font-bold text-pink-800">Grafik/Visual</span>
+                          <Input type="number" className="w-10 h-8 md:w-12 md:h-8 text-center text-xs" defaultValue={0} />
                        </div>
                     </div>
                  </div>
                  <div className="space-y-2">
-                    <Label className="font-bold">Catatan Tambahan (Instruksi Khusus)</Label>
-                    <Textarea placeholder="Contoh: Buat soal studi kasus kasus lokal..." className="h-full min-h-[140px]" {...form.register('specialInstructions')} />
+                    <Label className="font-bold text-sm">Catatan Tambahan</Label>
+                    <Textarea placeholder="Contoh: Fokus pada studi kasus lokal..." className="h-24 md:h-full min-h-[100px] text-xs md:text-sm" {...form.register('specialInstructions')} />
                  </div>
              </div>
           </div>
 
           <Button 
             type="submit" 
-            className="w-full h-16 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-indigo-100 transition-all active:scale-[0.98]"
+            className="w-full h-14 md:h-16 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-lg md:text-xl rounded-xl md:rounded-2xl shadow-xl shadow-indigo-100 transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading ? (
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Dihangatkan oleh AI... Sesaat lagi!
+                <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Processing...
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Zap className="w-6 h-6 fill-white" />
-                GENERATE SOAL SEKARANG
+                <Zap className="w-5 h-5 md:w-6 md:h-6 fill-white" />
+                GENERATE SEKARANG
               </div>
             )}
           </Button>

@@ -141,31 +141,31 @@ export default function GeneratorRPP({ onSuccess }: Props) {
   };
 
   return (
-    <Card className="border-none shadow-2xl shadow-indigo-100 bg-white overflow-hidden">
-      <CardHeader className="bg-indigo-600 text-white p-8">
-        <div className="flex items-center gap-4 mb-2">
-          <FileText className="w-10 h-10" />
+    <Card className="border-none shadow-2xl shadow-indigo-100 bg-white overflow-hidden rounded-t-none md:rounded-t-3xl">
+      <CardHeader className="bg-indigo-600 text-white p-6 md:p-8">
+        <div className="flex items-center gap-3 md:gap-4 mb-2">
+          <FileText className="w-8 h-8 md:w-10 md:h-10" />
           <div>
-            <CardTitle className="text-2xl font-black">Generator RPP / Modul Ajar</CardTitle>
-            <CardDescription className="text-indigo-100 font-medium">Susun rencana pembelajaran profesional dalam hitungan detik.</CardDescription>
+            <CardTitle className="text-xl md:text-2xl font-black">Generator RPP / Modul Ajar</CardTitle>
+            <CardDescription className="text-indigo-100 font-medium text-xs md:text-sm">Susun rencana pembelajaran profesional dalam hitungan detik.</CardDescription>
           </div>
         </div>
       </CardHeader>
       
-      <CardContent className="p-8">
-        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+      <CardContent className="p-4 md:p-8">
+        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-6 md:space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50 rounded-xl md:rounded-2xl border border-slate-100">
              <div className="flex items-center justify-between col-span-full">
                 <div className="flex items-center gap-2">
-                   <Settings className="w-4 h-4 text-indigo-600" />
-                   <span className="font-bold text-sm uppercase tracking-wider text-slate-500">Pengaturan Dokumen</span>
+                   <Settings className="w-3 h-3 md:w-4 md:h-4 text-indigo-600" />
+                   <span className="font-bold text-[10px] md:text-xs uppercase tracking-wider text-slate-500">Pengaturan Dokumen</span>
                 </div>
              </div>
              
-             <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200">
+             <div className="flex items-center justify-between p-3 md:p-4 bg-white rounded-xl border border-slate-200">
                 <div className="space-y-0.5">
-                  <Label className="text-sm font-bold">Kop Surat (Opsional)</Label>
-                  <p className="text-xs text-slate-500">Gunakan format kop instansi resmi.</p>
+                  <Label className="text-xs md:text-sm font-bold">Kop Surat (Opsional)</Label>
+                  <p className="text-[10px] md:text-xs text-slate-500">Gunakan format kop instansi resmi.</p>
                 </div>
                 <Switch 
                   checked={form.watch('useLetterhead')} 
@@ -173,10 +173,10 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                 />
              </div>
 
-             <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200">
+             <div className="flex items-center justify-between p-3 md:p-4 bg-white rounded-xl border border-slate-200">
                 <div className="space-y-0.5">
-                  <Label className="text-sm font-bold">Lembar Pengesahan</Label>
-                  <p className="text-xs text-slate-500">Tambahkan tanda tangan kepala sekolah.</p>
+                  <Label className="text-xs md:text-sm font-bold">Lembar Pengesahan</Label>
+                  <p className="text-[10px] md:text-xs text-slate-500">Tambahkan tanda tangan kepala sekolah.</p>
                 </div>
                 <Switch 
                   checked={form.watch('useValidationPage')} 
@@ -185,57 +185,57 @@ export default function GeneratorRPP({ onSuccess }: Props) {
              </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
              <div className="flex items-center gap-2 border-b border-indigo-100 pb-2">
-                <Layout className="w-5 h-5 text-indigo-600" />
-                <h3 className="font-bold text-lg">Identitas Guru & Satuan Pendidikan</h3>
+                <Layout className="w-4 h-4 md:w-5 md:h-5 text-indigo-600" />
+                <h3 className="font-bold text-base md:text-lg">Identitas Guru & Satuan Pendidikan</h3>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="font-bold">Nama Lengkap Guru</Label>
-                  <Input id="name" placeholder="Contoh: Hery Purwanto, S.Pd" {...form.register('name')} />
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label htmlFor="name" className="font-bold text-sm">Nama Lengkap Guru</Label>
+                  <Input id="name" placeholder="Contoh: Hery Purwanto, S.Pd" {...form.register('name')} className="h-10 md:h-12" />
                   {form.formState.errors.name && <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>}
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="nip" className="font-bold">NIP (Opsional)</Label>
-                  <Input id="nip" placeholder="Contoh: 199010312019031002" {...form.register('nip')} />
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label htmlFor="nip" className="font-bold text-sm">NIP (Opsional)</Label>
+                  <Input id="nip" placeholder="Contoh: 19901031..." {...form.register('nip')} className="h-10 md:h-12" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="school" className="font-bold">Sekolah</Label>
-                  <Input id="school" placeholder="Contoh: SMP 60 Muaro Jambi" {...form.register('school')} />
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label htmlFor="school" className="font-bold text-sm">Sekolah</Label>
+                  <Input id="school" placeholder="Nama Sekolah" {...form.register('school')} className="h-10 md:h-12" />
                   {form.formState.errors.school && <p className="text-xs text-red-500">{form.formState.errors.school.message}</p>}
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="subject" className="font-bold">Mata Pelajaran</Label>
-                  <Input id="subject" placeholder="Contoh: Bahasa Indonesia" {...form.register('subject')} />
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label htmlFor="subject" className="font-bold text-sm">Mata Pelajaran</Label>
+                  <Input id="subject" placeholder="Bahasa Indonesia" {...form.register('subject')} className="h-10 md:h-12" />
                   {form.formState.errors.subject && <p className="text-xs text-red-500">{form.formState.errors.subject.message}</p>}
                 </div>
-                <div className="space-y-2">
-                   <Label className="font-bold">Tahun Pelajaran</Label>
-                   <Input placeholder="2025/2026" {...form.register('schoolYear')} />
+                <div className="space-y-1.5 md:space-y-2">
+                   <Label className="font-bold text-sm">Tahun Pelajaran</Label>
+                   <Input placeholder="2025/2026" {...form.register('schoolYear')} className="h-10 md:h-12" />
                 </div>
              </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
              <div className="flex items-center gap-2 border-b border-indigo-100 pb-2">
-                <Layers className="w-5 h-5 text-indigo-600" />
-                <h3 className="font-bold text-lg">Detail Kurikulum & Materi</h3>
+                <Layers className="w-4 h-4 md:w-5 md:h-5 text-indigo-600" />
+                <h3 className="font-bold text-base md:text-lg">Detail Kurikulum & Materi</h3>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label className="font-bold">Fase / Kelas</Label>
-                  <div className="flex gap-2">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label className="font-bold text-sm">Fase / Kelas</Label>
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <Select onValueChange={(val: string) => {
                       if (val !== "manual") form.setValue('phaseGrade', val);
                     }}>
-                      <SelectTrigger className="w-[180px]">
+                      <SelectTrigger className="w-full sm:w-[150px] h-10 md:h-12">
                         <SelectValue placeholder="Pilih..." />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Fase A (Kelas 1-2) SD">Fase A (1-2)</SelectItem>
+                        <SelectItem value="Fase A ( Kelas 1-2) SD">Fase A (1-2)</SelectItem>
                         <SelectItem value="Fase B (Kelas 3-4) SD">Fase B (3-4)</SelectItem>
                         <SelectItem value="Fase C (Kelas 5-6) SD">Fase C (5-6)</SelectItem>
                         <SelectItem value="Fase D (Kelas 7-9) SMP">Fase D (7-9)</SelectItem>
@@ -245,16 +245,16 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                       </SelectContent>
                     </Select>
                     <Input 
-                      placeholder="Input manual di sini..." 
+                      placeholder="Manual..." 
                       {...form.register('phaseGrade')} 
-                      className="flex-grow"
+                      className="flex-grow h-10 md:h-12"
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label className="font-bold">Semester</Label>
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label className="font-bold text-sm">Semester</Label>
                   <Select onValueChange={(val: string) => form.setValue('semester', val)} defaultValue="Ganjil">
-                    <SelectTrigger>
+                    <SelectTrigger className="h-10 md:h-12">
                       <SelectValue placeholder="Pilih Semester" />
                     </SelectTrigger>
                     <SelectContent>
@@ -263,11 +263,11 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="col-span-full space-y-4">
+                <div className="col-span-full space-y-3 md:space-y-4">
                    <div className="flex items-center justify-between">
-                     <Label className="font-bold">Materi Pokok / Bab (Dapat ditambahkan)</Label>
-                     <Button type="button" variant="outline" size="sm" onClick={addTopic} className="h-8 gap-1">
-                       <Plus className="w-3 h-3" /> Tambah Topik
+                     <Label className="font-bold text-sm">Materi Pokok / Bab</Label>
+                     <Button type="button" variant="outline" size="sm" onClick={addTopic} className="h-8 gap-1 text-xs">
+                       <Plus className="w-3 h-3" /> Tambah
                      </Button>
                    </div>
                    <div className="space-y-2">
@@ -277,9 +277,10 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                            placeholder={`Topik/Materi ${idx + 1}`} 
                            value={t} 
                            onChange={(e) => updateTopic(idx, e.target.value)}
+                           className="h-10 md:h-11"
                          />
                          {topics.length > 1 && (
-                           <Button type="button" variant="ghost" size="icon" onClick={() => removeTopic(idx)} className="text-red-500">
+                           <Button type="button" variant="ghost" size="icon" onClick={() => removeTopic(idx)} className="text-red-500 h-10 w-10 md:h-11 md:w-11">
                              <Trash2 className="w-4 h-4" />
                            </Button>
                          )}
@@ -287,10 +288,10 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                      ))}
                    </div>
                 </div>
-                <div className="space-y-2">
-                  <Label className="font-bold">Pendekatan / Model Pembelajaran</Label>
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label className="font-bold text-sm">Model Pembelajaran</Label>
                   <Select onValueChange={(val: string) => form.setValue('learningModel', val)} defaultValue="Discovery Learning">
-                    <SelectTrigger>
+                    <SelectTrigger className="h-10 md:h-12">
                       <SelectValue placeholder="Pilih Model" />
                     </SelectTrigger>
                     <SelectContent>
@@ -301,34 +302,34 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="timeAllocation" className="font-bold">Alokasi Waktu</Label>
-                  <Input id="timeAllocation" placeholder="Contoh: 2 x 40 Menit" {...form.register('timeAllocation')} />
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label htmlFor="timeAllocation" className="font-bold text-sm">Alokasi Waktu</Label>
+                  <Input id="timeAllocation" placeholder="2 x 40 Menit" {...form.register('timeAllocation')} className="h-10 md:h-12" />
                 </div>
              </div>
           </div>
 
-          <div className="space-y-2 pt-4">
-             <Label htmlFor="notes" className="font-bold flex items-center gap-2">
-                <Info className="w-4 h-4" /> Catatan Tambahan (Opsional)
+          <div className="space-y-2 pt-2 md:pt-4">
+             <Label htmlFor="notes" className="font-bold flex items-center gap-2 text-sm">
+                <Info className="w-3.5 h-3.5" /> Catatan Tambahan (Opsional)
              </Label>
-             <Textarea id="notes" placeholder="Contoh: Fokus pada pemahaman mikroskopis sel, sertakan kaitan dengan kehidupan sehari-hari." {...form.register('additionalNotes')} />
+             <Textarea id="notes" placeholder="Fokus pada pemahaman..." {...form.register('additionalNotes')} className="text-sm min-h-[100px]" />
           </div>
 
           <Button 
             type="submit" 
-            className="w-full h-14 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-lg rounded-2xl shadow-xl shadow-indigo-200 transition-all active:scale-[0.98]"
+            className="w-full h-14 md:h-16 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-base md:text-lg rounded-xl md:rounded-2xl shadow-xl shadow-indigo-200 transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading ? (
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Sedang Menyusun Modul Ajar...
+                Processing...
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Rocket className="w-6 h-6" />
-                Generate Rencana Pembelajaran
+                <Rocket className="w-5 h-5 md:w-6 md:h-6" />
+                GENERATE RENCANA PEMBELAJARAN
               </div>
             )}
           </Button>
