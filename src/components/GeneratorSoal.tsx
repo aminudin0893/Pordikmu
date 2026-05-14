@@ -62,7 +62,6 @@ interface Props {
 
 export default function GeneratorSoal({ onSuccess }: Props) {
   const [loading, setLoading] = useState(false);
-  const [difficulty, setDifficulty] = useState([30, 40, 30]); // Mudah, Sedang, Sulit
 
   const form = useForm<SoalFormData>({
     resolver: zodResolver(soalSchema),
@@ -85,40 +84,21 @@ export default function GeneratorSoal({ onSuccess }: Props) {
   });
 
   const handleDifficultyChange = (type: 'easy' | 'medium' | 'hard', newVal: number) => {
-    const current = {
+    const vals = {
       easy: form.getValues('easyPerc'),
       medium: form.getValues('mediumPerc'),
       hard: form.getValues('hardPerc')
     };
-
-    if (type === 'easy') {
-      const diff = newVal - current.easy;
-      const part = diff / 2;
-      form.setValue('easyPerc', newVal);
-      form.setValue('mediumPerc', Math.max(0, current.medium - part));
-      form.setValue('hardPerc', Math.max(0, current.hard - part));
-    } else if (type === 'medium') {
-      const diff = newVal - current.medium;
-      const part = diff / 2;
-      form.setValue('mediumPerc', newVal);
-      form.setValue('easyPerc', Math.max(0, current.easy - part));
-      form.setValue('hardPerc', Math.max(0, current.hard - part));
-    } else {
-      const diff = newVal - current.hard;
-      const part = diff / 2;
-      form.setValue('hardPerc', newVal);
-      form.setValue('easyPerc', Math.max(0, current.easy - part));
-      form.setValue('mediumPerc', Math.max(0, current.medium - part));
-    }
     
-    // Normalize to 100
-    const total = form.getValues('easyPerc') + form.getValues('mediumPerc') + form.getValues('hardPerc');
-    if (total !== 100) {
-      const factor = 100 / total;
-      form.setValue('easyPerc', Math.round(form.getValues('easyPerc') * factor));
-      form.setValue('mediumPerc', Math.round(form.getValues('mediumPerc') * factor));
-      form.setValue('hardPerc', 100 - (Math.round(form.getValues('easyPerc') * factor) + Math.round(form.getValues('mediumPerc') * factor)));
-    }
+    vals[type] = newVal;
+    
+    // Simple normalization to keep total 100
+    const total = vals.easy + vals.medium + vals.hard;
+    const factor = 100 / (total || 1);
+    
+    form.setValue('easyPerc', Math.round(vals.easy * factor));
+    form.setValue('mediumPerc', Math.round(vals.medium * factor));
+    form.setValue('hardPerc', 100 - (Math.round(vals.easy * factor) + Math.round(vals.medium * factor)));
   };
 
   const [topics, setTopics] = useState(form.getValues('topics') || [""]);
@@ -259,17 +239,29 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                 </div>
                 <div className="space-y-2">
                   <Label className="font-bold">Fase / Kelas</Label>
-                  <Select onValueChange={(val: string) => form.setValue('phaseGrade', val)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih Kelas" />
-                    </SelectTrigger>
-                    <SelectContent>
-                       <SelectItem value="Fase D (Kelas 7) SMP">Fase D (Kelas 7) SMP</SelectItem>
-                       <SelectItem value="Fase D (Kelas 8) SMP">Fase D (Kelas 8) SMP</SelectItem>
-                       <SelectItem value="Fase D (Kelas 9) SMP">Fase D (Kelas 9) SMP</SelectItem>
-                       <SelectItem value="Fase E (Kelas 10) SMA">Fase E (Kelas 10) SMA</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="flex gap-2">
+                    <Select onValueChange={(val: string) => {
+                      if (val !== "manual") form.setValue('phaseGrade', val);
+                    }}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Pilih..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Fase A (Kelas 1-2) SD">Fase A (1-2)</SelectItem>
+                        <SelectItem value="Fase B (Kelas 3-4) SD">Fase B (3-4)</SelectItem>
+                        <SelectItem value="Fase C (Kelas 5-6) SD">Fase C (5-6)</SelectItem>
+                        <SelectItem value="Fase D (Kelas 7-9) SMP">Fase D (7-9)</SelectItem>
+                        <SelectItem value="Fase E (Kelas 10) SMA">Fase E (10)</SelectItem>
+                        <SelectItem value="Fase F (Kelas 11-12) SMA">Fase F (11-12)</SelectItem>
+                        <SelectItem value="manual">-- Input Manual --</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Input 
+                      placeholder="Input manual di sini..." 
+                      {...form.register('phaseGrade')} 
+                      className="flex-grow"
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                    <Label className="font-bold">Tahun Pelajaran</Label>

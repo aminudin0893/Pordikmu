@@ -16,7 +16,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
-import { Switch } from './ui/switch';
+import { Checkbox } from './ui/checkbox';
 import {
   Select,
   SelectContent,
@@ -29,7 +29,6 @@ import { generateEducationContent } from '../lib/gemini';
 import { toast } from 'sonner';
 
 const materiSchema = z.object({
-  name: z.string().min(1, "Nama harus diisi"),
   school: z.string().min(1, "Sekolah harus diisi"),
   subject: z.string().min(1, "Mata Pelajaran harus diisi"),
   phaseGrade: z.string().min(1, "Fase/Kelas harus diisi"),
@@ -37,6 +36,7 @@ const materiSchema = z.object({
   depthLevel: z.enum(['basic', 'intermediate', 'advanced']),
   includeAnalogy: z.boolean(),
   includeIllustration: z.boolean(),
+  includeQuiz: z.boolean(),
   targetFocus: z.string().optional(),
 });
 
@@ -53,7 +53,6 @@ export default function GeneratorMateri({ onSuccess }: Props) {
   const form = useForm<MateriFormData>({
     resolver: zodResolver(materiSchema),
     defaultValues: {
-      name: '',
       school: '',
       subject: '',
       phaseGrade: '',
@@ -61,7 +60,8 @@ export default function GeneratorMateri({ onSuccess }: Props) {
       depthLevel: 'intermediate',
       includeAnalogy: true,
       includeIllustration: true,
-    } as any
+      includeQuiz: true,
+    }
   });
 
   const addTopic = () => {
@@ -89,7 +89,7 @@ export default function GeneratorMateri({ onSuccess }: Props) {
     setLoading(true);
     try {
       const prompt = `
-        Susunlah materi ajar yang komprehensif, interaktif, mendalam, dan sangat profesional sesuai standar Kurikulum Merdeka untuk:
+        Susunlah Materi Ajar Digital yang sangat komprehensif, menarik, dan menggunakan prinsip "Deep Learning" untuk:
         
         DATA:
         - Subjek: ${data.subject}
@@ -98,20 +98,22 @@ export default function GeneratorMateri({ onSuccess }: Props) {
         - Tingkat Kedalaman: ${data.depthLevel}
         - Fokus Utama: ${data.targetFocus || "Pemahaman Konsep Secara Holistik"}
         
-        STUKTUR MATERI (WAJIB ADA):
-        1. JUDUL: Buat judul yang sangat menarik dan relevan.
-        2. TUJUAN PEMBELAJARAN (Tabel): List tujuan pembelajaran yang selaras dengan CP Kurikulum Merdeka.
-        3. PENGANTAR KONTEKSTUAL: Cerita atau fenomena nyata terkait materi (Apersepsi).
-        4. PEMBAHASAN INTI: Penjelasan mendalam menggunakan bahasa yang mudah dipahami namun akademis. Gunakan poin-poin/list yang rapi.
-        5. ANALOGI & ILUSTRASI: ${data.includeAnalogy ? "Berikan analogi dunia nyata yang cerdas. " : ""}${data.includeIllustration ? "Sertakan deskripsi detail untuk ilustrasi visual yang bisa dibuat. " : ""}
-        6. TABEL KOMPARASI/RANGKUMAN: Buat tabel profesional yang merangkum poin-poin kunci materi.
-        7. POJOK DISKUSI (HOTS): Tantangan berpikir kritis dan pertanyaan pemantik untuk siswa.
-        8. GLOSARIUM & PENGAYAAN: Istilah penting dan bahan bacaan lebih lanjut.
+        KOMPONEN MATERI (WAJIB ADA):
+        1. TUJUAN PEMBELAJARAN (Tabel): Apa yang akan dikuasai siswa.
+        2. APERSEPSI & PREVIEW: Cerita/konteks dunia nyata untuk memancing rasa ingin tahu.
+        3. ISI MATERI UTAMA: Penjelasan konsep dengan struktur yang logis.
+           - Gunakan heading yang jelas.
+           - Tambahkan poin-poin penting.
+           ${data.includeAnalogy ? "- Sertakan ANALOGI sederhana untuk menjelaskan konsep abstrak." : ""}
+        4. STUDI KASUS / CONTOH NYATA: Penerapan materi dalam kehidupan.
+        5. VISUALISASI DESKRIPTIF: Deskripsi visual ${data.includeIllustration ? "yang detail (bayangkan sebagai ilustrasi buku teks)" : ""}.
+        6. RANGKUMAN (Tabel): Intisari materi yang mudah dihafal.
+        ${data.includeQuiz ? "7. CEK PEMAHAMAN (Kuis Kecil): 3-5 pertanyaan reflektif untuk mengetes pemahaman." : ""}
         
         INSTRUKSI FORMAT:
         - Gunakan Bahasa Indonesia formal dan edukatif.
         - Wajib menggunakan Tabel Markdown untuk bagian Tujuan dan Rangkuman.
-        - Terapkan prinsip "Deep Learning" agar siswa tidak hanya menghafal, tapi memahami "why" dan "how".
+        - Terapkan prinsip "Deep Learning" agar siswa tidak hanya menghafal, tapi memahami "why" and "how".
         - Format tulisan harus sangat rapi dengan Markdown yang profesional.
       `;
 
@@ -138,15 +140,11 @@ export default function GeneratorMateri({ onSuccess }: Props) {
       </CardHeader>
       
       <CardContent className="p-8">
-        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
              <div className="space-y-2">
-                <Label className="font-bold">Nama Guru</Label>
-                <Input placeholder="Nama Anda" {...form.register('name')} />
-             </div>
-             <div className="space-y-2">
                 <Label className="font-bold">Mata Pelajaran</Label>
-                <Input placeholder="Mata Pelajaran" {...form.register('subject')} />
+                <Input placeholder="Contoh: IPA / Biologi" {...form.register('subject')} />
              </div>
              <div className="space-y-2">
                 <Label className="font-bold">Sekolah</Label>
@@ -154,19 +152,29 @@ export default function GeneratorMateri({ onSuccess }: Props) {
              </div>
              <div className="space-y-2">
                 <Label className="font-bold">Fase / Kelas</Label>
-                <Select onValueChange={(val: string) => form.setValue('phaseGrade', val)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih Fase/Kelas" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Fase A (Kelas 1-2) SD">Fase A (Kelas 1-2) SD</SelectItem>
-                    <SelectItem value="Fase B (Kelas 3-4) SD">Fase B (Kelas 3-4) SD</SelectItem>
-                    <SelectItem value="Fase C (Kelas 5-6) SD">Fase C (Kelas 5-6) SD</SelectItem>
-                    <SelectItem value="Fase D (Kelas 7-9) SMP">Fase D (Kelas 7-9) SMP</SelectItem>
-                    <SelectItem value="Fase E (Kelas 10) SMA">Fase E (Kelas 10) SMA</SelectItem>
-                    <SelectItem value="Fase F (Kelas 11-12) SMA">Fase F (Kelas 11-12) SMA</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex gap-2">
+                  <Select onValueChange={(val: string) => {
+                    if (val !== "manual") form.setValue('phaseGrade', val);
+                  }}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Pilih..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Fase A (Kelas 1-2) SD">Fase A (1-2)</SelectItem>
+                      <SelectItem value="Fase B (Kelas 3-4) SD">Fase B (3-4)</SelectItem>
+                      <SelectItem value="Fase C (Kelas 5-6) SD">Fase C (5-6)</SelectItem>
+                      <SelectItem value="Fase D (Kelas 7-9) SMP">Fase D (7-9)</SelectItem>
+                      <SelectItem value="Fase E (Kelas 10) SMA">Fase E (10)</SelectItem>
+                      <SelectItem value="Fase F (Kelas 11-12) SMA">Fase F (11-12)</SelectItem>
+                      <SelectItem value="manual">-- Input Manual --</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Input 
+                    placeholder="Input manual..." 
+                    {...form.register('phaseGrade')} 
+                    className="flex-grow"
+                  />
+                </div>
              </div>
              <div className="col-span-full space-y-4">
                 <div className="flex items-center justify-between">
@@ -194,70 +202,66 @@ export default function GeneratorMateri({ onSuccess }: Props) {
              </div>
           </div>
 
-          <div className="space-y-6 pt-4 border-t border-slate-100">
-             <div className="flex items-center gap-2">
+          <div className="space-y-6 p-6 bg-slate-50 rounded-3xl border border-slate-200">
+             <div className="flex items-center gap-2 border-b border-emerald-100 pb-2">
                 <Sparkles className="w-5 h-5 text-emerald-600" />
-                <h3 className="font-bold text-lg leading-none">Konfigurasi Penjelasan AI</h3>
+                <h3 className="font-bold text-lg italic">Gaya Penulisan & Kedalaman</h3>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                   <Label className="font-bold">Tingkat Kedalaman</Label>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                   <Label className="font-bold">Tingkat Kedalaman Materi</Label>
                    <Select onValueChange={(val: any) => form.setValue('depthLevel', val)} defaultValue="intermediate">
                      <SelectTrigger>
-                       <SelectValue />
+                        <SelectValue />
                      </SelectTrigger>
                      <SelectContent>
-                       <SelectItem value="basic">Dasar / Pengenalan</SelectItem>
-                       <SelectItem value="intermediate">Menengah / Standar</SelectItem>
-                       <SelectItem value="advanced">Lanjutan / Mendalam</SelectItem>
+                        <SelectItem value="basic">Dasar (Perkenalan Konsep)</SelectItem>
+                        <SelectItem value="intermediate">Menengah (Pemahaman Komprehensif)</SelectItem>
+                        <SelectItem value="advanced">Lanjut (Analisis Mendalam & HOTS)</SelectItem>
                      </SelectContent>
                    </Select>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-xl border border-emerald-100">
-                   <div className="space-y-0.5">
-                      <Label className="text-xs font-bold text-emerald-900">Analogi</Label>
-                      <p className="text-[10px] text-emerald-600">Gunakan perumpamaan</p>
+                <div className="space-y-2 text-right">
+                   <Label className="font-bold">Fitur Tambahan</Label>
+                   <div className="flex flex-wrap justify-end gap-4 pt-2">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="analog" checked={form.watch('includeAnalogy')} onCheckedChange={(val) => form.setValue('includeAnalogy', !!val)} />
+                        <label htmlFor="analog" className="text-sm font-medium">Analogi</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="illus" checked={form.watch('includeIllustration')} onCheckedChange={(val) => form.setValue('includeIllustration', !!val)} />
+                        <label htmlFor="illus" className="text-sm font-medium">Ilustrasi</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="quiz" checked={form.watch('includeQuiz')} onCheckedChange={(val) => form.setValue('includeQuiz', !!val)} />
+                        <label htmlFor="quiz" className="text-sm font-medium">Kuis</label>
+                      </div>
                    </div>
-                   <Switch 
-                     checked={form.watch('includeAnalogy')} 
-                     onCheckedChange={(val) => form.setValue('includeAnalogy', val)} 
-                   />
                 </div>
-                <div className="flex items-center justify-between p-3 bg-blue-50 rounded-xl border border-blue-100">
-                   <div className="space-y-0.5">
-                      <Label className="text-xs font-bold text-blue-900">Ilustrasi</Label>
-                      <p className="text-[10px] text-blue-600">Deskripsi visual</p>
-                   </div>
-                   <Switch 
-                     checked={form.watch('includeIllustration')} 
-                     onCheckedChange={(val) => form.setValue('includeIllustration', val)} 
-                   />
+                <div className="col-span-full space-y-2">
+                   <Label className="font-bold flex items-center gap-2">
+                      <Target className="w-4 h-4 text-emerald-600" /> Fokus Target Pembelajaran
+                   </Label>
+                   <Textarea placeholder="Contoh: Tekankan pada bagaimana proses osmosis terjadi secara biologis..." {...form.register('targetFocus')} />
                 </div>
              </div>
-          </div>
-
-          <div className="space-y-2">
-             <Label className="font-bold flex items-center gap-2">
-                <Target className="w-4 h-4 text-emerald-600" /> Fokus Utama Materi
-             </Label>
-             <Textarea placeholder="Contoh: Fokus pada mekanisme transfer energi dalam ekosistem..." {...form.register('targetFocus')} />
           </div>
 
           <Button 
             type="submit" 
-            className="w-full h-14 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-lg rounded-2xl shadow-xl shadow-emerald-100 transition-all active:scale-[0.98]"
+            className="w-full h-16 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-emerald-100 transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading ? (
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Materi Sedang Ditulis...
+                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Meramu Materi... Sesaat lagi!
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Rocket className="w-6 h-6" />
-                Generate Materi Ajar
+                <Zap className="w-6 h-6 fill-white" />
+                GENERATE MATERI SEKARANG
               </div>
             )}
           </Button>

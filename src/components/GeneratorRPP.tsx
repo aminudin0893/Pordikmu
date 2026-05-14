@@ -128,8 +128,6 @@ export default function GeneratorRPP({ onSuccess }: Props) {
         - Gunakan Bahasa Indonesia yang formal dan edukatif.
         - Tampilkan data dalam tabel Markdown yang rapi untuk bagian Kegiatan Pembelajaran dan Asesmen.
         - Pastikan modul ini mendukung "Deep Learning" (pemahaman mendalam) dan "Kurikulum Merdeka".
-        - Jika "Kop Surat" aktif, tambahkan bagian Header Instansi di awal.
-        - Jika "Lembar Pengesahan" aktif, tambahkan section tanda tangan di bagian akhir.
       `;
 
       const result = await generateEducationContent(prompt);
@@ -229,19 +227,29 @@ export default function GeneratorRPP({ onSuccess }: Props) {
              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label className="font-bold">Fase / Kelas</Label>
-                  <Select onValueChange={(val: string) => form.setValue('phaseGrade', val)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih Fase/Kelas" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Fase A (Kelas 1-2) SD">Fase A (Kelas 1-2) SD</SelectItem>
-                      <SelectItem value="Fase B (Kelas 3-4) SD">Fase B (Kelas 3-4) SD</SelectItem>
-                      <SelectItem value="Fase C (Kelas 5-6) SD">Fase C (Kelas 5-6) SD</SelectItem>
-                      <SelectItem value="Fase D (Kelas 7-9) SMP">Fase D (Kelas 7-9) SMP</SelectItem>
-                      <SelectItem value="Fase E (Kelas 10) SMA">Fase E (Kelas 10) SMA</SelectItem>
-                      <SelectItem value="Fase F (Kelas 11-12) SMA">Fase F (Kelas 11-12) SMA</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="flex gap-2">
+                    <Select onValueChange={(val: string) => {
+                      if (val !== "manual") form.setValue('phaseGrade', val);
+                    }}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Pilih..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Fase A (Kelas 1-2) SD">Fase A (1-2)</SelectItem>
+                        <SelectItem value="Fase B (Kelas 3-4) SD">Fase B (3-4)</SelectItem>
+                        <SelectItem value="Fase C (Kelas 5-6) SD">Fase C (5-6)</SelectItem>
+                        <SelectItem value="Fase D (Kelas 7-9) SMP">Fase D (7-9)</SelectItem>
+                        <SelectItem value="Fase E (Kelas 10) SMA">Fase E (10)</SelectItem>
+                        <SelectItem value="Fase F (Kelas 11-12) SMA">Fase F (11-12)</SelectItem>
+                        <SelectItem value="manual">-- Input Manual --</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Input 
+                      placeholder="Input manual di sini..." 
+                      {...form.register('phaseGrade')} 
+                      className="flex-grow"
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label className="font-bold">Semester</Label>
