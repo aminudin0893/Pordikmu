@@ -138,14 +138,12 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
         Susunlah MATERI AJAR (BAHAN AJAR) yang sangat LENGKAP, PROFESIONAL, MENDALAM, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
-        TIDAK BOLEH ADA POIN YANG KOSONG.
-        
-        PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>.
-        
-        STRUKTUR MODUL RESMI (HARUS LENGKAP):
+        TIDAK BOLEH ADA POIN YANG KOSONG. Jika data spesifik tidak disediakan, gunakan wawasan kependidikan profesional untuk mengisi narasinya secara detail.
+
+        STRUKTUR MODUL RESMI (HARUS SANGAT LENGKAP):
 
         1. HEADER & IDENTITAS:
-           # BAHAN AJAR DIGITAL
+           # BAHAN AJAR DIGITAL ESENSIAL
            **MATA PELAJARAN: ${data.subject.toUpperCase()}**
            **${data.school.toUpperCase()}**
            ---
@@ -156,34 +154,34 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
         | Satuan Pendidikan | ${data.school} |
         | Mata Pelajaran | ${data.subject.toUpperCase()} |
         | Jenjang / Fase / Kelas | ${data.phaseGrade} |
-        | Semester | Ganjil/Genap |
+        | Semester | [Ganjil/Genap - Sesuaikan] |
         | Disusun Oleh | ${data.name} |
         | Topik Utama | ${data.topics.join(", ")} |
         | Target Kedalaman | ${data.depthLevel.toUpperCase()} |
 
         ## B. Capaian & Tujuan Pembelajaran
-        Sajikan target kompetensi yang harus dikuasai peserta didik dalam bentuk poin-poin yang jelas, terukur, dan menantang.
+        Deskripsikan secara rinci target kompetensi yang harus dikuasai peserta didik berdasarkan Capaian Pembelajaran (CP) dan Tujuan Pembelajaran (TP) yang terukur.
 
         ## C. Pembahasan Materi (Deep Learning Approach)
-        Gunakan pendekatan mendalam (High-Logic explanation):
-        1. **Essential Questions**: Minimal 3 pertanyaan pemantik rasa ingin tahu.
-        2. **Konsep Inti**: Penjelasan logis, sistematis, mendalam dan komprehensif (minimal 5 paragraf detail).
-        ${data.includeAnalogy ? "3. **Analogi Dunia Nyata**: Hubungkan konsep abstrak dengan fenomena sehari-hari agar lebih mudah dipahami secara intuitif." : ""}
-        ${data.includeIllustration ? "4. **Visualisasi Konsep**: Deskripsikan secara detail ilustrasi/gambar/infografis pendukung yang memperjelas materi." : ""}
+        Gunakan pendekatan High-Logic & Komprehensif:
+        1. **Essential Questions**: Berikan minimal 3-5 pertanyaan pemantik yang merangsang kognitif tingkat tinggi.
+        2. **Konsep Inti & Teori**: Jelaskan secara logis, sistematis, mendalam, dan komprehensif (minimal 5-8 paragraf detil per sub-topik). Sertakan data, fakta, atau teori pendukung yang relevan.
+        ${data.includeAnalogy ? "3. **Analogi Dunia Nyata**: Berikan analogi yang kreatif dan kontekstual untuk memudahkan pemahaman konsep abstrak secara intuitif." : ""}
+        ${data.includeIllustration ? "4. **Panduan Visual/Ilustrasi**: Deskripsikan secara detail (dalam teks) visual/gambar/infografis yang seharusnya ada untuk memperkuat pemahaman materi." : ""}
 
         ## D. Contoh Penerapan & Studi Kasus
-        Berikan situasi nyata atau dilema yang melatih penalaran kritis (Critical Thinking) peserta didik terkait materi tersebut secara spesifik.
+        Sajikan situasi nyata, dilema etis, atau masalah di masyarakat yang memerlukan penerapan konsep ini untuk diselesaikan (mengasah Critical Thinking).
 
         ## E. Rangkuman & Refleksi Mandiri
         | Intisari Materi (Rangkuman) | Pertanyaan Refleksi Peserta Didik |
         |---|---|
-        | [Jabarkan minimal 5 poin penting] | [Minimal 3 pertanyaan kontemplatif untuk mengukur pemahaman] |
+        | [Jabarkan minimal 5-7 poin penting materi] | [Minimal 3-5 pertanyaan kontemplatif untuk mengukur kedalaman pemahaman] |
 
-        ${data.includeQuiz ? "## F. Uji Pemahaman (Format HOTS)\nBerikan 5 soal pilihan ganda atau esai dengan tingkat kesulitan tinggi (C4-C6)." : ""}
+        ${data.includeQuiz ? "## F. Uji Pemahaman (Format HOTS)\nBerikan 5 soal pilihan ganda (dengan opsi A-E berderet ke bawah) atau 3 soal esai analisis dengan tingkat kesulitan C4-C6." : ""}
 
         ---
-        ## Pengesahan
-        | Mengetahui, Kepala Sekolah | Penulis / Guru |
+        ## Lembar Pengesahan
+        | Mengetahui, Kepala Sekolah | Penulis / Guru Mata Pelajaran |
         |---|---|
         | | |
         | | |
@@ -193,9 +191,9 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
         Instruksi Tambahan: ${data.targetFocus || "Tidak ada."}
 
         INSTRUKSI TEKNIS:
-        - Bahasa Indonesia Formal & Akademik.
-        - Gunakan pembatas (---) jika diperlukan.
-        - Pastikan narasi mengalir dan sangat informatif.
+        - Bahasa Indonesia Formal, Akademik, dan Inspiratif.
+        - Dokumen harus terlihat sangat berbobot dan siap digunakan sebagai referensi utama di kelas.
+        - Narasi harus mengalir lancar dari satu sub-bab ke sub-bab berikutnya.
       `;
 
       const result = await generateEducationContent(prompt);

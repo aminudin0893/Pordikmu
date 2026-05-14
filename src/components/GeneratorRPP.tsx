@@ -139,11 +139,11 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         Buatkan (RPP) atau MODUL AJAR yang sangat LENGKAP, PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
-        TIDAK BOLEH ADA POIN YANG KOSONG. Jika data tidak tersedia, gunakan penalaran pedagogik yang relevan untuk Mengisi secara profesional.
+        TIDAK BOLEH ADA POIN YANG KOSONG. Jika data tidak tersedia, gunakan penalaran pedagogik yang relevan untuk Mengisi secara profesional dan mendalam.
         
         PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>.
         
-        STRUKTUR MODUL AJAR RESMI (HARUS LENGKAP):
+        STRUKTUR MODUL AJAR RESMI (WAJIB LENGKAP):
 
         ${data.useLetterhead ? `
         # KOP SURAT RESMI SEKOLAH
@@ -168,45 +168,44 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         | Alokasi Waktu | ${data.timeAllocation} |
         | Model Pembelajaran | ${data.learningModel} |
 
-        ## B. Kompetensi Inti (Wajib Diisi Lengkap)
-        1. **Tujuan Pembelajaran**: Jabarkan minimal 3-4 poin tujuan operasional yang spesifik (ABCD: Audience, Behavior, Condition, Degree).
-        2. **Capaian Pembelajaran (CP)**: Sesuaikan dengan fase ${data.phaseGrade} dan materi ${data.topics[0]}.
-        3. **Pemahaman Bermakna**: Manfaat nyata jangka panjang bagi peserta didik.
-        4. **Pertanyaan Pemantik**: Minimal 3 pertanyaan kritis pemicu kognitif.
-        5. **Profil Pelajar Pancasila**: Sebutkan minimal 3 dimensi yang relevan (misal: Beriman, Mandiri, Bernalar Kritis).
-        6. **Target Peserta Didik**: Reguler/Tipikal/Pencapaian Tinggi.
-        7. **Sarana & Prasarana**: Laptop, Proyektor, Internet, Buku Paket, dll.
+        ## B. Kompetensi Inti (Wajib Diisi Sangat Lengkap)
+        1. **Tujuan Pembelajaran**: Jabarkan minimal 3-4 poin tujuan operasional yang spesifik (format ABCD: Audience, Behavior, Condition, Degree).
+        2. **Capaian Pembelajaran (CP)**: Harus relevan dengan fase ${data.phaseGrade} dan materi ${data.topics[0]}.
+        3. **Pemahaman Bermakna**: Deskripsikan manfaat nyata keberlanjutan bagi kehidupan siswa setelah mempelajari topik ini.
+        4. **Pertanyaan Pemantik**: Berikan minimal 3-5 pertanyaan kritis yang menggugah rasa ingin tahu siswa.
+        5. **Profil Pelajar Pancasila**: Jelaskan minimal 3 dimensi yang akan dikembangkan secara eksplisit dalam sesi ini.
+        6. **Persiapan Belajar**: Langkah-langkah teknis guru sebelum masuk kelas.
 
-        ## C. Langkah-Langkah Pembelajaran
-        Sajikan langkah pembelajaran mendalam dengan sintaks model **${data.learningModel}**:
-        | Tahap Pembelajaran | Uraian Kegiatan (Deep Learning: 4C & Literasi) | Alokasi Waktu |
+        ## C. Langkah-Langkah Pembelajaran (Sintaks Model ${data.learningModel})
+        Sajikan langkah pembelajaran mendalam (Deep Learning):
+        | Tahap Pembelajaran | Uraian Kegiatan (4C: Collaboration, Communication, Critical Thinking, Creativity) | Alokasi Waktu |
         |---|---|---|
-        | **Pendahuluan** | 1. Orientasi (Salam, Doa, Presensi). 2. Apersepsi (Kaitan materi lalu & sekarang). 3. Motivasi. 4. Penyampaian Tujuan. | ... Menit |
+        | **Pendahuluan** | 1. Orientasi (Salam, Doa, Cek Kehadiran). 2. Apersepsi (Mengaitkan materi sebelumnya). 3. Motivasi (Pemberian gambaran manfaat materi). 4. Penyampaian Tujuan & Cakupan Materi. | ... Menit |
         | **Kegiatan Inti** | **Sintaks Model ${data.learningModel}**: 
-        - [Langkah 1]: ...
-        - [Langkah 2]: ...
-        - [Langkah 3]: ...
-        - [Langkah 4]: ...
-        - [Langkah 5]: ...
-        (Pastikan integrasi Literasi, Numerasi, dan 4C: Critical Thinking, Communication, Collaboration, Creativity) | ... Menit |
-        | **Penutup** | 1. Refleksi Guru & Peserta Didik. 2. Umpan Balik. 3. Kesimpulan. 4. Penugasan/Tindak Lanjut. 5. Doa Penutup. | ... Menit |
+        - [Langkah 1/Sintaks 1]: [Detail deskripsi kegiatan guru & siswa]
+        - [Langkah 2/Sintaks 2]: [Detail deskripsi kegiatan guru & siswa]
+        - [Langkah 3/Sintaks 3]: [Detail deskripsi kegiatan guru & siswa]
+        - [Langkah 4/Sintaks 4]: [Detail deskripsi kegiatan guru & siswa]
+        - [Langkah 5/Sintaks 5]: [Detail deskripsi kegiatan guru & siswa]
+        (Pastikan integrasi Literasi, Numerasi, dan Penguatan Karakter) | ... Menit |
+        | **Penutup** | 1. Refleksi Guru & Peserta Didik terhadap proses belajar. 2. Umpan Balik (Feedback). 3. Kesimpulan bersama. 4. Penugasan/Tindak Lanjut (Remedial/Pengayaan). 5. Doa Penutup. | ... Menit |
 
-        ## D. Asesmen & Penilaian (Harus Detail)
-        1. **Asesmen Diagnostik**: (Non-Kognitif & Kognitif).
-        2. **Asesmen Formatif**: (Observasi Sikap, Performa Diskusi, Presentasi).
-        3. **Asesmen Sumatif**: (Tes Tertulis/Produk Akhir).
-        *Sertakan deskripsi kriteria penilaian/rubrik singkat.*
+        ## D. Asesmen & Instrumen Penilaian (Detail)
+        1. **Asesmen Diagnostik (Awal)**: (Kognitif & Non-Kognitif).
+        2. **Asesmen Formatif (Proses)**: (Observasi Sikap, Cek Pemahaman Diskusi, Lembar Pengamatan Performa).
+        3. **Asesmen Sumatif (Akhir)**: (Tes Tertulis Pilihan Ganda/Uraian atau Penugasan Proyek).
+        *Sertakan KRITERIA KETERCAPAIAN TUJUAN PEMBELAJARAN (KKTP) yang jelas.*
 
         ## E. Media, Alat & Sumber Belajar
-        - **Media**: Powerpoint, Video Pembelajaran, YouTube.
-        - **Alat**: Papan Tulis, Spidol, Laptop.
-        - **Bahan Ajar**: Buku Guru & Siswa, Handout, E-Modul.
+        - **Media**: Powerpoint Interaktif, Video YouTube, Artikel Terkait.
+        - **Alat**: Laptop, LCD Proyektor, Alat Peraga yang relevan.
+        - **Bahan Ajar**: Buku Guru & Siswa Kemendikbudristek, Handout, E-Modul buatan guru.
 
-        ## F. Lampiran (Materi Lengkap & LKPD)
-        1. **Ringkasan Materi**: Jabarkan materi esensial minimal 3 paragraf.
-        2. **Lembar Kerja Peserta Didik (LKPD)**: Berikan 1 tugas diskusi/mandiri yang menantang.
-        3. **Glosarium**: Minimal 5 istilah teknis.
-        4. **Daftar Pustaka**: Format APA atau standar Indonesia.
+        ## F. Lampiran (Bahan Bacaan & LKPD)
+        1. **Ringkasan Materi**: Jabarkan materi esensial secara komprehensif (minimal 3-5 paragraf padat isi).
+        2. **Lembar Kerja Peserta Didik (LKPD)**: Sajikan 1 tugas eksploratif atau diskusi kelompok.
+        3. **Glosarium**: Definisi minimal 5 kata kunci teknis materi.
+        4. **Daftar Pustaka**: Mengacu pada sumber referensi yang kredibel.
 
         ${data.useValidationPage ? `
         ---
@@ -221,10 +220,10 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
 
         Catatan Tambahan: ${data.additionalNotes || "Tidak ada."}
 
-        INSTRUKSI TEKNIS:
-        - Gunakan Bahasa Indonesia Baku & Formal.
-        - Dokumen harus terlihat sangat kredibel, padat isi, dan profesional.
-        - Pastikan Header Tabel menggunakan Bold.
+        INSTRUKSI KHUSUS:
+        - Gunakan Bahasa Indonesia Formal & Akademik.
+        - Pastikan narasi terlihat sangat profesional seperti disusun oleh ahli kurikulum.
+        - Dokumen harus padat informasi dan siap digunakan di kelas.
       `;
 
       const result = await generateEducationContent(prompt);

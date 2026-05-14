@@ -196,7 +196,8 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
         PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>.
-        
+        TIDAK BOLEH ADA BAGIAN YANG KOSONG. Jika data spesifik tidak ada, gunakan pengetahuan pedagogik profesional untuk mengisinya secara relevan.
+
         STRUKTUR NASKAH ASESMEN RESMI (HARUS LENGKAP):
 
         1. KOP SURAT (Diletakkan di bagian atas):
@@ -213,10 +214,10 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         | Mata Pelajaran | ${data.subject.toUpperCase()} |
         | Jenis Asesmen | ${data.assessmentType.toUpperCase()} |
         | Jenjang / Fase / Kelas | ${data.phaseGrade} |
-        | Semester | Ganjil/Genap |
+        | Semester | [Ganjil/Genap - Sesuaikan dengan waktu sekarang] |
         | Tahun Pelajaran | ${data.schoolYear} |
         | Nama Guru | ${data.name} |
-        | Alokasi Waktu | [Alokasi Waktu yang Relevan] |
+        | Alokasi Waktu | [Isi alokasi waktu yang sesuai, misal: 90 Menit] |
 
         ## B. Data Peserta Didik
         | Nama Peserta Didik | Kelas | No. Absen | Nilai |
@@ -231,16 +232,28 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         5. Periksa kembali pekerjaan Anda sebelum dikumpulkan.
 
         ## D. Naskah Asesmen (Butir Soal)
-        Sajikan soal dengan stimulus (teks/gambar/grafik) yang kontekstual dan berorientasi HOTS (Higher Order Thinking Skills).
-        ${data.mcqCount > 0 ? `1. **Pilihan Ganda** (Jumlah: ${data.mcqCount} soal dengan ${data.optionsCount}).` : ""}
-        ${data.multiResponseCount > 0 ? `2. **PG Kompleks / Multi-Response** (Jumlah: ${data.multiResponseCount} soal).` : ""}
-        ${data.trueFalseCount > 0 ? `3. **Benar / Salah** (Jumlah: ${data.trueFalseCount} soal).` : ""}
-        ${data.matchTableCount > 0 ? `4. **Menjodohkan** (Jumlah: ${data.matchTableCount} soal).` : ""}
-        ${data.shortAnswerCount > 0 ? `5. **Isian Singkat** (Jumlah: ${data.shortAnswerCount} soal).` : ""}
-        ${data.essayCount > 0 ? `6. **Uraian / Essay** (Jumlah: ${data.essayCount} soal).` : ""}
+        Sajikan soal dengan stimulus (teks/gambar/grafik/studi kasus) yang kontekstual dan berorientasi HOTS (Higher Order Thinking Skills).
+        
+        WAJIB FORMAT PILIHAN GANDA:
+        Tuliskan opsi jawaban (A, B, C, D, E) secara BERDERET KE BAWAH (Daftar Menurun), bukan ke samping.
+        Contoh:
+        1. Apa yang dimaksud dengan ...?
+           A. Jawaban satu
+           B. Jawaban dua
+           C. Jawaban tiga
+           D. Jawaban empat
+           E. Jawaban lima
 
-        ## E. Kisi-Kisi & Kunci Jawaban
-        | No | Materi | Indikator Soal | Level | Kunci / Pedoman Skor |
+        JENIS SOAL YANG HARUS DIBUAT:
+        ${data.mcqCount > 0 ? `- **Pilihan Ganda** (Jumlah: ${data.mcqCount} soal dengan ${data.optionsCount}). Opsi harus vertikal ke bawah.` : ""}
+        ${data.multiResponseCount > 0 ? `- **PG Kompleks / Multi-Response** (Jumlah: ${data.multiResponseCount} soal). Di mana jawaban benar lebih dari satu.` : ""}
+        ${data.trueFalseCount > 0 ? `- **Benar / Salah** (Jumlah: ${data.trueFalseCount} soal).` : ""}
+        ${data.matchTableCount > 0 ? `- **Menjodohkan** (Jumlah: ${data.matchTableCount} soal).` : ""}
+        ${data.shortAnswerCount > 0 ? `- **Isian Singkat** (Jumlah: ${data.shortAnswerCount} soal).` : ""}
+        ${data.essayCount > 0 ? `- **Uraian / Essay** (Jumlah: ${data.essayCount} soal).` : ""}
+
+        ## E. Kisi-Kisi & Kunci Jawaban (Sangat Lengkap)
+        | No | Materi | Indikator Soal | Level Kognitif | Kunci Jawaban / Pedoman Skor |
         |---|---|---|---|---|
         | 1 | ... | ... | ... | ... |
 
@@ -258,9 +271,9 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         Catatan/Instruksi Khusus: ${data.specialInstructions || "Tidak ada."}
 
         INSTRUKSI TEKNIS:
-        - Bahasa Indonesia Baku & Formal.
-        - Gunakan pembatas (---) jika diperlukan.
-        - Pastikan format soal rapi dan mudah dibaca.
+        - Bahasa Indonesia Baku, Formal, dan Akademik.
+        - Pastikan seluruh butir soal terisi lengkap sesuai jumlah yang diminta.
+        - Dokumen harus terlihat sangat rapi dan siap cetak segera.
       `;
 
       const result = await generateEducationContent(prompt);
