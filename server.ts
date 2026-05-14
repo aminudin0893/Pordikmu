@@ -32,7 +32,13 @@ async function startServer() {
       }
 
       // Use request-specific key or fallback to environment key
-      const activeApiKey = requestApiKey || process.env.GEMINI_API_KEY;
+      let activeApiKey = (requestApiKey && typeof requestApiKey === 'string') 
+        ? requestApiKey.trim() 
+        : process.env.GEMINI_API_KEY;
+
+      if (!activeApiKey || activeApiKey === "null" || activeApiKey === "undefined") {
+        activeApiKey = process.env.GEMINI_API_KEY || "";
+      }
       
       if (!activeApiKey) {
         return res.status(401).json({ error: "No API Key provided. Please enter an API key on the dashboard." });
@@ -51,7 +57,7 @@ async function startServer() {
         model: model,
         contents: prompt,
         config: {
-          systemInstruction: systemInstruction || "You are an expert education consultant specialized in Kurikulum Merdeka and Deep Learning pedagogy.",
+          systemInstruction: systemInstruction || "You are an expert education consultant specialized in Kurikulum Merdeka and Deep Learning pedagogy. Always format structured data using clean, standard Markdown tables.",
           temperature: 0.7,
         },
       });

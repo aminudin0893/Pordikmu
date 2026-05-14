@@ -14,7 +14,8 @@ import {
   EyeOff,
   Save,
   Brain,
-  CheckCircle
+  CheckCircle,
+  Trash2
 } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
@@ -200,15 +201,32 @@ export default function App() {
                           {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                       </div>
-                      <Button 
-                        onClick={() => {
-                          localStorage.setItem('user_gemini_key', userApiKey);
-                          toast.success("API Key Berhasil Disimpan!");
-                        }}
-                        className="bg-indigo-600 hover:bg-indigo-700"
-                      >
-                        <Save className="w-4 h-4 mr-2" /> Simpan
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button 
+                          onClick={() => {
+                            const trimmedKey = userApiKey.trim();
+                            setUserApiKey(trimmedKey);
+                            localStorage.setItem('user_gemini_key', trimmedKey);
+                            toast.success("API Key Berhasil Disimpan!");
+                          }}
+                          className="bg-indigo-600 hover:bg-indigo-700"
+                        >
+                          <Save className="w-4 h-4 mr-2" /> Simpan
+                        </Button>
+                        {userApiKey && (
+                          <Button 
+                            variant="outline"
+                            onClick={() => {
+                              setUserApiKey('');
+                              localStorage.removeItem('user_gemini_key');
+                              toast.info("API Key Berhasil Dihapus");
+                            }}
+                            className="text-red-500 border-red-100 hover:bg-red-50 hover:text-red-600"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
                     </div>
                     <p className="text-[10px] text-indigo-400 font-medium italic">Kosongkan jika ingin menggunakan key default sistem.</p>
                   </div>
