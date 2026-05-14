@@ -12,13 +12,22 @@ import {
   AlertCircle,
   Eye,
   EyeOff,
-  Save
+  Save,
+  Brain,
+  CheckCircle
 } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
 import { Label } from './components/ui/label';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
 import { Toaster, toast } from 'sonner';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "./components/ui/dialog";
+import { Progress } from "./components/ui/progress";
 
 // Components
 import GeneratorRPP from './components/GeneratorRPP';
@@ -36,6 +45,23 @@ export default function App() {
   const [generatedContent, setGeneratedContent] = useState<string>('');
   const [lastConfig, setLastConfig] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  React.useEffect(() => {
+    let interval: any;
+    if (isLoading) {
+      setProgress(0);
+      interval = setInterval(() => {
+        setProgress(prev => {
+          if (prev >= 95) return prev;
+          return prev + Math.floor(Math.random() * 5) + 2;
+        });
+      }, 400);
+    } else {
+      setProgress(100);
+    }
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -255,7 +281,7 @@ export default function App() {
               <Button variant="ghost" onClick={handleBack} className="mb-6 hover:bg-white -ml-4">
                 <ArrowLeft className="w-4 h-4 mr-2" /> Kembali ke Menu Utama
               </Button>
-              <GeneratorRPP onSuccess={onGenerateSuccess} />
+              <GeneratorRPP onSuccess={onGenerateSuccess} onLoading={setIsLoading} />
             </motion.div>
           )}
 
@@ -264,7 +290,7 @@ export default function App() {
               <Button variant="ghost" onClick={handleBack} className="mb-6 hover:bg-white -ml-4">
                 <ArrowLeft className="w-4 h-4 mr-2" /> Kembali ke Menu Utama
               </Button>
-              <GeneratorSoal onSuccess={onGenerateSuccess} />
+              <GeneratorSoal onSuccess={onGenerateSuccess} onLoading={setIsLoading} />
             </motion.div>
           )}
 
@@ -273,7 +299,7 @@ export default function App() {
               <Button variant="ghost" onClick={handleBack} className="mb-6 hover:bg-white -ml-4">
                 <ArrowLeft className="w-4 h-4 mr-2" /> Kembali ke Menu Utama
               </Button>
-              <GeneratorMateri onSuccess={onGenerateSuccess} />
+              <GeneratorMateri onSuccess={onGenerateSuccess} onLoading={setIsLoading} />
             </motion.div>
           )}
 
@@ -291,6 +317,49 @@ export default function App() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Progress Dialog */}
+        <Dialog open={isLoading} onOpenChange={() => {}}>
+          <DialogContent className="sm:max-w-md border-none shadow-2xl bg-white/95 backdrop-blur-xl">
+            <DialogHeader>
+              <DialogTitle className="text-center flex flex-col items-center gap-4 py-4">
+                <div className="relative">
+                  <div className="w-20 h-20 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Brain className="w-8 h-8 text-indigo-600 animate-pulse" />
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-xl font-black text-slate-900">Sedang Memproses...</h3>
+                  <p className="text-sm font-medium text-slate-500 italic">Gemini AI sedang menyusun dokumen terbaik untuk Anda.</p>
+                </div>
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-6 pb-8">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm font-bold">
+                  <span className="text-indigo-600">Progress</span>
+                  <span className="text-slate-900">{progress}%</span>
+                </div>
+                <Progress value={progress} className="h-3 bg-indigo-50" />
+              </div>
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
+                 <div className="flex items-center gap-3 text-xs font-bold text-slate-600">
+                    <CheckCircle className={`w-4 h-4 ${progress > 20 ? 'text-emerald-500' : 'text-slate-300'}`} />
+                    <span>Menganalisis Kurikulum & Tujuan</span>
+                 </div>
+                 <div className="flex items-center gap-3 text-xs font-bold text-slate-600">
+                    <CheckCircle className={`w-4 h-4 ${progress > 55 ? 'text-emerald-500' : 'text-slate-300'}`} />
+                    <span>Menyusun Narasi & Item Dokumen</span>
+                 </div>
+                 <div className="flex items-center gap-3 text-xs font-bold text-slate-600">
+                    <CheckCircle className={`w-4 h-4 ${progress > 85 ? 'text-emerald-500' : 'text-slate-300'}`} />
+                    <span>Finalisasi Format Siap Cetak (A4)</span>
+                 </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </main>
 
       <footer className="border-t border-slate-200 bg-white py-12 mt-20 relative z-10">

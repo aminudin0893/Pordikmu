@@ -58,10 +58,16 @@ type SoalFormData = z.infer<typeof soalSchema>;
 
 interface Props {
   onSuccess: (content: string, config: any) => void;
+  onLoading?: (isLoading: boolean) => void;
 }
 
-export default function GeneratorSoal({ onSuccess }: Props) {
+export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
   const [loading, setLoading] = useState(false);
+
+  const setCompLoading = (val: boolean) => {
+    setLoading(val);
+    onLoading?.(val);
+  };
 
   const form = useForm<SoalFormData>({
     resolver: zodResolver(soalSchema),
@@ -125,56 +131,72 @@ export default function GeneratorSoal({ onSuccess }: Props) {
   };
 
   const onSubmit = async (data: SoalFormData) => {
-    setLoading(true);
+    setCompLoading(true);
     try {
       const totalSoal = data.mcqCount + data.multiResponseCount + data.trueFalseCount + data.shortAnswerCount + data.essayCount + data.matchTableCount;
       if (totalSoal === 0) {
         toast.error("Tentukan jumlah soal yang akan di-generate!");
-        setLoading(false);
+        setCompLoading(false);
         return;
       }
 
       const currentTotalPerc = data.easyPerc + data.mediumPerc + data.hardPerc;
       if (currentTotalPerc !== 100) {
         toast.error(`Total proporsi harus 100% (saat ini ${currentTotalPerc}%)`);
-        setLoading(false);
+        setCompLoading(false);
         return;
       }
 
       const prompt = `
-        Ciptakan BANK SOAL UJIAN (NASKAH SOAL) yang TERSTRUKTUR, SANGAT RAPI, dan PROFESIONAL sebagai DOKUMEN RESMI SIAP CETAK sesuai standar Kurikulum Merdeka.
+        Ciptakan BANK SOAL UJIAN (NASKAH SOAL) yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sebagai dokumen kedinasan sekolah.
         
-        Sajikan identitas ujian dalam TABEL MARKDOWN yang rapi di bagian awal (Header):
-        IDENTITAS ASESMEN:
-        - Guru: ${data.name}
-        - Sekolah: ${data.school}
-        - Mata Pelajaran: ${data.subject}
-        - Fase/Kelas: ${data.phaseGrade}
-        - Materi Utama: ${data.topics.join(", ")}
-        - Jenis Asesmen: ${data.assessmentType}
-        - Tahun Pelajaran: ${data.schoolYear}
+        WAJIB IKUTI STRUKTUR FORMAL BERIKUT:
+
+        1. KOP SURAT (Center):
+           [Placeholder Logo Sekolah]
+           PEMERINTAH KABUPATEN/KOTA [...]
+           DINAS PENDIDIKAN DAN KEBUDAYAAN
+           ${data.school.toUpperCase()}
+           TERAKREDITASI [A/B]
+           Alamat: [Input Alamat Sekolah] | Email: [Email Sekolah]
+           ----------------------------------------------------------------------------------
+
+        2. IDENTITAS UJIAN (Gunakan Tabel Formal):
+           | MATA PELAJARAN | ${data.subject.toUpperCase()} |
+           |----------------|-------------------------------|
+           | JENIS ASESMEN  | ${data.assessmentType.toUpperCase()} |
+
+        3. IDENTITAS PESERTA (Gunakan Box entry):
+           | Nama | ............................ | Kelas | ${data.phaseGrade} |
+           |------|------------------------------|-------|--------------------|
+           | Hari/Tanggal | .................... | No Absen | ............... |
+
+        4. NASKAH SOAL (Header):
+           NASKAH SOAL ${data.subject.toUpperCase()}
+           ----------------------------------------------------------------------------------
+
+        ISI NASKAH:
+        - Gunakan penomoran yang jelas.
+        - Untuk Pilihan Ganda, letakkan opsi A, B, C, D dengan rapi.
+        - Setiap butir soal wajib menyertakan label [HOTS] atau [C4] secara halus.
         
-        DATA TEKNIS SOAL:
-        - Opsi PG: ${data.optionsCount}
-        - Level Kognitif: ${data.cognitiveLevels.join(", ")}
-        - Distribusi: Mudah (${data.easyPerc}%), Sedang (${data.mediumPerc}%), Sulit/HOTS (${data.hardPerc}%)
-        
-        WAJIB ADA (STRUKTUR DOKUMEN):
-        1. KOP SOAL: Header identitas sekolah dan ujian yang sangat profesional.
-        2. PETUNJUK UMUM: Langkah mengerjakan ujian.
-        3. NASKAH SOAL: Tuliskan soal per kategori tipe soal dengan rapi.
-           - Gunakan tabel Markdown untuk soal tipe "MENJODOHKAN".
-           - Setiap nomor wajib mencantumkan label [Level Kognitif, misal: C4-HOTS].
-           - Total Soal: PG (${data.mcqCount}), PG_K (${data.multiResponseCount}), B/S (${data.trueFalseCount}), Isian (${data.shortAnswerCount}), Essay (${data.essayCount}), Menjodohkan (${data.matchTableCount}).
-        4. KISI-KISI SOAL (TABEL PROFESIONAL): Tabel Kisi-Kisi lengkap (No, TP, Materi, Indikator, Level, Bentuk).
-        5. KUNCI JAWABAN & RUBRIK (TABEL PROFESIONAL): Sajikan kunci jawaban dalam tabel yang rapi dan rubrik penilaian yang detail.
-        
+        JUMLAH BUTIR:
+        - PG: ${data.mcqCount}
+        - PG Kompleks: ${data.multiResponseCount}
+        - B/S: ${data.trueFalseCount}
+        - Isian: ${data.shortAnswerCount}
+        - Essay: ${data.essayCount}
+        - Menjodohkan: ${data.matchTableCount} (Gunakan Tabel untuk menjodohkan)
+
+        DOKUMEN PELENGKAP:
+        ---
+        5. KISI-KISI SOAL (Tabel Lengkap)
+        6. KUNCI JAWABAN & RUBRIK PENILAIAN (Tabel Detail)
+
         INSTRUKSI TEKNIS:
-        - Gunakan Bahasa Indonesia formal (EYD).
-        - Wajib menggunakan Tabel Markdown (|---|---|) yang rapi untuk Identitas, Menjodohkan, Kisi-kisi, dan Rubrik.
-        - Pastikan soal memiliki stimulus (Stem) yang kontekstual sesuai prinsip "Deep Learning".
-        - Gunakan garis pembatas (---) antar section besar agar dokumen mudah dibaca saat dicetak.
-        - Dokumen harus memiliki tampilan formal layaknya ujian nasional atau ujian sekolah resmi.
+        - Bahasa Indonesia Baku.
+        - Gunakan Markdown Divider (---) untuk memisahkan section.
+        - Layout harus terlihat bersih dan menyerupai format naskah ujian resmi sekolah.
       `;
 
       const result = await generateEducationContent(prompt);
@@ -183,7 +205,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
     } catch (error: any) {
       toast.error(error.message || "Gagal membuat soal");
     } finally {
-      setLoading(false);
+      setCompLoading(false);
     }
   };
 

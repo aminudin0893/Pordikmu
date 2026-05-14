@@ -44,11 +44,17 @@ type MateriFormData = z.infer<typeof materiSchema>;
 
 interface Props {
   onSuccess: (content: string, config: any) => void;
+  onLoading?: (isLoading: boolean) => void;
 }
 
-export default function GeneratorMateri({ onSuccess }: Props) {
+export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
   const [loading, setLoading] = useState(false);
   const [topics, setTopics] = useState([""]);
+
+  const setCompLoading = (val: boolean) => {
+    setLoading(val);
+    onLoading?.(val);
+  };
 
   const form = useForm<MateriFormData>({
     resolver: zodResolver(materiSchema),
@@ -86,38 +92,45 @@ export default function GeneratorMateri({ onSuccess }: Props) {
   };
 
   const onSubmit = async (data: MateriFormData) => {
-    setLoading(true);
+    setCompLoading(true);
     try {
       const prompt = `
-        Susunlah Materi Ajar Digital yang sangat komprehensif, menarik, dan menggunakan prinsip "Deep Learning" sebagai DOKUMEN RESMI SIAP CETAK.
+        Susunlah MATERI AJAR DIGITAL yang SANGAT PROFESIONAL, LENGKAP, dan SIAP CETAK sebagai referensi belajar utama di sekolah.
+
+        STRUKTUR DOKUMEN:
+
+        1. HEADER MATERI:
+           [Placeholder Logo Mata Pelajaran]
+           MATERI AJAR DIGITAL: ${data.subject.toUpperCase()}
+           SEKOLAH: ${data.school.toUpperCase()}
+           ----------------------------------------------------------------------------------
+
+        2. IDENTITAS MATERI (Tabel):
+           | Bagian | Detail |
+           |--------|--------|
+           | Fase / Kelas | ${data.phaseGrade} |
+           | Topik Utama | ${data.topics.join(", ")} |
+           | Kedalaman | ${data.depthLevel.toUpperCase()} |
+
+        3. TUJUAN PEMBELAJARAN (Tabel rapi).
         
-        Sajikan identitas materi dalam TABEL MARKDOWN yang rapi di bagian awal:
-        IDENTITAS MATERI:
-        - Sekolah: ${data.school}
-        - Subjek: ${data.subject}
-        - Fase/Kelas: ${data.phaseGrade}
-        - Topik / Materi: ${data.topics.join(", ")}
-        - Tingkat Kedalaman: ${data.depthLevel}
-        - Fokus Utama: ${data.targetFocus || "Pemahaman Konsep Secara Holistik"}
+        4. ISI MATERI (Mendalam & HOTS):
+           - Konsep Dasar (Penjelasan fundamental)
+           - Analisis Mendalam (Deep Learning aspek "Why" dan "How")
+           ${data.includeAnalogy ? "- Analogi Konstektual (Memudahkan pemahaman)" : ""}
+           ${data.includeIllustration ? "- Panduan Visual (Deskripsi gambar/grafik pendukung)" : ""}
         
-        KOMPONEN MATERI (WAJIB ADA):
-        1. TUJUAN PEMBELAJARAN (Tabel): Apa yang akan dikuasai siswa.
-        2. APERSEPSI & PREVIEW: Cerita/konteks dunia nyata untuk memancing rasa ingin tahu.
-        3. ISI MATERI UTAMA: Penjelasan konsep dengan struktur yang logis.
-           - Gunakan heading yang jelas.
-           - Tambahkan poin-poin penting.
-           ${data.includeAnalogy ? "- Sertakan ANALOGI sederhana untuk menjelaskan konsep abstrak." : ""}
-        4. STUDI KASUS / CONTOH NYATA: Penerapan materi dalam kehidupan.
-        5. VISUALISASI DESKRIPTIF: Deskripsi visual ${data.includeIllustration ? "yang detail (bayangkan sebagai ilustrasi buku teks)" : ""}.
-        6. RANGKUMAN (Tabel): Intisari materi dalam bentuk tabel yang sangat rapi.
-        ${data.includeQuiz ? "7. CEK PEMAHAMAN (Kuis Kecil): 3-5 pertanyaan reflektif untuk mengetes pemahaman." : ""}
-        
-        INSTRUKSI FORMAT:
-        - Gunakan Bahasa Indonesia formal dan edukatif.
-        - Wajib menggunakan Tabel Markdown yang sangat rapi dan profesional untuk bagian Identitas, Tujuan, dan Rangkuman.
-        - Pastikan tabel memiliki border Markdown yang lengkap (|---|---|).
-        - Gunakan garis pembatas (---) antar section agar dokumen terlihat bersih saat dicetak.
-        - Terapkan prinsip "Deep Learning" agar siswa tidak hanya menghafal, tapi memahami "why" and "how".
+        5. PENERAPAN NYATA (Studi kasus atau implementasi).
+
+        6. RANGKUMAN & CEK PEMAHAMAN:
+           - Tabel Rangkuman Intisari.
+           ${data.includeQuiz ? "- Kuis Mini Self-Assessment" : ""}
+
+        INSTRUKSI TEKNIS:
+        - Bahasa Indonesia Baku.
+        - Gunakan Tabel Markdown untuk data terstruktur.
+        - Layout harus terlihat profesional dan bersih.
+        - Gunakan pembatas (---) antar section.
       `;
 
       const result = await generateEducationContent(prompt);
@@ -126,7 +139,7 @@ export default function GeneratorMateri({ onSuccess }: Props) {
     } catch (error: any) {
       toast.error(error.message || "Gagal menyusun materi");
     } finally {
-      setLoading(false);
+      setCompLoading(false);
     }
   };
 

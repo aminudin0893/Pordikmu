@@ -91,25 +91,25 @@ export default function ResultView({ content: initialContent, config }: Props) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <Card className="lg:col-span-3 border-none shadow-2xl shadow-slate-200 bg-white overflow-hidden">
-          <CardContent className="p-0 sm:p-10">
-            {isEditing ? (
-              <div className="h-full min-h-[600px] flex flex-col space-y-4 p-4">
-                <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg text-amber-800 text-xs font-medium">
-                  Mode Edit Aktif: Anda dapat mengubah teks Markdown secara langsung di sini.
-                </div>
-                <Textarea 
-                  className="flex-1 w-full h-[800px] font-mono text-sm p-6 bg-slate-50 border-slate-200 focus:ring-indigo-500 focus:border-indigo-500 rounded-xl"
-                  value={editedContent}
-                  onChange={(e) => setEditedContent(e.target.value)}
-                />
+        <Card className="lg:col-span-3 border-none shadow-inner bg-slate-100/50 p-4 md:p-10 rounded-3xl overflow-auto max-h-[85vh]">
+          {isEditing ? (
+            <div className="h-full min-h-[600px] flex flex-col space-y-4 p-4 bg-white rounded-2xl shadow-xl">
+              <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg text-amber-800 text-xs font-medium">
+                Mode Edit Aktif: Anda dapat mengubah teks Markdown secara langsung di sini.
               </div>
-            ) : (
-              <div className="prose prose-indigo max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-li:leading-relaxed prose-table:border prose-table:border-slate-200 prose-table:w-full prose-table:my-6 prose-th:bg-slate-50 prose-th:p-4 prose-td:p-4 prose-th:border prose-td:border prose-th:text-slate-900 prose-td:text-slate-700">
+              <Textarea 
+                className="flex-1 w-full h-[800px] font-mono text-sm p-6 bg-slate-50 border-slate-200 focus:ring-indigo-500 focus:border-indigo-500 rounded-xl"
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+              />
+            </div>
+          ) : (
+            <div className="bg-white shadow-2xl mx-auto rounded-none min-h-[1100px] w-full max-w-[850px] p-12 md:p-20 paper-content">
+              <div className="prose prose-indigo max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-li:leading-relaxed prose-table:border prose-table:border-slate-300 prose-table:w-full prose-table:my-6 prose-th:bg-slate-50 prose-th:p-3 prose-td:p-3 prose-th:border prose-td:border prose-th:text-slate-900 prose-td:text-slate-700 prose-hr:border-slate-400 prose-hr:border-t-2">
                 <ReactMarkdown>{content}</ReactMarkdown>
               </div>
-            )}
-          </CardContent>
+            </div>
+          )}
         </Card>
 
         <div className="space-y-6">

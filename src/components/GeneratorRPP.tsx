@@ -50,10 +50,16 @@ type RPPFormData = z.infer<typeof rppSchema>;
 
 interface Props {
   onSuccess: (content: string, config: any) => void;
+  onLoading?: (isLoading: boolean) => void;
 }
 
-export default function GeneratorRPP({ onSuccess }: Props) {
+export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
   const [loading, setLoading] = useState(false);
+
+  const setCompLoading = (val: boolean) => {
+    setLoading(val);
+    onLoading?.(val);
+  };
 
   const form = useForm<RPPFormData>({
     resolver: zodResolver(rppSchema),
@@ -97,61 +103,44 @@ export default function GeneratorRPP({ onSuccess }: Props) {
   };
 
   const onSubmit = async (data: RPPFormData) => {
-    setLoading(true);
+    setCompLoading(true);
     try {
       const prompt = `
-        Buatkan (RPP) / MODUL AJAR (MODUL PEMBELAJARAN) yang sangat LENGKAP, FORMAL, dan PROFESIONAL sebagai DOKUMEN RESMI SIAP CETAK sesuai standar Kurikulum Merdeka.
+        Buatkan (RPP) / MODUL AJAR yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar Kurikulum Merdeka.
+        
+        ${data.useLetterhead ? "WAJIB: Tambahkan KOP SURAT PROFESIONAL di bagian paling atas (Nama Sekolah: ${data.school.toUpperCase()})." : ""}
 
-        ${data.useLetterhead ? "WAJIB: Tambahkan placeholder [KOP SURAT INSTANSI] di bagian paling atas." : ""}
-        
-        Sajikan seluruh informasi identitas dalam TABEL MARKDOWN yang rapi:
-        IDENTITAS MODUL:
-        - Nama Guru: ${data.name}
-        - NIP: ${data.nip || "-"}
-        - Sekolah: ${data.school}
-        - Mata Pelajaran: ${data.subject}
-        - Fase/Kelas: ${data.phaseGrade}
-        - Semester: ${data.semester}
-        - Materi Pokok: ${data.topics.join(", ")}
-        - Alokasi Waktu: ${data.timeAllocation}
-        - Model: ${data.learningModel}
-        - Tahun Pelajaran: ${data.schoolYear}
-        
-        INFORMASI TAMBAHAN: ${data.additionalNotes || "Tidak ada khusus"}
-        
-        STRUKTUR DOKUMEN WAJIB (Gunakan Heading dan Tabel):
-        1. KOMPONEN UMUM:
-           - Kompetensi Awal: (Sajikan dalam List/Tabel)
-           - Profil Pelajar Pancasila (P3): (Sajikan dalam Tabel yang rapi)
-           - Sarana & Prasarana: (Sajikan dalam Tabel)
-           - Target Peserta Didik: (Deskripsi singkat)
+        STRUKTUR DOKUMEN WAJIB:
 
+        1. IDENTITAS MODUL (Tabel Markdown Formal):
+           | Informasi | Detail |
+           |-----------|--------|
+           | Nama Penyusun | ${data.name} |
+           | Sekolah | ${data.school} |
+           | Fase / Kelas | ${data.phaseGrade} |
+           | Semester | ${data.semester} |
+           | Alokasi Waktu | ${data.timeAllocation} |
+        
         2. KOMPONEN INTI:
-           - Tujuan Pembelajaran (TP): (Sajikan dalam Tabel)
-           - Pemahaman Bermakna & Pertanyaan Pemantik: (Sajikan dalam Tabel)
-           - Persiapan Pembelajaran.
+           - Tujuan Pembelajaran (Sajikan dalam Tabel)
+           - Pemahaman Bermakna & Pertanyaan Pemantik
 
         3. KEGIATAN PEMBELAJARAN (TABEL PROFESIONAL):
-           - WAJIB: Gunakan TABEL untuk langkah-langkah kegiatan (Pendahuluan, Inti, Penutup).
-           - Kolom tabel harus mencakup: Tahapan, Deskripsi Kegiatan, dan Alokasi Waktu.
-           - Integrasikan High Order Thinking Skills (HOTS) dan 6C.
+           Sajikan langkah-langkah dalam tabel: [No, Tahapan, Deskripsi Kegiatan, Estimasi Waktu].
+           Integrasikan 6C dan HOTS secara eksplisit.
 
-        4. ASESMEN (TABEL PROFESIONAL):
-           - Buat Tabel Rencana Asesmen: (Asesmen Diagnostik, Formatif, Sumatif).
-           - Sertakan Instrumen dan Rubrik Penilaian dalam Tabel yang detail.
+        4. ASESMEN & RUBRIK (TABEL):
+           - Tabel Instrumen Asesmen.
+           - Tabel Rubrik Penilaian detail.
 
-        5. LAMPIRAN:
-           - Ringkasan Materi (Pointer Utama).
-           - LKPD (Lembar Kerja Peserta Didik) - Harus terstruktur rapi.
-           - Glosarium & Daftar Pustaka.
+        5. LAMPIRAN (LKPD, Ringkasan Materi, Glosarium).
 
-        ${data.useValidationPage ? "WAJIB: Di akhir dokumen, buat bagian Lembar Pengesahan dengan tabel tanda tangan Guru Mata Pelajaran dan Kepala Sekolah." : ""}
+        ${data.useValidationPage ? "WAJIB: Sertakan Lembar Pengesahan dengan box tanda tangan Guru dan Kepala Sekolah." : ""}
 
         INSTRUKSI TEKNIS:
-        - Gunakan Bahasa Indonesia formal (EYD).
-        - Wajib menggunakan Tabel Markdown (|---|---|) yang sejajar dan lengkap untuk seluruh bagian yang memungkinkan.
-        - Pastikan format tulisan sangat rapi dengan pembatas section menggunakan garis horizontal (---).
-        - Dokumen harus memiliki "Vibe" sebagai dokumen resmi kedinasan sekolah.
+        - Bahasa Indonesia Baku.
+        - Gunakan pembatas (---) antar section.
+        - Layout harus rapi dan berwibawa sebagai dokumen resmi sekolah.
       `;
 
       const result = await generateEducationContent(prompt);
@@ -160,7 +149,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
     } catch (error: any) {
       toast.error(error.message || "Gagal menyusun modul ajar");
     } finally {
-      setLoading(false);
+      setCompLoading(false);
     }
   };
 
