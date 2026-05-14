@@ -179,7 +179,11 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
       const prompt = `
         Ciptakan BANK SOAL UJIAN (NASKAH ASESMEN) yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
-        WAJIB IKUTI STRUKTUR NASKAH ASESMEN RESMI:
+        WAJIB IKUTI STRUKTUR NASKAH ASESMEN RESMI (WAJIB GUNAKAN TABEL MARKDOWN STANDAR):
+        Contoh Format Tabel:
+        | Header 1 | Header 2 |
+        |---|---|
+        | Data 1 | Data 2 |
 
         1. KOP SURAT (Center):
            # KOP SURAT RESMI SEKOLAH

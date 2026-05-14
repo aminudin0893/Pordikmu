@@ -134,7 +134,11 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
       const prompt = `
         Buatkan (RPP) atau MODUL AJAR yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka / Kurikulum Merdeka Belajar).
         
-        WAJIB IKUTI STRUKTUR MODUL AJAR RESMI:
+        WAJIB IKUTI STRUKTUR MODUL AJAR RESMI (GUNAKAN FORMAT TABEL MARKDOWN STANDAR):
+        Contoh Format Tabel:
+        | Header 1 | Header 2 |
+        |---|---|
+        | Data 1 | Data 2 |
 
         ${data.useLetterhead ? `
         # KOP SURAT RESMI SEKOLAH

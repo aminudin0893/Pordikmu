@@ -124,7 +124,13 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
       const prompt = `
         Susunlah MATERI AJAR (BAHAN AJAR) yang sangat PROFESIONAL, MENDALAM, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
-        PENTING: Materi harus menggunakan pendekatan **Deep Learning** (Pemahaman Mendalam) dan kontekstual sesuai kehidupan nyata peserta didik.
+        PENTING: Seluruh data identitas dan rangkuman WAJIB disajikan dalam bentuk TABEL MARKDOWN STANDAR.
+        Contoh Format Tabel:
+        | Header 1 | Header 2 |
+        |---|---|
+        | Data 1 | Data 2 |
+
+        Materi harus menggunakan pendekatan **Deep Learning** (Pemahaman Mendalam) dan kontekstual sesuai kehidupan nyata peserta didik.
 
         STRUKTUR DOKUMEN RESMI:
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { 
   Download, 
   Copy, 
@@ -106,7 +107,7 @@ export default function ResultView({ content: initialContent, config }: Props) {
           ) : (
             <div className="bg-white shadow-2xl mx-auto rounded-none min-h-[1100px] w-full max-w-[850px] p-12 md:p-20 paper-content">
               <div className="prose prose-indigo max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-li:leading-relaxed prose-table:border prose-table:border-slate-300 prose-table:w-full prose-table:my-6 prose-th:bg-slate-50 prose-th:p-3 prose-td:p-3 prose-th:border prose-td:border prose-th:text-slate-900 prose-td:text-slate-700 prose-hr:border-slate-400 prose-hr:border-t-2">
-                <ReactMarkdown>{content}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
               </div>
             </div>
           )}

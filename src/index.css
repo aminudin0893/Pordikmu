@@ -29,32 +29,35 @@
 
 /* Table Styles for Kurikulum Merdeka professionalism - Enhanced for Official Look */
 .prose table { 
-  @apply w-full border-collapse my-8 overflow-hidden text-[13px] leading-relaxed;
-  border: 2px solid #334155 !important;
+  @apply w-full border-collapse my-8 text-[13px] leading-relaxed;
+  border: 1.5pt solid #000000 !important;
+  table-layout: auto;
 }
 
 .prose thead { 
-  @apply bg-slate-100 border-b-2 border-slate-700;
+  @apply bg-slate-100 border-b-2 border-slate-900;
 }
 
 .prose th { 
-  @apply p-3 text-left font-black text-slate-900 uppercase tracking-tighter;
-  border: 1px solid #475569 !important;
+  @apply p-3 text-left font-bold text-black uppercase tracking-tight;
+  border: 1pt solid #000000 !important;
   background-color: #f1f5f9 !important;
+  vertical-align: middle;
 }
 
 .prose td { 
-  @apply p-3 text-slate-800 leading-normal;
-  border: 1px solid #94a3b8 !important;
+  @apply p-3 text-slate-900 leading-normal;
+  border: 1pt solid #000000 !important;
   vertical-align: top;
+  word-break: break-word;
 }
 
 .prose tr:nth-child(even) { 
-  @apply bg-slate-50/80;
+  @apply bg-slate-50/50;
 }
 
 .prose tr:hover { 
-  @apply bg-indigo-50/50 transition-colors;
+  @apply bg-indigo-50/30 transition-colors;
 }
 
 /* Formal Document Layout Adjustments */
