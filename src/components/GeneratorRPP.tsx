@@ -75,35 +75,36 @@ export default function GeneratorRPP({ onSuccess }: Props) {
     setLoading(true);
     try {
       const prompt = `
-        Buatkan Rencana Pelaksanaan Pembelajaran (RPP) / Modul Ajar yang sangat lengkap dan mendalam (Deep Learning) sesuai Kurikulum Merdeka untuk:
+        Buatkan Rencana Pelaksanaan Pembelajaran (RPP) / Modul Ajar yang sangat lengkap, mendalam (Deep Learning), dan profesional sesuai standar Kurikulum Merdeka untuk:
         
-        Informasi Guru:
-        - Nama: ${data.name}
+        IDENTITAS:
+        - Nama Guru: ${data.name}
+        - NIP: ${data.nip || "-"}
         - Sekolah: ${data.school}
         - Mata Pelajaran: ${data.subject}
         - Fase/Kelas: ${data.phaseGrade}
         - Semester: ${data.semester}
+        - Materi Pokok: ${data.topic}
+        - Alokasi Waktu: ${data.timeAllocation}
+        - Model Pembelajaran: ${data.learningModel}
         - Tahun Pelajaran: ${data.schoolYear}
         
-        Konfigurasi Materi:
-        - Materi Pokok: ${data.topic}
-        - Model Pembelajaran: ${data.learningModel}
-        - Alokasi Waktu: ${data.timeAllocation}
-        - Jumlah Pertemuan: ${data.meetingsCount}
+        INFORMASI TAMBAHAN: ${data.additionalNotes || "Tidak ada khusus"}
         
-        Catatan Tambahan: ${data.additionalNotes || "Tidak ada"}
+        STRUKTUR DOKUMEN (WAJIB ADA):
+        1. INFORMASI UMUM: Identitas Modul, Kompetensi Awal, Profil Pelajar Pancasila (P3), Sarana & Prasarana, Target Peserta Didik.
+        2. KOMPONEN INTI: Tujuan Pembelajaran (TP), Alur Tujuan Pembelajaran (ATP), Pemahaman Bermakna, Pertanyaan Pemantik, Persiapan Pembelajaran.
+        3. KEGIATAN PEMBELAJARAN (Tabel Profesional): Sertakan tabel langkah-langkah kegiatan (Pendahuluan, Inti, Penutup) dengan estimasi waktu dan integrasi HOTS/6C.
+        4. ASESMEN (Tabel Profesional): Tabel jenis asesmen (Diagnostik, Formatif, Sumatif) beserta instrumennya.
+        5. PENGAYAAN & REMEDIAL: Strategi tindak lanjut.
+        6. LAMPIRAN: Ringkasan Materi, Lembar Kerja Peserta Didik (LKPD), Media Pembelajaran, Glosarium, Daftar Pustaka.
         
-        RPP harus mencakup:
-        1. Informasi Umum (Sarpras, Target Peserta Didik, Model)
-        2. Komponen Inti (CP, TP, ATP, Pemahaman Bermakna, Pertanyaan Pemantik)
-        3. Persiapan Pembelajaran (Kesiapan Belajar)
-        4. Kegiatan Pembelajaran Mendalam (Pendahuluan, Inti dengan 6C/HOTS, Penutup)
-        5. Asesmen Beragam (Formatif, Sumatif, Diagnostik)
-        6. Pengayaan & Remedial
-        7. Refleksi Guru & Siswa
-        8. Lampiran (Materi Ajar singkat, LKPD, Instrumen Penilaian)
-        
-        Format output: Gunakan Markdown yang rapi dan profesional. Sertakan strategi Pembelajaran Mendalam (Discovery/Inquiry/Project-Based) yang konkret.
+        INSTRUKSI KHUSUS:
+        - Gunakan Bahasa Indonesia yang formal dan edukatif.
+        - Tampilkan data dalam tabel Markdown yang rapi untuk bagian Kegiatan Pembelajaran dan Asesmen.
+        - Pastikan modul ini mendukung "Deep Learning" (pemahaman mendalam) dan "Kurikulum Merdeka".
+        - Jika "Kop Surat" aktif, tambahkan bagian Header Instansi di awal.
+        - Jika "Lembar Pengesahan" aktif, tambahkan section tanda tangan di bagian akhir.
       `;
 
       const result = await generateEducationContent(prompt);

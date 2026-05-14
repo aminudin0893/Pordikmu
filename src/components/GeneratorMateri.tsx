@@ -65,28 +65,30 @@ export default function GeneratorMateri({ onSuccess }: Props) {
     setLoading(true);
     try {
       const prompt = `
-        Susunlah materi ajar yang interaktif, mendalam, dan menarik sesuai Kurikulum Merdeka untuk:
+        Susunlah materi ajar yang komprehensif, interaktif, mendalam, dan sangat profesional sesuai standar Kurikulum Merdeka untuk:
         
-        Subjek: ${data.subject}
-        Fase/Kelas: ${data.phaseGrade}
-        Topik: ${data.topic}
-        Tingkat Kedalaman: ${data.depthLevel}
+        DATA:
+        - Subjek: ${data.subject}
+        - Fase/Kelas: ${data.phaseGrade}
+        - Topik/Bab: ${data.topic}
+        - Tingkat Kedalaman: ${data.depthLevel}
+        - Fokus Utama: ${data.targetFocus || "Pemahaman Konsep Secara Holistik"}
         
-        Kebutuhan Khusus:
-        - Analogi Kontekstual: ${data.includeAnalogy ? "YA" : "TIDAK"}
-        - Deskripsi Ilustrasi Visual: ${data.includeIllustration ? "YA" : "TIDAK"}
-        - Fokus Utama: ${data.targetFocus || "Pemahaman Konsep Dasar"}
+        STUKTUR MATERI (WAJIB ADA):
+        1. JUDUL: Buat judul yang sangat menarik dan relevan.
+        2. TUJUAN PEMBELAJARAN (Tabel): List tujuan pembelajaran yang selaras dengan CP Kurikulum Merdeka.
+        3. PENGANTAR KONTEKSTUAL: Cerita atau fenomena nyata terkait materi (Apersepsi).
+        4. PEMBAHASAN INTI: Penjelasan mendalam menggunakan bahasa yang mudah dipahami namun akademis. Gunakan poin-poin/list yang rapi.
+        5. ANALOGI & ILUSTRASI: ${data.includeAnalogy ? "Berikan analogi dunia nyata yang cerdas. " : ""}${data.includeIllustration ? "Sertakan deskripsi detail untuk ilustrasi visual yang bisa dibuat. " : ""}
+        6. TABEL KOMPARASI/RANGKUMAN: Buat tabel profesional yang merangkum poin-poin kunci materi.
+        7. POJOK DISKUSI (HOTS): Tantangan berpikir kritis dan pertanyaan pemantik untuk siswa.
+        8. GLOSARIUM & PENGAYAAN: Istilah penting dan bahan bacaan lebih lanjut.
         
-        Materi harus mencakup:
-        1. Judul yang Menarik (Hook)
-        2. Pengantar Kontekstual (Mengapa ini penting?)
-        3. Penjelasan Inti (Gunakan prinsip Pembelajaran Mendalam / Deep Learning - tidak hanya hafalan)
-        4. Analogi atau Perumpamaan dunia nyata untuk memudahkan pemahaman
-        5. Deskripsi Prompt untuk Gambar/Ilustrasi yang bisa di-generate (untuk membantu guru)
-        6. Pojok Diskusi / Pertanyaan Pemantik
-        7. Kesimpulan & Peta Konsep sederhana
-        
-        Gunakan gaya bahasa yang sesuai untuk ${data.phaseGrade}. Gunakan Markdown yang cantik.
+        INSTRUKSI FORMAT:
+        - Gunakan Bahasa Indonesia formal dan edukatif.
+        - Wajib menggunakan Tabel Markdown untuk bagian Tujuan dan Rangkuman.
+        - Terapkan prinsip "Deep Learning" agar siswa tidak hanya menghafal, tapi memahami "why" dan "how".
+        - Format tulisan harus sangat rapi dengan Markdown yang profesional.
       `;
 
       const result = await generateEducationContent(prompt);

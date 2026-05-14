@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { 
   Download, 
@@ -6,10 +6,14 @@ import {
   Printer, 
   FileCheck,
   Share2,
-  CheckCircle2
+  CheckCircle2,
+  Edit3,
+  Save,
+  X
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
+import { Textarea } from './ui/textarea';
 import { toast } from 'sonner';
 
 interface Props {
@@ -17,7 +21,17 @@ interface Props {
   config: any;
 }
 
-export default function ResultView({ content, config }: Props) {
+export default function ResultView({ content: initialContent, config }: Props) {
+  const [content, setContent] = useState(initialContent);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(initialContent);
+
+  // Update content if initialContent changes from parent
+  useEffect(() => {
+    setContent(initialContent);
+    setEditedContent(initialContent);
+  }, [initialContent]);
+
   const handleCopy = () => {
     navigator.clipboard.writeText(content);
     toast.success("Berhasil disalin ke papan klip!");
@@ -25,6 +39,17 @@ export default function ResultView({ content, config }: Props) {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleSaveEdit = () => {
+    setContent(editedContent);
+    setIsEditing(false);
+    toast.success("Perubahan berhasil disimpan! (Lokal)");
+  };
+
+  const handleCancelEdit = () => {
+    setEditedContent(content);
+    setIsEditing(false);
   };
 
   return (
@@ -42,24 +67,48 @@ export default function ResultView({ content, config }: Props) {
         </div>
         
         <div className="flex flex-wrap gap-2">
+          {!isEditing ? (
+            <Button variant="outline" onClick={() => setIsEditing(true)} className="gap-2 border-indigo-200 text-indigo-600 hover:bg-indigo-50">
+              <Edit3 className="w-4 h-4" /> Edit Konten
+            </Button>
+          ) : (
+            <>
+              <Button variant="outline" onClick={handleCancelEdit} className="gap-2 border-red-200 text-red-600 hover:bg-red-50">
+                <X className="w-4 h-4" /> Batal
+              </Button>
+              <Button onClick={handleSaveEdit} className="gap-2 bg-green-600 hover:bg-green-700">
+                <Save className="w-4 h-4" /> Simpan Perubahan
+              </Button>
+            </>
+          )}
           <Button variant="outline" onClick={handleCopy} className="gap-2">
             <Copy className="w-4 h-4" /> Salin
           </Button>
           <Button variant="outline" onClick={handlePrint} className="gap-2">
             <Printer className="w-4 h-4" /> Cetak / PDF
           </Button>
-          <Button className="bg-indigo-600 hover:bg-indigo-700 gap-2">
-            <Download className="w-4 h-4" /> Download DOCX
-          </Button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <Card className="lg:col-span-3 border-none shadow-2xl shadow-slate-200 bg-white overflow-hidden">
-          <CardContent className="p-10">
-            <div className="prose prose-indigo max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-li:leading-relaxed">
-              <ReactMarkdown>{content}</ReactMarkdown>
-            </div>
+          <CardContent className="p-0 sm:p-10">
+            {isEditing ? (
+              <div className="h-full min-h-[600px] flex flex-col space-y-4 p-4">
+                <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg text-amber-800 text-xs font-medium">
+                  Mode Edit Aktif: Anda dapat mengubah teks Markdown secara langsung di sini.
+                </div>
+                <Textarea 
+                  className="flex-1 w-full h-[800px] font-mono text-sm p-6 bg-slate-50 border-slate-200 focus:ring-indigo-500 focus:border-indigo-500 rounded-xl"
+                  value={editedContent}
+                  onChange={(e) => setEditedContent(e.target.value)}
+                />
+              </div>
+            ) : (
+              <div className="prose prose-indigo max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-li:leading-relaxed prose-table:border prose-table:border-slate-200 prose-th:bg-slate-50 prose-th:p-4 prose-td:p-4 prose-th:border prose-td:border prose-th:text-slate-900 prose-td:text-slate-700">
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </div>
+            )}
           </CardContent>
         </Card>
 

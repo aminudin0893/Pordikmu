@@ -91,39 +91,43 @@ export default function GeneratorSoal({ onSuccess }: Props) {
       }
 
       const prompt = `
-        Ciptakan Bank Soal Ujian yang TERSTRUKTUR, RAPI, dan sesuai Kurikulum Merdeka untuk:
+        Ciptakan Bank Soal Ujian yang TERSTRUKTUR, SANGAT RAPI, dan sesuai standar Kurikulum Merdeka untuk:
         
-        Identitas Asesmen:
+        IDENTITAS ASESMEN:
         - Guru: ${data.name}
         - Sekolah: ${data.school}
         - Mata Pelajaran: ${data.subject}
         - Fase/Kelas: ${data.phaseGrade}
         - Topik/Materi: ${data.topic}
         - Jenis Asesmen: ${data.assessmentType}
+        - Tahun Pelajaran: ${data.schoolYear}
         
-        Konfigurasi Soal:
-        - Jumlah Opsi: ${data.optionsCount}
+        DATA TEKNIS SOAL:
+        - Jumlah Opsi PG: ${data.optionsCount}
         - Level Kognitif: ${data.cognitiveLevels.join(", ")}
-        - Distribusi Tingkat Kesulitan: Mudah (${data.easyPerc}%), Sedang (${data.mediumPerc}%), Sulit/HOTS (${data.hardPerc}%)
+        - Distribusi Kesulitan: Mudah (${data.easyPerc}%), Sedang (${data.mediumPerc}%), Sulit/HOTS (${data.hardPerc}%)
         
-        Distribusi Tipe Soal:
-        - Pilihan Ganda (PG): ${data.mcqCount} butir
-        - PG Kompleks (Multi Response): ${data.multiResponseCount} butir
-        - Benar / Salah: ${data.trueFalseCount} butir
-        - Isian Singkat: ${data.shortAnswerCount} butir
-        - Essay / Uraian: ${data.essayCount} butir
-        - Menjodohkan / Tabel: ${data.matchTableCount} butir
+        DAFTAR BUTIR SOAL YANG DIBUTUHKAN:
+        - Pilihan Ganda: ${data.mcqCount}
+        - Pilihan Ganda Kompleks: ${data.multiResponseCount}
+        - Benar / Salah: ${data.trueFalseCount}
+        - Isian Singkat: ${data.shortAnswerCount}
+        - Essay / Uraian: ${data.essayCount}
+        - Menjodohkan (Format Tabel): ${data.matchTableCount}
         
-        Instruksi Tambahan: ${data.specialInstructions || "Fokus pada penalaran logis dan konteks dunia nyata."}
+        STRUKTUR OUTPUT (WAJIB ADA):
+        1. KOP SOAL: Header identitas sekolah dan ujian yang profesional.
+        2. PETUNJUK UMUM: Langkah-langkah mengerjakan ujian.
+        3. NASKAH SOAL: Tuliskan soal per kategori tipe soal. Setiap nomor wajib mencantumkan [Tipe] dan [Level Kognitif, misal: C4-HOTS].
+        4. KISI-KISI SOAL (Tabel Profesional): Sertakan tabel Kisi-Kisi yang berisi (Nomor, TP, Materi, Indikator Soal, Level, Bentuk Soal).
+        5. KUNCI JAWABAN: Terpisah di bagian akhir.
+        6. RUBRIK PENILAIAN (Tabel Profesional): Khusus untuk bagian Essay/Uraian.
         
-        Output:
-        1. Judul Ujian & Kop Identitas
-        2. Daftar Soal (Tuliskan Tipe dan Level Kognitif di setiap butir)
-        3. Kunci Jawaban Lengkap
-        4. Rubrik Penilaian (khusus Essay)
-        5. Kisi-kisi singkat (TP, Materi, Indikator Soal, Level)
-        
-        Gunakan format Markdown yang sangat rapi. Sisipkan elemen narasi/stem soal yang kontekstual untuk HOTS.
+        INSTRUKSI KHUSUS:
+        - Gunakan Bahasa Indonesia formal.
+        - Wajib menggunakan Tabel Markdown untuk Kisi-kisi, Rubrik, dan Soal Menjodohkan.
+        - Pastikan soal memiliki "Stem" atau stimulus yang kontekstual dan relevan dengan kehidupan sehari-hari (Prinsip Kurikulum Merdeka).
+        - Format tulisan harus sangat rapi dengan pemisah section yang jelas.
       `;
 
       const result = await generateEducationContent(prompt);
