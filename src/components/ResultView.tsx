@@ -130,16 +130,19 @@ export default function ResultView({ content: initialContent, config }: Props) {
   // Clean content of common AI-generated HTML artifacts
   const cleanMarkdown = (text: string) => {
     return text
-      .replace(/# KOP SURAT RESMI SEKOLAH[\s\S]*?---/, '')
-      .replace(/# HEADER & IDENTITAS[\s\S]*?---/, '')
-      .replace(/# BAHAN AJAR DIGITAL ESENSIAL[\s\S]*?---/, '')
-      .replace(/1\. KOP SURAT[\s\S]*?---/, '')
-      .replace(/MENTERI PENDIDIKAN[\s\S]*?KEPUTUSAN/gi, '') // Remove ministerial headers if any
+      .replace(/# KOP SURAT RESMI SEKOLAH[\s\S]*?---/gi, '')
+      .replace(/# HEADER & IDENTITAS[\s\S]*?---/gi, '')
+      .replace(/# BAHAN AJAR DIGITAL ESENSIAL[\s\S]*?---/gi, '')
+      .replace(/1\. KOP SURAT[\s\S]*?---/gi, '')
+      .replace(/MENTERI PENDIDIKAN[\s\S]*?KEPUTUSAN/gi, '')
+      .replace(/DINAS PENDIDIKAN[\s\S]*?KEBUDAYAAN/gi, '')
+      .replace(/SMP MUHAMMADIYAH[\s\S]*?@GMAIL\.COM/gi, '')
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<div[^>]*>/gi, '')
       .replace(/<\/div>/gi, '')
       .replace(/<span[^>]*>/gi, '')
-      .replace(/<\/span>/gi, '');
+      .replace(/<\/span>/gi, '')
+      .trim();
   };
 
   const displayContent = cleanMarkdown(content);
