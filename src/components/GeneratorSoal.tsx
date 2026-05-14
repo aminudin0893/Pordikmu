@@ -192,39 +192,40 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
            ----------------------------------------------------------------------------------
 
         ## A. Identitas Asesmen
-        | Data Administrasi | Keterangan |
-        |-------------------|------------|
+        | Data Administrasi | Keterangan Informasi |
+        |---|---|
         | Mata Pelajaran | ${data.subject.toUpperCase()} |
         | Jenis Asesmen | ${data.assessmentType.toUpperCase()} |
-        | Jenjang / Kelas | ${data.phaseGrade} |
-        | Tahun Pelajaran | ${data.schoolYear || "[Tahun Pelajaran]"} |
+        | Jenjang / Fase / Kelas | ${data.phaseGrade} |
         | Semester | [Ganjil/Genap] |
+        | Tahun Pelajaran | ${data.schoolYear} |
         | Nama Guru | ${data.name} |
         | Waktu Pengerjaan | [Alokasi Waktu] |
 
-        ## B. Identitas Peserta Didik
+        ## B. Data Peserta Didik
         | Nama Peserta Didik | Kelas | No. Absen | Nilai |
-        |--------------------|-------|-----------|-------|
+        |---|---|---|---|
         | ............................ | ${data.phaseGrade} | .......... | .......... |
 
-        ## C. Petunjuk Umum
-        > 1. Berdoalah sebelum mulai mengerjakan soal.
-        > 2. Tulislah identitas Anda pada lembar yang telah disediakan.
-        > 3. Bacalah setiap butir soal dengan teliti.
-        > 4. Dahulukan menjawab soal-soal yang Anda anggap mudah.
+        ## C. Petunjuk Pengerjaan
+        1. Berdoalah sebelum mulai mengerjakan soal.
+        2. Tulislah identitas Anda pada lembar yang disediakan.
+        3. Bacalah setiap butir soal dengan teliti dan cermat.
+        4. Dahulukan menjawab soal-soal yang Anda anggap mudah.
+        5. Periksa kembali pekerjaan Anda sebelum dikumpulkan.
 
-        ## D. Naskah Soal
-        Sajikan soal dengan stimulus yang menarik (teks/gambar/grafik).
-        - PG (Pilihan Ganda): ${data.mcqCount} butir.
-        - PG Kompleks (Jawaban >1): ${data.multiResponseCount} butir.
-        - Benar/Salah: ${data.trueFalseCount} butir.
-        - Isian Singkat & Essay: ${data.shortAnswerCount + data.essayCount} butir.
-        - Menjodohkan: ${data.matchTableCount} butir.
+        ## D. Naskah Asesmen (Butir Soal)
+        Sajikan soal dengan stimulus (teks/gambar/grafik) yang kontekstual.
+        1. **Pilihan Ganda** (Jumlah: ${data.mcqCount}).
+        2. **PG Kompleks** (Jumlah: ${data.multiResponseCount}).
+        3. **Benar / Salah** (Jumlah: ${data.trueFalseCount}).
+        4. **Isian & Essay** (Jumlah: ${data.shortAnswerCount + data.essayCount}).
+        5. **Menjodohkan** (Jumlah: ${data.matchTableCount}).
 
-        ## E. Kisi-Kisi & Kunci Jawaban
-        | No | Capaian Pembelajaran | Materi | Indikator | Level | No. Soal | Kunci |
-        |---|---|---|---|---|---|---|
-        | 1 | ... | ... | ... | ${data.cognitiveLevels[0]} | 1 | ... |
+        ## E. Kunci Jawaban & Kisi-Kisi
+        | No | Materi | Indikator Soal | Level | Kunci / Pedoman Skor |
+        |---|---|---|---|---|
+        | 1 | ... | ... | ... | ... |
 
         INSTRUKSI TEKNIS:
         - Bahasa Indonesia Baku & Formal.

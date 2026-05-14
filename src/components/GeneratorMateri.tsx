@@ -135,33 +135,35 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
            **${data.school.toUpperCase()}**
            ---
 
-        ## A. Pendahuluan
-        | Komponen | Keterangan |
-        |----------|------------|
-        | Fase / Kelas | ${data.phaseGrade} |
+        ## A. Pendahuluan & Identitas
+        | Komponen Administrasi | Keterangan Informasi |
+        |---|---|
+        | Satuan Pendidikan | ${data.school} |
+        | Mata Pelajaran | ${data.subject.toUpperCase()} |
+        | Jenjang / Fase / Kelas | ${data.phaseGrade} |
+        | Semester | [Ganjil/Genap] |
         | Topik Utama | ${data.topics.join(", ")} |
-        | Kedalaman | ${data.depthLevel.toUpperCase()} |
-        | Fokus | ${data.targetFocus || "Pemahaman Konsep"} |
+        | Target Kedalaman | ${data.depthLevel.toUpperCase()} |
 
-        ## B. Tujuan Pembelajaran
-        Sajikan target kompetensi yang ingin dicapai dalam tabel/list rapi.
+        ## B. Capaian & Tujuan Pembelajaran
+        Sajikan target kompetensi yang harus dikuasai peserta didik dalam bentuk poin-poin yang jelas dan terukur.
 
-        ## C. Pembahasan Utama (Deep Learning)
-        Gunakan pendekatan mendalam:
-        - **Essential Questions**: Pertanyaan pemantik.
-        - **Konsep Inti**: Penjelasan logis dan sistematis.
-        ${data.includeAnalogy ? "- **Analogi Kontekstual**: Perumpamaan dunia nyata." : ""}
-        ${data.includeIllustration ? "- **Visualisasi**: Deskripsi grafis pendukung." : ""}
+        ## C. Pembahasan Materi (Deep Learning Approach)
+        Gunakan pendekatan mendalam (High-Logic explanation):
+        1. **Essential Questions**: Pertanyaan pemantik rasa ingin tahu.
+        2. **Konsep Inti**: Penjelasan logis, sistematis, dan komprehensif.
+        ${data.includeAnalogy ? "3. **Analogi Dunia Nyata**: Hubungkan konsep abstrak dengan fenomena sehari-hari agar lebih mudah dipahami." : ""}
+        ${data.includeIllustration ? "4. **Visualisasi Konsep**: Deskripsikan ilustrasi/gambar pendukung yang memperjelas materi." : ""}
 
         ## D. Contoh Penerapan & Studi Kasus
-        Berikan situasi nyata untuk melatih nalar kritis siswa.
+        Berikan situasi nyata atau dilema yang melatih penalaran kritis (Critical Thinking) peserta didik terkait materi tersebut.
 
-        ## E. Rangkuman & Refleksi
-        | Intisari | Refleksi Siswa |
+        ## E. Rangkuman & Refleksi Mandiri
+        | Intisari Materi (Rangkuman) | Pertanyaan Refleksi Peserta Didik |
         |---|---|
-        | [Rangkuman Poin Materi] | [Pertanyaan Kontemplatif] |
+        | [Jabarkan poin-poin penting] | [Pertanyaan kontemplatif untuk mengukur pemahaman] |
 
-        ${data.includeQuiz ? "## F. Uji Kompetensi (Format HOTS)\nBerikan 3-5 soal tantangan." : ""}
+        ${data.includeQuiz ? "## F. Uji Pemahaman (Format HOTS)\nBerikan 3-5 soal asesmen formatif dengan tingkat kesulitan tinggi." : ""}
 
         INSTRUKSI TEKNIS:
         - Bahasa Indonesia Formal.

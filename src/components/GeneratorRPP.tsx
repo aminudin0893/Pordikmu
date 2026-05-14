@@ -146,47 +146,52 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         *Alamat: [Masukkan Alamat Sekolah] | Email: [Email Sekolah]*
         ---` : ""}
 
-        # RENCANA PELAKSANAAN PEMBELAJARAN (RPP/MODUL AJAR)
+        # RENCANA PELAKSANAAN PEMBELAJARAN (RPP / MODUL AJAR)
 
         ## A. Identitas Modul
-        | Komponen | Detail Informasi |
+        | Aspek Identitas | Keterangan Informasi |
         |---|---|
         | Nama Penyusun | ${data.name} |
         | NIP | ${data.nip || "-"} |
         | Satuan Pendidikan | ${data.school} |
         | Tahun Pelajaran | ${data.schoolYear} |
+        | Semester | ${data.semester} |
         | Jenjang / Fase / Kelas | ${data.phaseGrade} |
         | Mata Pelajaran | ${data.subject} |
         | Alokasi Waktu | ${data.timeAllocation} |
         | Model Pembelajaran | ${data.learningModel} |
 
         ## B. Kompetensi Inti
-        | Aspek | Deskripsi Capaian / Uraian |
+        | Komponen | Deskripsi Capaian / Uraian |
         |---|---|
-        | **Tujuan Pembelajaran** | Jabarkan secara detail sesuai CP |
-        | **Pemahaman Bermakna** | Hubungkan dengan konteks kehidupan nyata |
-        | **Pertanyaan Pemantik** | Pemancing diskusi kritis (HOTS) |
-        | **Profil Pelajar Pancasila** | Beriman, Mandiri, Bernalar Kritis, Kreatif, dll |
+        | **Tujuan Pembelajaran** | Jabarkan secara detail poin-poin tujuan sesuai CP |
+        | **Pemahaman Bermakna** | Manfaat nyata bagi peserta didik |
+        | **Pertanyaan Pemantik** | Pertanyaan kritis pemicu kognitif |
+        | **Profil Pelajar Pancasila** | Karakter yang ingin dikembangkan |
 
         ## C. Langkah-Langkah Pembelajaran
-        Sajikan dalam tabel yang sangat detail:
-        | Tahapan | Uraian Kegiatan Pembelajaran (Integrasi 4C & Literasi) | Alokasi Waktu |
+        Sajikan langkah pembelajaran dengan sintaks model **${data.learningModel}**:
+        | Tahap Pembelajaran | Uraian Kegiatan (Deep Learning: 4C & Literasi) | Alokasi Waktu |
         |---|---|---|
-        | **Pendahuluan** | Salam, Doa, Presensi, Motivasi, Apersepsi, Penyampaian Tujuan. | ... Menit |
-        | **Kegiatan Inti** | Implementasi Sintaks Model **${data.learningModel}**: (Detailkan langkah per langkah sesuai model tersebut). | ... Menit |
-        | **Penutup** | Refleksi, Simpulan, Evaluasi, Tindak Lanjut, Doa Penutup. | ... Menit |
+        | **Pendahuluan** | 1. Orientasi (Salam, Doa, Presensi). 2. Apersepsi. 3. Motivasi. 4. Penyampaian Tujuan & Cakupan Materi. | ... Menit |
+        | **Kegiatan Inti** | **Sintaks Model ${data.learningModel}**: [Detailkan langkah per langkah secara naratif atau penomoran rapi]. Fokus pada interaksi aktif peserta didik. | ... Menit |
+        | **Penutup** | 1. Refleksi Peserta Didik & Guru. 2. Umpan Balik. 3. Kesimpulan. 4. Tindak Lanjut. 5. Doa Penutup. | ... Menit |
 
-        ## D. Asesmen & Instrumen Penilaian
-        | Jenis | Teknik Asesmen | Instrumen |
+        ## D. Asesmen & Penilaian
+        | Jenis Asesmen | Bentuk / Instrumen | Teknik |
         |---|---|---|
-        | Asesmen Diagnostik | Tes Lisan / Angket | Lembar Kuesioner (Terlampir) |
-        | Asesmen Formatif | Observasi / Performa | Lembar Pengamatan (Terlampir) |
-        | Asesmen Sumatif | Tes Tertulis | Soal Pilihan Ganda/Esai (Terlampir) |
+        | Asesmen Diagnostik | Tes Lisan / Angket | Kognitif/Non-Kognitif |
+        | Asesmen Formatif | Observasi / Produk / Performa | Lembar Pengamatan |
+        | Asesmen Sumatif | Tes Tertulis (PG/Uraian) | Skor/Rubrik |
 
-        ## E. Lampiran (Materi, LKPD, Rubrik)
-        - **Bahan Bacaan Guru & Peserta Didik** (Rangkuman mendalam minimal 3 paragraf).
-        - **LKPD (Lembar Kerja Peserta Didik)** (Tugas terstruktur).
-        - **Rubrik Penilaian** (Tabel kriteria dan skor).
+        ## E. Media & Sumber Belajar
+        - **Media**: [Cantumkan media digital/fisik yang digunakan].
+        - **Bahan Ajar**: [Cantumkan buku/modul/link berita].
+        - **Sarana**: [Alat pendukung belajar].
+
+        ## F. Lampiran (LKPD & Ringkasan)
+        - **Ringkasan Materi**: Sajikan materi esensial secara mendalam (Deep Learning).
+        - **LKPD (Lembar Kerja Peserta Didik)**: Berikan tugas mandiri/kelompok yang menantang.
         - **Glosarium & Daftar Pustaka**.
 
         ${data.useValidationPage ? `
@@ -396,6 +401,13 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
                         <SelectItem value="Problem Based Learning">Problem Based Learning (PBL)</SelectItem>
                         <SelectItem value="Project Based Learning">Project Based Learning (PjBL)</SelectItem>
                         <SelectItem value="Inquiry Learning">Inquiry Learning</SelectItem>
+                        <SelectItem value="Cooperative Learning">Cooperative Learning</SelectItem>
+                        <SelectItem value="Contextual Teaching & Learning">Contextual Teaching (CTL)</SelectItem>
+                        <SelectItem value="Case Based Learning">Case Based Learning</SelectItem>
+                        <SelectItem value="Integrated Literacy">Pembelajaran Literasi</SelectItem>
+                        <SelectItem value="Differentiated Learning">Pembelajaran Berdiferensiasi</SelectItem>
+                        <SelectItem value="Socratic Method">Metode Sokratik</SelectItem>
+                        <SelectItem value="Flipped Classroom">Flipped Classroom</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
