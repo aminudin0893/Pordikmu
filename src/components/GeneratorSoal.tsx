@@ -85,70 +85,14 @@ export default function GeneratorSoal({ onSuccess }: Props) {
   });
 
   const handleDifficultyChange = (type: 'easy' | 'medium' | 'hard', newVal: number) => {
-    const currentVals = {
-      easy: form.getValues('easyPerc') || 0,
-      medium: form.getValues('mediumPerc') || 0,
-      hard: form.getValues('hardPerc') || 0
-    };
-
-    const oldVal = currentVals[type];
-    const diff = newVal - oldVal;
-
-    if (diff === 0) return;
-
-    const others: ('easy' | 'medium' | 'hard')[] = 
-      type === 'easy' ? ['medium', 'hard'] : 
-      type === 'medium' ? ['easy', 'hard'] : ['easy', 'medium'];
-
-    let remainingDiff = diff;
-
-    // Try to take from the first other
-    const firstOther = others[0];
-    const firstOtherVal = currentVals[firstOther];
-    const takeFromFirst = Math.min(Math.max(remainingDiff, -currentVals[type]), firstOtherVal);
+    const fieldMap = {
+      easy: 'easyPerc',
+      medium: 'mediumPerc',
+      hard: 'hardPerc'
+    } as const;
     
-    // Simplest logic: prioritize taking from the "next" slider first, then the other one
-    // to keep total at 100.
-    
-    let nextVals = { ...currentVals };
-    nextVals[type] = newVal;
-
-    if (type === 'easy') {
-      // Easy changes, adjust Medium first, then Hard
-      const medChange = Math.min(nextVals.medium, diff);
-      nextVals.medium -= medChange;
-      const remaining = diff - medChange;
-      nextVals.hard -= remaining;
-    } else if (type === 'medium') {
-      // Medium changes, adjust Hard first, then Easy
-      const hardChange = Math.min(nextVals.hard, diff);
-      nextVals.hard -= hardChange;
-      const remaining = diff - hardChange;
-      nextVals.easy -= remaining;
-    } else {
-      // Hard changes, adjust Medium first, then Easy
-      const medChange = Math.min(nextVals.medium, diff);
-      nextVals.medium -= medChange;
-      const remaining = diff - medChange;
-      nextVals.easy -= remaining;
-    }
-
-    // Ensure no negatives and sum is 100
-    nextVals.easy = Math.max(0, nextVals.easy);
-    nextVals.medium = Math.max(0, nextVals.medium);
-    nextVals.hard = Math.max(0, nextVals.hard);
-    
-    const sum = nextVals.easy + nextVals.medium + nextVals.hard;
-    if (sum !== 100) {
-      // Adjust the largest one to make it 100
-      const diffTo100 = 100 - sum;
-      if (type !== 'easy') nextVals.easy += diffTo100;
-      else nextVals.medium += diffTo100;
-    }
-
-    form.setValue('easyPerc', nextVals.easy);
-    form.setValue('mediumPerc', nextVals.medium);
-    form.setValue('hardPerc', nextVals.hard);
+    // Set value simply to allow free manual sliding
+    form.setValue(fieldMap[type], newVal);
   };
 
   const currentEasy = form.watch('easyPerc') || 0;
