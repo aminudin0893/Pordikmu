@@ -100,35 +100,58 @@ export default function GeneratorRPP({ onSuccess }: Props) {
     setLoading(true);
     try {
       const prompt = `
-        Buatkan Rencana Pelaksanaan Pembelajaran (RPP) / Modul Ajar yang sangat lengkap, mendalam (Deep Learning), dan profesional sesuai standar Kurikulum Merdeka untuk:
+        Buatkan (RPP) / MODUL AJAR (MODUL PEMBELAJARAN) yang sangat LENGKAP, FORMAL, dan PROFESIONAL sebagai DOKUMEN RESMI SIAP CETAK sesuai standar Kurikulum Merdeka.
+
+        ${data.useLetterhead ? "WAJIB: Tambahkan placeholder [KOP SURAT INSTANSI] di bagian paling atas." : ""}
         
-        IDENTITAS:
+        Sajikan seluruh informasi identitas dalam TABEL MARKDOWN yang rapi:
+        IDENTITAS MODUL:
         - Nama Guru: ${data.name}
         - NIP: ${data.nip || "-"}
         - Sekolah: ${data.school}
         - Mata Pelajaran: ${data.subject}
         - Fase/Kelas: ${data.phaseGrade}
         - Semester: ${data.semester}
-        - Materi Pokok (Topik): ${data.topics.join(", ")}
+        - Materi Pokok: ${data.topics.join(", ")}
         - Alokasi Waktu: ${data.timeAllocation}
-        - Model Pembelajaran: ${data.learningModel}
+        - Model: ${data.learningModel}
         - Tahun Pelajaran: ${data.schoolYear}
         
         INFORMASI TAMBAHAN: ${data.additionalNotes || "Tidak ada khusus"}
         
-        STRUKTUR DOKUMEN (WAJIB ADA):
-        1. INFORMASI UMUM: Identitas Modul, Kompetensi Awal, Profil Pelajar Pancasila (P3), Sarana & Prasarana, Target Peserta Didik.
-        2. KOMPONEN INTI: Tujuan Pembelajaran (TP), Alur Tujuan Pembelajaran (ATP), Pemahaman Bermakna, Pertanyaan Pemantik, Persiapan Pembelajaran.
-        3. KEGIATAN PEMBELAJARAN (Tabel Profesional): Sertakan tabel langkah-langkah kegiatan (Pendahuluan, Inti, Penutup) dengan estimasi waktu dan integrasi HOTS/6C.
-        4. ASESMEN (Tabel Profesional): Tabel jenis asesmen (Diagnostik, Formatif, Sumatif) beserta instrumennya.
-        5. PENGAYAAN & REMEDIAL: Strategi tindak lanjut.
-        6. LAMPIRAN: Ringkasan Materi, Lembar Kerja Peserta Didik (LKPD), Media Pembelajaran, Glosarium, Daftar Pustaka.
-        
-        INSTRUKSI KHUSUS:
-        - Gunakan Bahasa Indonesia yang formal dan edukatif.
-        - Tampilkan data dalam tabel Markdown yang rapi dan profesional untuk bagian Kegiatan Pembelajaran dan Asesmen.
-        - Pastikan tabel memiliki border Markdown yang lengkap (|---|---|).
-        - Pastikan modul ini mendukung "Deep Learning" (pemahaman mendalam) dan "Kurikulum Merdeka".
+        STRUKTUR DOKUMEN WAJIB (Gunakan Heading dan Tabel):
+        1. KOMPONEN UMUM:
+           - Kompetensi Awal: (Sajikan dalam List/Tabel)
+           - Profil Pelajar Pancasila (P3): (Sajikan dalam Tabel yang rapi)
+           - Sarana & Prasarana: (Sajikan dalam Tabel)
+           - Target Peserta Didik: (Deskripsi singkat)
+
+        2. KOMPONEN INTI:
+           - Tujuan Pembelajaran (TP): (Sajikan dalam Tabel)
+           - Pemahaman Bermakna & Pertanyaan Pemantik: (Sajikan dalam Tabel)
+           - Persiapan Pembelajaran.
+
+        3. KEGIATAN PEMBELAJARAN (TABEL PROFESIONAL):
+           - WAJIB: Gunakan TABEL untuk langkah-langkah kegiatan (Pendahuluan, Inti, Penutup).
+           - Kolom tabel harus mencakup: Tahapan, Deskripsi Kegiatan, dan Alokasi Waktu.
+           - Integrasikan High Order Thinking Skills (HOTS) dan 6C.
+
+        4. ASESMEN (TABEL PROFESIONAL):
+           - Buat Tabel Rencana Asesmen: (Asesmen Diagnostik, Formatif, Sumatif).
+           - Sertakan Instrumen dan Rubrik Penilaian dalam Tabel yang detail.
+
+        5. LAMPIRAN:
+           - Ringkasan Materi (Pointer Utama).
+           - LKPD (Lembar Kerja Peserta Didik) - Harus terstruktur rapi.
+           - Glosarium & Daftar Pustaka.
+
+        ${data.useValidationPage ? "WAJIB: Di akhir dokumen, buat bagian Lembar Pengesahan dengan tabel tanda tangan Guru Mata Pelajaran dan Kepala Sekolah." : ""}
+
+        INSTRUKSI TEKNIS:
+        - Gunakan Bahasa Indonesia formal (EYD).
+        - Wajib menggunakan Tabel Markdown (|---|---|) yang sejajar dan lengkap untuk seluruh bagian yang memungkinkan.
+        - Pastikan format tulisan sangat rapi dengan pembatas section menggunakan garis horizontal (---).
+        - Dokumen harus memiliki "Vibe" sebagai dokumen resmi kedinasan sekolah.
       `;
 
       const result = await generateEducationContent(prompt);

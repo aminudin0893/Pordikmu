@@ -89,12 +89,14 @@ export default function GeneratorMateri({ onSuccess }: Props) {
     setLoading(true);
     try {
       const prompt = `
-        Susunlah Materi Ajar Digital yang sangat komprehensif, menarik, dan menggunakan prinsip "Deep Learning" untuk:
+        Susunlah Materi Ajar Digital yang sangat komprehensif, menarik, dan menggunakan prinsip "Deep Learning" sebagai DOKUMEN RESMI SIAP CETAK.
         
-        DATA:
+        Sajikan identitas materi dalam TABEL MARKDOWN yang rapi di bagian awal:
+        IDENTITAS MATERI:
+        - Sekolah: ${data.school}
         - Subjek: ${data.subject}
         - Fase/Kelas: ${data.phaseGrade}
-        - Topik / Materi Pembelajaran: ${data.topics.join(", ")}
+        - Topik / Materi: ${data.topics.join(", ")}
         - Tingkat Kedalaman: ${data.depthLevel}
         - Fokus Utama: ${data.targetFocus || "Pemahaman Konsep Secara Holistik"}
         
@@ -107,15 +109,15 @@ export default function GeneratorMateri({ onSuccess }: Props) {
            ${data.includeAnalogy ? "- Sertakan ANALOGI sederhana untuk menjelaskan konsep abstrak." : ""}
         4. STUDI KASUS / CONTOH NYATA: Penerapan materi dalam kehidupan.
         5. VISUALISASI DESKRIPTIF: Deskripsi visual ${data.includeIllustration ? "yang detail (bayangkan sebagai ilustrasi buku teks)" : ""}.
-        6. RANGKUMAN (Tabel): Intisari materi yang mudah dihafal.
+        6. RANGKUMAN (Tabel): Intisari materi dalam bentuk tabel yang sangat rapi.
         ${data.includeQuiz ? "7. CEK PEMAHAMAN (Kuis Kecil): 3-5 pertanyaan reflektif untuk mengetes pemahaman." : ""}
         
         INSTRUKSI FORMAT:
         - Gunakan Bahasa Indonesia formal dan edukatif.
-        - Wajib menggunakan Tabel Markdown yang sangat rapi dan profesional untuk bagian Tujuan dan Rangkuman.
-        - Pastikan tabel mudah dibaca dengan kolom yang terstruktur.
+        - Wajib menggunakan Tabel Markdown yang sangat rapi dan profesional untuk bagian Identitas, Tujuan, dan Rangkuman.
+        - Pastikan tabel memiliki border Markdown yang lengkap (|---|---|).
+        - Gunakan garis pembatas (---) antar section agar dokumen terlihat bersih saat dicetak.
         - Terapkan prinsip "Deep Learning" agar siswa tidak hanya menghafal, tapi memahami "why" and "how".
-        - Format tulisan harus sangat rapi dengan Markdown yang profesional.
       `;
 
       const result = await generateEducationContent(prompt);
@@ -252,7 +254,7 @@ export default function GeneratorMateri({ onSuccess }: Props) {
 
           <Button 
             type="submit" 
-            className="w-full h-14 md:h-16 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base md:text-lg rounded-xl md:rounded-2xl shadow-xl shadow-emerald-100 transition-all active:scale-[0.98]"
+            className="w-full h-14 md:h-16 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm md:text-base rounded-xl md:rounded-2xl shadow-xl shadow-emerald-100 transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading ? (

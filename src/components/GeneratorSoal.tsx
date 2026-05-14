@@ -142,44 +142,39 @@ export default function GeneratorSoal({ onSuccess }: Props) {
       }
 
       const prompt = `
-        Ciptakan Bank Soal Ujian yang TERSTRUKTUR, SANGAT RAPI, dan sesuai standar Kurikulum Merdeka untuk:
+        Ciptakan BANK SOAL UJIAN (NASKAH SOAL) yang TERSTRUKTUR, SANGAT RAPI, dan PROFESIONAL sebagai DOKUMEN RESMI SIAP CETAK sesuai standar Kurikulum Merdeka.
         
+        Sajikan identitas ujian dalam TABEL MARKDOWN yang rapi di bagian awal (Header):
         IDENTITAS ASESMEN:
         - Guru: ${data.name}
         - Sekolah: ${data.school}
         - Mata Pelajaran: ${data.subject}
         - Fase/Kelas: ${data.phaseGrade}
-        - Topik / Materi Utama: ${data.topics.join(", ")}
+        - Materi Utama: ${data.topics.join(", ")}
         - Jenis Asesmen: ${data.assessmentType}
         - Tahun Pelajaran: ${data.schoolYear}
         
         DATA TEKNIS SOAL:
-        - Jumlah Opsi PG: ${data.optionsCount}
+        - Opsi PG: ${data.optionsCount}
         - Level Kognitif: ${data.cognitiveLevels.join(", ")}
-        - Distribusi Kesulitan: Mudah (${data.easyPerc}%), Sedang (${data.mediumPerc}%), Sulit/HOTS (${data.hardPerc}%)
+        - Distribusi: Mudah (${data.easyPerc}%), Sedang (${data.mediumPerc}%), Sulit/HOTS (${data.hardPerc}%)
         
-        DAFTAR BUTIR SOAL YANG DIBUTUHKAN:
-        - Pilihan Ganda: ${data.mcqCount}
-        - Pilihan Ganda Kompleks: ${data.multiResponseCount}
-        - Benar / Salah: ${data.trueFalseCount}
-        - Isian Singkat: ${data.shortAnswerCount}
-        - Essay / Uraian: ${data.essayCount}
-        - Menjodohkan (Format Tabel): ${data.matchTableCount}
+        WAJIB ADA (STRUKTUR DOKUMEN):
+        1. KOP SOAL: Header identitas sekolah dan ujian yang sangat profesional.
+        2. PETUNJUK UMUM: Langkah mengerjakan ujian.
+        3. NASKAH SOAL: Tuliskan soal per kategori tipe soal dengan rapi.
+           - Gunakan tabel Markdown untuk soal tipe "MENJODOHKAN".
+           - Setiap nomor wajib mencantumkan label [Level Kognitif, misal: C4-HOTS].
+           - Total Soal: PG (${data.mcqCount}), PG_K (${data.multiResponseCount}), B/S (${data.trueFalseCount}), Isian (${data.shortAnswerCount}), Essay (${data.essayCount}), Menjodohkan (${data.matchTableCount}).
+        4. KISI-KISI SOAL (TABEL PROFESIONAL): Tabel Kisi-Kisi lengkap (No, TP, Materi, Indikator, Level, Bentuk).
+        5. KUNCI JAWABAN & RUBRIK (TABEL PROFESIONAL): Sajikan kunci jawaban dalam tabel yang rapi dan rubrik penilaian yang detail.
         
-        STRUKTUR OUTPUT (WAJIB ADA):
-        1. KOP SOAL: Header identitas sekolah dan ujian yang profesional.
-        2. PETUNJUK UMUM: Langkah-langkah mengerjakan ujian.
-        3. NASKAH SOAL: Tuliskan soal per kategori tipe soal. Setiap nomor wajib mencantumkan [Tipe] dan [Level Kognitif, misal: C4-HOTS].
-        4. KISI-KISI SOAL (Tabel Profesional): Sertakan tabel Kisi-Kisi yang berisi (Nomor, TP, Materi, Indikator Soal, Level, Bentuk Soal).
-        5. KUNCI JAWABAN: Terpisah di bagian akhir.
-        6. RUBRIK PENILAIAN (Tabel Profesional): Khusus untuk bagian Essay/Uraian.
-        
-        INSTRUKSI KHUSUS:
-        - Gunakan Bahasa Indonesia formal.
-        - Wajib menggunakan Tabel Markdown yang sangat rapi untuk Kisi-kisi, Rubrik, dan Soal Menjodohkan.
-        - Pastikan tabel memiliki header yang jelas dan kolom yang sejajar secara visual dalam format Markdown.
-        - Pastikan soal memiliki "Stem" atau stimulus yang kontekstual dan relevan dengan kehidupan sehari-hari (Prinsip Kurikulum Merdeka).
-        - Format tulisan harus sangat rapi dengan pemisah section yang jelas menggunakan divider (---).
+        INSTRUKSI TEKNIS:
+        - Gunakan Bahasa Indonesia formal (EYD).
+        - Wajib menggunakan Tabel Markdown (|---|---|) yang rapi untuk Identitas, Menjodohkan, Kisi-kisi, dan Rubrik.
+        - Pastikan soal memiliki stimulus (Stem) yang kontekstual sesuai prinsip "Deep Learning".
+        - Gunakan garis pembatas (---) antar section besar agar dokumen mudah dibaca saat dicetak.
+        - Dokumen harus memiliki tampilan formal layaknya ujian nasional atau ujian sekolah resmi.
       `;
 
       const result = await generateEducationContent(prompt);
@@ -488,7 +483,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
 
           <Button 
             type="submit" 
-            className="w-full h-14 md:h-16 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-base md:text-lg rounded-xl md:rounded-2xl shadow-xl shadow-indigo-100 transition-all active:scale-[0.98]"
+            className="w-full h-14 md:h-16 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm md:text-base rounded-xl md:rounded-2xl shadow-xl shadow-indigo-100 transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading ? (

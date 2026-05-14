@@ -160,3 +160,57 @@
     @apply font-sans;
     }
 }
+
+@media print {
+  body {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .no-print, 
+  button, 
+  header, 
+  footer, 
+  nav, 
+  .sidebar-container,
+  [role="alert"] {
+    display: none !important;
+  }
+  .prose {
+    max-width: none !important;
+    padding: 2cm !important;
+    margin: 0 !important;
+    font-size: 11pt !important;
+    color: black !important;
+  }
+  .prose h1, .prose h2, .prose h3 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+  /* Ensure page breaks don't split cards unnecessarily */
+  div.card {
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+  }
+  /* Modern browsers handling of table printing */
+  table {
+    page-break-inside: auto;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: 1pt solid #ccc !important;
+  }
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+  thead {
+    display: table-header-group;
+    background-color: #f8f9fa !important;
+    -webkit-print-color-adjust: exact;
+  }
+  th, td {
+    border: 1pt solid #ccc !important;
+    padding: 8pt !important;
+  }
+}
