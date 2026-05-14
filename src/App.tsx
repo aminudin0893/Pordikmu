@@ -59,29 +59,33 @@ export default function App() {
     return (
       <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-4">
         <Toaster position="top-center" richColors />
-        <Card className="w-full max-w-md border-none shadow-2xl">
-          <CardHeader className="bg-indigo-600 text-white rounded-t-xl text-center">
-            <GraduationCap className="w-12 h-12 mx-auto mb-2" />
-            <CardTitle className="text-2xl font-black">LOGIN PESERTA</CardTitle>
-            <CardDescription className="text-indigo-100">Masukkan Kode Akses Anda</CardDescription>
+        <Card className="w-full max-w-md border-none shadow-2xl overflow-hidden rounded-2xl md:rounded-3xl">
+          <CardHeader className="bg-indigo-600 text-white p-6 md:p-8 text-center">
+            <GraduationCap className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-2" />
+            <CardTitle className="text-xl md:text-2xl font-black">LOGIN PESERTA</CardTitle>
+            <CardDescription className="text-indigo-100 text-xs md:text-sm">Masukkan Kode Akses PIN Anda</CardDescription>
           </CardHeader>
-          <CardContent className="p-8">
-            <form onSubmit={handleLogin} className="space-y-4">
+          <CardContent className="p-6 md:p-8">
+            <form onSubmit={handleLogin} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="pin">Kode PIN</Label>
+                <Label htmlFor="pin" className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-wider">Kode PIN Akses</Label>
                 <Input 
                   id="pin" 
                   type="password" 
-                  placeholder="Masukkan 6 digit pin" 
+                  placeholder="••••••" 
                   value={pin}
                   onChange={(e) => setPin(e.target.value)}
-                  className="text-center text-2xl tracking-[1em] h-14"
+                  className="text-center text-xl md:text-2xl tracking-[0.5em] md:tracking-[1em] h-12 md:h-14 font-black border-slate-200 focus:border-indigo-500 transition-all"
+                  maxLength={6}
                 />
               </div>
-              <Button type="submit" className="w-full h-12 bg-indigo-600 font-bold text-lg">
+              <Button type="submit" className="w-full h-11 md:h-12 bg-indigo-600 hover:bg-indigo-700 font-bold text-base md:text-lg shadow-lg shadow-indigo-100 transition-all active:scale-[0.98]">
                 Masuk ke Aplikasi
               </Button>
             </form>
+            <p className="text-center mt-6 text-[10px] md:text-xs text-slate-400 font-medium">
+              Gunakan PIN yang telah diberikan oleh operator sistem.
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -138,10 +142,10 @@ export default function App() {
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-2">
                   <Zap className="w-3 h-3 fill-indigo-500" /> Powered by Gemini AI
                 </div>
-                <h2 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
+                <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
                   APLIKASI GENERATOR <span className="text-indigo-600">AI PENDIDIKAN</span>
                 </h2>
-                <p className="text-slate-600 max-w-2xl mx-auto text-lg leading-relaxed">
+                <p className="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed">
                   Pilih menu aplikasi di bawah ini untuk menyusun perangkat ajar Anda secara otomatis. 
                   <span className="block font-bold mt-1 text-indigo-500">Support Kurikulum Merdeka dan Pembelajaran Mendalam.</span>
                 </p>
