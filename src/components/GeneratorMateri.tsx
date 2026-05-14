@@ -34,12 +34,15 @@ import { generateEducationContent } from '../lib/gemini';
 import { toast } from 'sonner';
 import { Switch } from './ui/switch';
 
+import { LogoUploader } from './LogoUploader';
+
 const materiSchema = z.object({
   name: z.string().min(1, "Nama harus diisi"),
   nip: z.string().optional(),
   principalName: z.string().min(1, "Nama Kepala Sekolah harus diisi"),
   principalNip: z.string().optional(),
   school: z.string().min(1, "Sekolah harus diisi"),
+  logo: z.string().optional(),
   subject: z.string().min(1, "Mata Pelajaran harus diisi"),
   phaseGrade: z.string().min(1, "Fase/Kelas harus diisi"),
   topics: z.array(z.string()).min(1, "Minimal satu topik materi harus diisi"),
@@ -77,6 +80,7 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
       principalName: "Rachmawati Fitriyah, S.H,. S.Pd.",
       principalNip: "1640634",
       school: "SMP Muhammadiyah 1 Probolinggo",
+      logo: "",
       subject: "Pendidikan Agama Islam",
       phaseGrade: "Fase D (Kelas 7) SMP/MTs",
       topics: [""],
@@ -292,8 +296,15 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div className="space-y-4 col-span-full">
+                  <LogoUploader 
+                    value={form.watch('logo')} 
+                    onChange={(val: string) => form.setValue('logo', val)} 
+                  />
+                </div>
+
                 <div className="space-y-1.5 md:space-y-2 col-span-full">
-                    <Label className="font-bold text-sm">Nama Sekolah / Instansi</Label>
+                    <Label className="font-bold text-sm">Nama Satuan Pendidikan (Sekolah)</Label>
                     <Input placeholder="Misal: SMP Negeri 1 Jakarta" {...form.register('school')} className="h-10 md:h-12" />
                     {form.formState.errors.school && <p className="text-xs text-red-500">{form.formState.errors.school.message}</p>}
                 </div>

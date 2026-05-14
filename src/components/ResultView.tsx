@@ -56,6 +56,10 @@ export default function ResultView({ content: initialContent, config }: Props) {
   // Clean content of common AI-generated HTML artifacts
   const cleanMarkdown = (text: string) => {
     return text
+      .replace(/# KOP SURAT RESMI SEKOLAH[\s\S]*?---/, '')
+      .replace(/# HEADER & IDENTITAS[\s\S]*?---/, '')
+      .replace(/# BAHAN AJAR DIGITAL ESENSIAL[\s\S]*?---/, '')
+      .replace(/1\. KOP SURAT[\s\S]*?---/, '')
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<div[^>]*>/gi, '')
       .replace(/<\/div>/gi, '')
@@ -118,7 +122,32 @@ export default function ResultView({ content: initialContent, config }: Props) {
               />
             </div>
           ) : (
-            <div className="bg-white border border-slate-100 mx-auto rounded-none min-h-[1100px] w-full max-w-[850px] p-12 md:p-20 paper-content">
+            <div className="bg-white border border-slate-100 mx-auto rounded-none min-h-[1100px] w-full max-w-[850px] p-8 md:p-16 paper-content">
+              {config.useLetterhead && (
+                <div className="mb-8 border-b-[3px] border-double border-black pb-4 text-center relative">
+                  <div className="flex items-center gap-6 text-black">
+                    {config.logo && (
+                      <div className="shrink-0 w-[100px] h-[100px] flex items-center justify-center">
+                        <img referrerPolicy="no-referrer" src={config.logo} alt="Logo" className="w-full h-full object-contain" />
+                      </div>
+                    )}
+                    <div className="flex-1 text-center pr-[100px]">
+                      <p className="text-[10px] font-bold leading-tight uppercase tracking-tight">MAJELIS PENDIDIKAN DASAR MENENGAH DAN PENDIDIKAN NON FORMAL</p>
+                      <p className="text-[11px] font-bold leading-tight uppercase">PIMPINAN DAERAH MUHAMMADIYAH KOTA PROBOLINGGO</p>
+                      <p className="text-lg font-black leading-tight uppercase mt-1 mb-1 tracking-tighter">
+                        {config.school || "SMP MUHAMMADIYAH 1 KOTA PROBOLINGGO"}
+                      </p>
+                      <p className="text-[10px] font-bold uppercase tracking-widest mb-1 italic">TERAKREDITASI A</p>
+                      <p className="text-[9px] leading-tight">
+                        Jl. Mayjend Panjaitan 73 Kota Probolinggo Email: <span className="text-blue-600 underline font-medium">smp_muh.prob@yahoo.co.id</span>
+                      </p>
+                      <p className="text-[9px] leading-tight">
+                        Telp/fax. 0335-422307 Website: <span className="text-blue-600 underline font-medium">smpmusapro.sch.id</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="prose max-w-none">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayContent}</ReactMarkdown>
               </div>

@@ -36,12 +36,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/
 import { generateEducationContent } from '../lib/gemini';
 import { toast } from 'sonner';
 
+import { LogoUploader } from './LogoUploader';
+
 const soalSchema = z.object({
   name: z.string().min(1, "Nama harus diisi"),
   nip: z.string().optional(),
   principalName: z.string().min(1, "Nama Kepala Sekolah harus diisi"),
   principalNip: z.string().optional(),
   school: z.string().min(1, "Sekolah harus diisi"),
+  logo: z.string().optional(),
   subject: z.string().min(1, "Mata Pelajaran harus diisi"),
   phaseGrade: z.string().min(1, "Fase/Kelas harus diisi"),
   schoolYear: z.string().min(1, "Tahun Pelajaran harus diisi"),
@@ -87,6 +90,7 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
       principalName: "Rachmawati Fitriyah, S.H,. S.Pd.",
       principalNip: "1640634",
       school: "SMP Muhammadiyah 1 Probolinggo",
+      logo: "",
       subject: "Pendidikan Agama Islam",
       phaseGrade: "Fase D (Kelas 7) SMP/MTs",
       schoolYear: "2025/2026",
@@ -381,8 +385,15 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <div className="space-y-4 col-span-full">
+                    <LogoUploader 
+                      value={form.watch('logo')} 
+                      onChange={(val: string) => form.setValue('logo', val)} 
+                    />
+                  </div>
+
                   <div className="space-y-2 col-span-full">
-                    <Label htmlFor="school" className="font-bold text-sm">Nama Sekolah</Label>
+                    <Label htmlFor="school" className="font-bold text-sm">Nama Sekolah / Madrasah</Label>
                     <Input id="school" placeholder="Nama Sekolah..." {...form.register('school')} className="h-10 md:h-12" />
                     {form.formState.errors.school && <p className="text-xs text-red-500">{form.formState.errors.school.message}</p>}
                   </div>

@@ -183,6 +183,13 @@
   .prose h2 { @apply text-lg font-bold mt-10 mb-4 text-black uppercase; border-bottom: 1pt solid black !important; padding-bottom: 0.2rem; page-break-after: avoid; page-break-before: always; }
   .prose h2:first-of-type { page-break-before: auto; }
   .prose h3 { @apply text-base font-bold mt-6 mb-2 text-black; border-left: none !important; padding-left: 0 !important; page-break-after: avoid; }
+  
+  /* Kop Surat Print Fix */
+  .border-double {
+    border-bottom-style: double !important;
+    border-bottom-width: 4px !important;
+  }
+  
   .prose p { @apply text-justify text-black mb-4; }
   .prose li { @apply mb-2; }
   
