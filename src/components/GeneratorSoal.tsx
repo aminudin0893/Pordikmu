@@ -196,27 +196,27 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
       }
 
       const prompt = `
-        Ciptakan BANK SOAL UJIAN (NASKAH ASESMEN) yang sangat EKSKLUSIF, LENGKAP, PROFESIONAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK.
+        Ciptakan BANK SOAL UJIAN (NASKAH ASESMEN) yang sangat EKSKLUSIF, LENGKAP, PROFESIONAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
-        ANDA ADALAH SEORANG AHLI EVALUASI PENDIDIKAN PROFESIONAL. TUGAS ANDA ADALAH:
+        ANDA ADALAH SEORANG AHLI EVALUASI PENDIDIKAN PROFESIONAL DENGAN PENGALAMAN 20 TAHUN. TUGAS ANDA ADALAH:
         1. Menyusun instrumen penilaian yang mencakup naskah soal, kisi-kisi, dan kunci jawaban secara sangat mendalam.
         2. Gunakan soal-soal HOTS (Higher Order Thinking Skills) level C4-C6 yang menantang nalar siswa.
         3. Pastikan setiap soal memiliki stimulus nyata (kasus, teks literasi, infografis) yang relevan dan terbaru.
-        4. Jangan biarkan ada bagian yang kosong; gunakan keahlian pedagogik Anda untuk mengisi narasi secara detail, akademis, dan terstruktur.
+        4. Susun konten secara PADAT dan EFISIEN. Pastikan naskah soal mengisi halaman secara optimal tanpa banyak ruang kosong yang sia-sia, namun tetap menjaga keterbacaan yang tinggi.
         5. Sertakan pedoman penskoran yang jelas untuk soal esai.
+        6. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar.
 
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
         PENTING: DILARANG KERAS menggunakan tag HTML.
         
         STRUKTUR NASKAH ASESMEN RESMI (HARUS LENGKAP):
 
-        1. KOP SURAT (Diletakkan di bagian atas):
-           ${data.useLetterhead ? `
-           # KOP SURAT RESMI SEKOLAH
-           **DINAS PENDIDIKAN DAN KEBUDAYAAN**
-           **${data.school.toUpperCase()}**
-           *ALAMAT SEKOLAH / ALAMAT INSTANSI TERKAIT*
-           ----------------------------------------------------------------------------------` : ""}
+        ${data.useLetterhead ? `
+        # KOP SURAT RESMI SEKOLAH
+        **DINAS PENDIDIKAN DAN KEBUDAYAAN**
+        **${data.school.toUpperCase()}**
+        *Alamat: [Masukkan Alamat Sekolah] | Email: [Email Sekolah]*
+        ---` : ""}
 
         ## A. Identitas Asesmen
         | Data Administrasi | Keterangan Informasi |

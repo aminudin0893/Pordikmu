@@ -141,23 +141,27 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
       const prompt = `
         Susunlah MATERI AJAR (BAHAN AJAR) yang sangat EKSKLUSIF, MENDALAM, PROFESIONAL, dan SIAP CETAK sesuai standar Kurikulum Merdeka.
         
-        ANDA ADALAH SEORANG PENULIS BUKU TEKS PENDIDIKAN PROFESIONAL KRITERIA NASIONAL. TUGAS ANDA ADALAH:
+        ANDA ADALAH SEORANG PENULIS BUKU TEKS PENDIDIKAN PROFESIONAL KRITERIA NASIONAL DENGAN PENGALAMAN 20 TAHUN. TUGAS ANDA ADALAH:
         1. Menguraikan materi secara SANGAT KOMPREHENSIF (Deep Learning) dengan bahasa yang mudah dipahami namun berbobot ilmiah.
         2. Gunakan narasi yang inspiratif, padat informasi, dan mengalir secara logis antar sub-bab.
         3. Hubungkan setiap bab dengan konteks nyata, kearifan lokal, dan tantangan masa depan (Visi Masa Depan).
-        4. Jangan biarkan ada bagian yang kosong; kembangkan materi secara kreatif, ilmiah, dan detail berdasarkan topik yang diberikan.
-        5. Sertakan rangkuman dan refleksi di akhir materi.
+        4. Susun konten secara PADAT dan EFISIEN. Pastikan materi mengisi setiap halaman A4 secara optimal tanpa banyak ruang kosong, namun tetap menjaga kerapian desain dokumen.
+        5. Sertakan Identitas Materi langsung setelah Kop Surat (jika ada).
+        6. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar.
 
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
         PENTING: DILARANG KERAS menggunakan tag HTML.
 
         STRUKTUR MODUL RESMI (HARUS SANGAT LENGKAP):
 
-        1. HEADER & IDENTITAS:
-           # BAHAN AJAR DIGITAL ESENSIAL
-           **MATA PELAJARAN: ${data.subject.toUpperCase()}**
-           **${data.school.toUpperCase()}**
-           ---
+        ${data.useLetterhead ? `
+        # KOP SURAT RESMI SEKOLAH
+        **DINAS PENDIDIKAN DAN KEBUDAYAAN**
+        **${data.school.toUpperCase()}**
+        *Alamat: [Masukkan Alamat Sekolah] | Email: [Email Sekolah]*
+        ---` : ""}
+
+        # BAHAN AJAR DIGITAL ESENSIAL
 
         ## A. Pendahuluan & Identitas
         | Komponen Administrasi | Keterangan Informasi |

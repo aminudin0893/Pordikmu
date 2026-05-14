@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   BookOpen, 
@@ -15,7 +15,9 @@ import {
   Save,
   Brain,
   CheckCircle,
-  Trash2
+  Trash2,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
@@ -47,6 +49,19 @@ export default function App() {
   const [lastConfig, setLastConfig] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [theme, setTheme] = useState<'light' | 'dark'>(
+    (localStorage.getItem('app-theme') as 'light' | 'dark') || 'light'
+  );
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('app-theme', theme);
+  }, [theme]);
 
   React.useEffect(() => {
     let interval: any;
@@ -84,10 +99,20 @@ export default function App() {
 
   if (view === 'login') {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4 transition-colors duration-300">
         <Toaster position="top-center" richColors />
-        <Card className="w-full max-w-md border-none shadow-2xl overflow-hidden rounded-2xl md:rounded-3xl">
+        <Card className="w-full max-w-md border-none shadow-2xl overflow-hidden rounded-2xl md:rounded-3xl dark:bg-slate-900">
           <CardHeader className="bg-indigo-600 text-white p-6 md:p-8 text-center">
+            <div className="flex justify-end absolute top-4 right-4">
+               <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                className="text-white hover:bg-white/20 rounded-full"
+              >
+                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              </Button>
+            </div>
             <GraduationCap className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-2" />
             <CardTitle className="text-xl md:text-2xl font-black">LOGIN PENGGUNA</CardTitle>
             <CardDescription className="text-indigo-100 text-xs md:text-sm">Masukkan Kode Akses PIN Anda</CardDescription>
@@ -122,16 +147,16 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-indigo-100 selection:text-indigo-900 transition-colors duration-300">
       <Toaster position="top-center" richColors />
       
       {/* Decorative background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-indigo-50 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[40%] h-[40%] bg-blue-50 rounded-full blur-3xl opacity-50" />
+        <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-indigo-50 dark:bg-indigo-900/10 rounded-full blur-3xl opacity-50" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[40%] h-[40%] bg-blue-50 dark:bg-blue-900/10 rounded-full blur-3xl opacity-50" />
       </div>
 
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 no-print">
+      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 no-print">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div 
             className="flex items-center gap-2 cursor-pointer" 
@@ -147,6 +172,14 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              className="rounded-full"
+            >
+              {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-yellow-400" />}
+            </Button>
             <Button variant="outline" size="sm" className="hidden sm:flex gap-2">
               <History className="w-4 h-4" /> Riwayat
             </Button>
@@ -171,20 +204,20 @@ export default function App() {
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-2">
                   <Zap className="w-3 h-3 fill-indigo-500" /> Powered by Gemini AI
                 </div>
-                <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
-                  APLIKASI GENERATOR <span className="text-indigo-600">AI PENDIDIKAN</span>
+                <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+                  APLIKASI GENERATOR <span className="text-indigo-600 dark:text-indigo-400">AI PENDIDIKAN</span>
                 </h2>
-                <p className="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed">
                   Pilih menu aplikasi di bawah ini untuk menyusun perangkat ajar Anda secara otomatis. 
-                  <span className="block font-bold mt-1 text-indigo-500">Support Kurikulum Merdeka dan Pembelajaran Mendalam.</span>
+                  <span className="block font-bold mt-1 text-indigo-500 dark:text-indigo-400">Support Kurikulum Merdeka dan Pembelajaran Mendalam.</span>
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="md:col-span-3 border-none shadow-lg bg-indigo-50 p-6 flex flex-col sm:flex-row items-center gap-4">
+                <Card className="md:col-span-3 border-none shadow-lg bg-indigo-50 dark:bg-indigo-900/20 p-6 flex flex-col sm:flex-row items-center gap-4">
                   <div className="flex-grow space-y-2 w-full">
                     <Label className="font-bold flex items-center gap-2">
-                      <Zap className="w-4 h-4 text-indigo-600" /> Masukkan API Key Gemini (Opsional)
+                      <Zap className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> Masukkan API Key Gemini (Opsional)
                     </Label>
                     <div className="flex gap-2">
                       <div className="relative flex-grow">
@@ -194,7 +227,7 @@ export default function App() {
                           type={showApiKey ? "text" : "password"}
                           autoComplete="new-password"
                           placeholder="AI_Studio_API_Key..." 
-                          className="bg-white pr-10" 
+                          className="bg-white dark:bg-slate-950 pr-10 border-indigo-100 dark:border-indigo-900/50" 
                           value={userApiKey}
                           onChange={(e) => setUserApiKey(e.target.value)}
                         />
@@ -273,16 +306,16 @@ export default function App() {
                     className="group"
                   >
                     <Card 
-                      className="h-full border-2 border-transparent hover:border-indigo-100 shadow-xl shadow-slate-100 hover:shadow-indigo-100 transition-all cursor-pointer overflow-hidden flex flex-col items-center text-center p-6 bg-white"
+                      className="h-full border-2 border-transparent hover:border-indigo-100 dark:hover:border-indigo-900 shadow-xl shadow-slate-100 dark:shadow-none hover:shadow-indigo-100 dark:hover:shadow-indigo-900/20 transition-all cursor-pointer overflow-hidden flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900"
                       onClick={() => setView(item.id as ViewMode)}
                     >
                       <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110`} 
-                           style={{ backgroundColor: `var(--${item.color}-50, #f8fafc)` }}>
+                           style={{ backgroundColor: theme === 'dark' ? 'rgba(99, 102, 241, 0.1)' : `var(--${item.color}-50, #f8fafc)` }}>
                         {item.icon}
                       </div>
-                      <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                      <p className="text-slate-500 text-sm leading-relaxed mb-6 flex-grow">{item.description}</p>
-                      <Button variant="ghost" className={`text-${item.color}-600 font-bold group-hover:bg-indigo-50 transition-colors`}>
+                      <h3 className="text-xl font-bold mb-3 dark:text-white">{item.title}</h3>
+                      <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">{item.description}</p>
+                      <Button variant="ghost" className={`text-${item.color}-600 dark:text-${item.color}-400 font-bold group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/30 transition-colors`}>
                         {item.action} →
                       </Button>
                     </Card>
@@ -341,42 +374,41 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Progress Dialog */}
         <Dialog open={isLoading} onOpenChange={() => {}}>
-          <DialogContent className="sm:max-w-md border-none shadow-2xl bg-white/95 backdrop-blur-xl">
+          <DialogContent className="sm:max-w-md border-none shadow-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl">
             <DialogHeader>
               <DialogTitle className="text-center flex flex-col items-center gap-4 py-4">
                 <div className="relative">
-                  <div className="w-20 h-20 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin" />
+                  <div className="w-20 h-20 border-4 border-indigo-100 dark:border-indigo-900/30 border-t-indigo-600 rounded-full animate-spin" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Brain className="w-8 h-8 text-indigo-600 animate-pulse" />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-xl font-black text-slate-900">Sedang Memproses...</h3>
-                  <p className="text-sm font-medium text-slate-500 italic">Gemini AI sedang menyusun dokumen terbaik untuk Anda.</p>
+                  <h3 className="text-xl font-black text-slate-900 dark:text-white">Sedang Memproses...</h3>
+                  <p className="text-sm font-medium text-slate-500 dark:text-slate-400 italic">Gemini AI sedang menyusun dokumen terbaik untuk Anda.</p>
                 </div>
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-6 pb-8">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm font-bold">
-                  <span className="text-indigo-600">Progress</span>
-                  <span className="text-slate-900">{progress}%</span>
+                  <span className="text-indigo-600 dark:text-indigo-400">Progress</span>
+                  <span className="text-slate-900 dark:text-white">{progress}%</span>
                 </div>
-                <Progress value={progress} className="h-3 bg-indigo-50" />
+                <Progress value={progress} className="h-3 bg-indigo-50 dark:bg-slate-800" />
               </div>
-              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
-                 <div className="flex items-center gap-3 text-xs font-bold text-slate-600">
-                    <CheckCircle className={`w-4 h-4 ${progress > 20 ? 'text-emerald-500' : 'text-slate-300'}`} />
+              <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800 space-y-3">
+                 <div className="flex items-center gap-3 text-xs font-bold text-slate-600 dark:text-slate-300">
+                    <CheckCircle className={`w-4 h-4 ${progress > 20 ? 'text-emerald-500' : 'text-slate-300 dark:text-slate-700'}`} />
                     <span>Menganalisis Kurikulum & Tujuan</span>
                  </div>
-                 <div className="flex items-center gap-3 text-xs font-bold text-slate-600">
-                    <CheckCircle className={`w-4 h-4 ${progress > 55 ? 'text-emerald-500' : 'text-slate-300'}`} />
+                 <div className="flex items-center gap-3 text-xs font-bold text-slate-600 dark:text-slate-300">
+                    <CheckCircle className={`w-4 h-4 ${progress > 55 ? 'text-emerald-500' : 'text-slate-300 dark:text-slate-700'}`} />
                     <span>Menyusun Narasi & Item Dokumen</span>
                  </div>
-                 <div className="flex items-center gap-3 text-xs font-bold text-slate-600">
-                    <CheckCircle className={`w-4 h-4 ${progress > 85 ? 'text-emerald-500' : 'text-slate-300'}`} />
+                 <div className="flex items-center gap-3 text-xs font-bold text-slate-600 dark:text-slate-300">
+                    <CheckCircle className={`w-4 h-4 ${progress > 85 ? 'text-emerald-500' : 'text-slate-300 dark:text-slate-700'}`} />
                     <span>Finalisasi Format Siap Cetak (A4)</span>
                  </div>
               </div>
@@ -385,10 +417,10 @@ export default function App() {
         </Dialog>
       </main>
 
-      <footer className="border-t border-slate-200 bg-white py-12 mt-20 relative z-10">
+      <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-12 mt-20 relative z-10 transition-colors">
         <div className="max-w-7xl mx-auto px-4 text-center space-y-4">
-          <p className="text-slate-500 font-medium tracking-tight">AI Pendidikan - Platform Penyusunan Perangkat Ajar Otomatis</p>
-          <div className="flex items-center justify-center gap-6 text-sm text-slate-400">
+          <p className="text-slate-500 dark:text-slate-400 font-medium tracking-tight">AI Pendidikan - Platform Penyusunan Perangkat Ajar Otomatis</p>
+          <div className="flex items-center justify-center gap-6 text-sm text-slate-400 dark:text-slate-500">
             <span>Kurikulum Merdeka</span>
             <span>Pembelajaran Mendalam (Deep Learning)</span>
             <span>HOTS Assessment</span>

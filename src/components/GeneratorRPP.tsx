@@ -147,10 +147,12 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         2. Masukkan elemen Profil Pelajar Pancasila, 4C (Critical Thinking, Creativity, Collaboration, Communication), dan Literasi/Numerasi secara eksplisit.
         3. Pastikan langkah pembelajaran sangat detail, bukan sekadar poin-poin. Sertakan estimasi waktu per langkah.
         4. Gunakan wawasan pedagogik luas untuk mengisi deskripsi tujuan, langkah-langkah, dan asesmen jika data spesifik tidak ada.
-        5. Pastikan struktur dokumen mengikuti format resmi Indonesia dengan penomoran yang rapi.
+        5. PENTING: Susun konten secara PADAT dan EFISIEN. Jangan biarkan satu halaman hanya berisi satu sub-poin pendek. Gabungkan sub-poin yang berkaitan agar konten mengisi halaman A4 secara proporsional namun tetap rapi.
+        6. Sertakan Identitas Modul langsung setelah Kop Surat (jika ada).
+        7. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar.
 
-        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR UNTUK DATA IDENTitas.
-        PENTING: DILARANG KERAS menggunakan tag HTML.
+        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR UNTUK DATA IDENTITAS.
+        DILARANG KERAS menggunakan tag HTML.
         
         STRUKTUR MODUL AJAR RESMI (WAJIB LENGKAP):
 
@@ -176,6 +178,7 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         | Materi Pokok | ${data.topics.join(", ")} |
         | Alokasi Waktu | ${data.timeAllocation} |
         | Model Pembelajaran | ${data.learningModel} |
+        | Jumlah Pertemuan | ${data.meetingsCount} |
 
         ## B. Kompetensi Awal
         Deskripsikan pengetahuan atau keterampilan yang perlu dimiliki peserta didik sebelum mempelajari topik ini (Prasyarat).
@@ -273,11 +276,11 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         </div>
       </CardHeader>
       
-      <CardContent className="p-4 md:p-8">
+      <CardContent className="p-4 md:p-8 dark:bg-slate-900 transition-colors">
         {/* Progress Tracker */}
         <div className="mb-10">
           <div className="flex justify-between items-center relative">
-            <div className="absolute top-1/2 left-0 w-full h-0.5 bg-slate-100 -translate-y-1/2 z-0" />
+            <div className="absolute top-1/2 left-0 w-full h-0.5 bg-slate-100 dark:bg-slate-800 -translate-y-1/2 z-0" />
             <div 
               className="absolute top-1/2 left-0 h-0.5 bg-indigo-600 -translate-y-1/2 z-0 transition-all duration-500" 
               style={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}
@@ -288,7 +291,7 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
                 <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 border-2 ${
                   currentStep >= idx 
                     ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg shadow-indigo-200' 
-                    : 'bg-white border-slate-200 text-slate-400'
+                    : 'bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-400'
                 }`}>
                   {currentStep > idx ? <Rocket className="w-4 h-4 md:w-5 md:h-5 text-white" /> : step.icon}
                 </div>
@@ -311,18 +314,18 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
               animate={{ opacity: 1, x: 0 }}
               className="space-y-6"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50 rounded-xl md:rounded-2xl border border-slate-100">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50 dark:bg-slate-950/50 rounded-xl md:rounded-2xl border border-slate-100 dark:border-slate-800">
                 <div className="flex items-center justify-between col-span-full">
                     <div className="flex items-center gap-2">
-                      <Settings className="w-3 h-3 md:w-4 md:h-4 text-indigo-600" />
-                      <span className="font-bold text-[10px] md:text-xs uppercase tracking-wider text-slate-500">Pengaturan Dokumen</span>
+                      <Settings className="w-3 h-3 md:w-4 md:h-4 text-indigo-600 dark:text-indigo-400" />
+                      <span className="font-bold text-[10px] md:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Pengaturan Dokumen</span>
                     </div>
                 </div>
                 
-                <div className="flex items-center justify-between p-3 md:p-4 bg-white rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between p-3 md:p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
                     <div className="space-y-0.5">
-                      <Label className="text-xs md:text-sm font-bold">Kop Surat (Opsional)</Label>
-                      <p className="text-[10px] md:text-xs text-slate-500">Gunakan format kop instansi resmi.</p>
+                      <Label className="text-xs md:text-sm font-bold dark:text-slate-200">Kop Surat (Opsional)</Label>
+                      <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400">Gunakan format kop instansi resmi.</p>
                     </div>
                     <Switch 
                       checked={form.watch('useLetterhead')} 
@@ -330,10 +333,10 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
                     />
                 </div>
 
-                <div className="flex items-center justify-between p-3 md:p-4 bg-white rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between p-3 md:p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
                     <div className="space-y-0.5">
-                      <Label className="text-xs md:text-sm font-bold">Lembar Pengesahan</Label>
-                      <p className="text-[10px] md:text-xs text-slate-500">Tambahkan tanda tangan kepala sekolah.</p>
+                      <Label className="text-xs md:text-sm font-bold dark:text-slate-200">Lembar Pengesahan</Label>
+                      <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400">Tambahkan tanda tangan kepala sekolah.</p>
                     </div>
                     <Switch 
                       checked={form.watch('useValidationPage')} 
@@ -343,9 +346,9 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center gap-2 border-b border-indigo-100 pb-2">
-                    <Layout className="w-4 h-4 md:w-5 md:h-5 text-indigo-600" />
-                    <h3 className="font-bold text-base md:text-lg">Profil Pengajar & Sekolah</h3>
+                <div className="flex items-center gap-2 border-b border-indigo-100 dark:border-indigo-900 pb-2">
+                    <Layout className="w-4 h-4 md:w-5 md:h-5 text-indigo-600 dark:text-indigo-400" />
+                    <h3 className="font-bold text-base md:text-lg dark:text-slate-100">Profil Pengajar & Sekolah</h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
