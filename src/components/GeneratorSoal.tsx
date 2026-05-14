@@ -20,7 +20,6 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
-import { Slider } from './ui/slider';
 import { Badge } from './ui/badge';
 import {
   Select,
@@ -91,8 +90,9 @@ export default function GeneratorSoal({ onSuccess }: Props) {
       hard: 'hardPerc'
     } as const;
     
-    // Set value simply to allow free manual sliding
-    form.setValue(fieldMap[type], newVal);
+    // Ensure value is within 0-100 range
+    const sanitizedVal = Math.min(100, Math.max(0, newVal));
+    form.setValue(fieldMap[type], sanitizedVal);
   };
 
   const currentEasy = form.watch('easyPerc') || 0;
@@ -368,10 +368,12 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                           <span>Mudah</span>
                           <span>{form.watch('easyPerc') || 30}%</span>
                         </div>
-                        <Slider 
-                           value={[form.watch('easyPerc') || 30]} 
-                           onValueChange={(val) => handleDifficultyChange('easy', val[0])}
-                           max={100} step={5} 
+                        <Input 
+                           type="number"
+                           className="h-10 md:h-11 border-slate-200 bg-white font-bold text-emerald-700"
+                           {...form.register('easyPerc', { valueAsNumber: true })}
+                           onChange={(e) => handleDifficultyChange('easy', parseInt(e.target.value) || 0)}
+                           min={0} max={100}
                         />
                       </div>
                       <div className="space-y-2">
@@ -379,10 +381,12 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                           <span>Sedang</span>
                           <span>{form.watch('mediumPerc') || 50}%</span>
                         </div>
-                        <Slider 
-                           value={[form.watch('mediumPerc') || 50]} 
-                           onValueChange={(val) => handleDifficultyChange('medium', val[0])}
-                           max={100} step={5} 
+                        <Input 
+                           type="number"
+                           className="h-10 md:h-11 border-slate-200 bg-white font-bold text-amber-700"
+                           {...form.register('mediumPerc', { valueAsNumber: true })}
+                           onChange={(e) => handleDifficultyChange('medium', parseInt(e.target.value) || 0)}
+                           min={0} max={100}
                         />
                       </div>
                       <div className="space-y-2">
@@ -390,10 +394,12 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                           <span>Sulit (HOTS)</span>
                           <span>{form.watch('hardPerc') || 20}%</span>
                         </div>
-                        <Slider 
-                           value={[form.watch('hardPerc') || 20]} 
-                           onValueChange={(val) => handleDifficultyChange('hard', val[0])}
-                           max={100} step={5} 
+                        <Input 
+                           type="number"
+                           className="h-10 md:h-11 border-slate-200 bg-white font-bold text-red-700"
+                           {...form.register('hardPerc', { valueAsNumber: true })}
+                           onChange={(e) => handleDifficultyChange('hard', parseInt(e.target.value) || 0)}
+                           min={0} max={100}
                         />
                       </div>
                       <div className={`pt-3 p-3 rounded-xl md:rounded-2xl text-center transition-all duration-300 ${isTotalCorrect ? "bg-emerald-500 text-white shadow-lg scale-[1.02]" : "bg-red-50 text-red-600 border border-red-100"}`}>
