@@ -177,55 +177,63 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
       }
 
       const prompt = `
-        Ciptakan BANK SOAL UJIAN (NASKAH SOAL) yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sebagai dokumen kedinasan sekolah.
+        Ciptakan BANK SOAL UJIAN (NASKAH ASESMEN) yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
-        WAJIB IKUTI STRUKTUR FORMAL BERIKUT:
+        WAJIB IKUTI STRUKTUR NASKAH ASESMEN RESMI:
 
         1. KOP SURAT (Center):
-           [Placeholder Logo Sekolah]
-           PEMERINTAH KABUPATEN/KOTA [...]
-           DINAS PENDIDIKAN DAN KEBUDAYAAN
-           ${data.school.toUpperCase()}
-           TERAKREDITASI [A/B]
-           Alamat: [Input Alamat Sekolah] | Email: [Email Sekolah]
+           # KOP SURAT RESMI SEKOLAH
+           **DINAS PENDIDIKAN DAN KEBUDAYAAN**
+           **${data.school.toUpperCase()}**
+           *ALAMAT SEKOLAH / ALAMAT INSTANSI TERKAIT*
            ----------------------------------------------------------------------------------
 
-        2. IDENTITAS UJIAN (Gunakan Tabel Formal):
-           | MATA PELAJARAN | ${data.subject.toUpperCase()} |
-           |----------------|-------------------------------|
-           | JENIS ASESMEN  | ${data.assessmentType.toUpperCase()} |
+        2. IDENTITAS ASESMEN (WAJIB TABEL):
+           | Data Administrasi | Keterangan |
+           |-------------------|------------|
+           | Mata Pelajaran | ${data.subject.toUpperCase()} |
+           | Jenis Asesmen | ${data.assessmentType.toUpperCase()} |
+           | Fase / Kelas | ${data.phaseGrade} |
+           | Tahun Pelajaran | ${data.schoolYear} |
+           | Nama Guru | ${data.name} |
+           | Waktu Pengerjaan | [Cantumkan Alokasi Waktu] |
 
-        3. IDENTITAS PESERTA (Gunakan Box entry):
-           | Nama | ............................ | Kelas | ${data.phaseGrade} |
-           |------|------------------------------|-------|--------------------|
-           | Hari/Tanggal | .................... | No Absen | ............... |
+        3. IDENTITAS PESERTA (WAJIB TABEL untuk Input Siswa):
+           | Nama Peserta Didik | Kelas | No. Absen | Nilai |
+           |--------------------|-------|-----------|-------|
+           | ............................ | ${data.phaseGrade} | .......... | .......... |
 
-        4. NASKAH SOAL (Header):
-           NASKAH SOAL ${data.subject.toUpperCase()}
+        4. PETUNJUK PENGERJAAN:
+           **PETUNJUK UMUM:**
+           1. Berdoalah sebelum mulai mengerjakan soal.
+           2. Tulislah identitas Anda pada lembar yang telah disediakan.
+           3. Bacalah setiap butir soal dengan teliti dan cermat.
+           4. Dahulukan menjawab soal-soal yang Anda anggap mudah.
            ----------------------------------------------------------------------------------
 
-        ISI NASKAH:
-        - Gunakan penomoran yang jelas.
-        - Untuk Pilihan Ganda, letakkan opsi A, B, C, D dengan rapi.
-        - Setiap butir soal wajib menyertakan label [HOTS] atau [C4] secara halus.
+        ISI NASKAH (BERDASARKAN DISTRIBUSI & LEVEL KOGNITIF):
+        - PG (Pilihan Ganda): ${data.mcqCount} butir (Opsi: ${data.optionsCount}).
+        - PG Kompleks (Jawaban >1): ${data.multiResponseCount} butir.
+        - Benar/Salah (Dengan Alasan): ${data.trueFalseCount} butir.
+        - Isian Singkat: ${data.shortAnswerCount} butir.
+        - Essay/Uraian (HOTS): ${data.essayCount} butir.
+        - Menjodohkan: ${data.matchTableCount} butir.
         
-        JUMLAH BUTIR:
-        - PG: ${data.mcqCount}
-        - PG Kompleks: ${data.multiResponseCount}
-        - B/S: ${data.trueFalseCount}
-        - Isian: ${data.shortAnswerCount}
-        - Essay: ${data.essayCount}
-        - Menjodohkan: ${data.matchTableCount} (Gunakan Tabel untuk menjodohkan)
+        KARAKTERISTIK SOAL:
+        - Gunakan **STIMULUS** (Teks, Gambar, Grafik, atau Infografis) yang kontekstual dan relevan.
+        - Fokus pada **High Order Thinking Skills (HOTS)** untuk kategori sulit (${data.hardPerc}%).
+        - Level Kognitif utama: ${data.cognitiveLevels.join(", ")}.
+        - Hubungkan dengan Profil Pelajar Pancasila yang relevan.
 
-        DOKUMEN PELENGKAP:
+        DOKUMEN PELENGKAP (WAJIB TABEL):
         ---
-        5. KISI-KISI SOAL (Tabel Lengkap)
-        6. KUNCI JAWABAN & RUBRIK PENILAIAN (Tabel Detail)
+        5. KISI-KISI ASESMEN (Lengkap: No, Capaian Pembelajaran, Materi, Indikator Soal, Level Kognitif, Bentuk Soal, No. Soal).
+        6. KUNCI JAWABAN & PEDOMAN PENSKORAN (Tabel Detail dengan skor maksimal per nomor).
 
         INSTRUKSI TEKNIS:
-        - Bahasa Indonesia Baku.
-        - Gunakan Markdown Divider (---) untuk memisahkan section.
-        - Layout harus terlihat bersih dan menyerupai format naskah ujian resmi sekolah.
+        - Bahasa Indonesia Baku & Formal (PUEBI).
+        - Layout rapi, profesional, dan mencerminkan naskah resmi lembaga pendidikan negeri/swasta ternama.
+        - Gunakan garis pembatas (---) antar bagian.
       `;
 
       const result = await generateEducationContent(prompt);

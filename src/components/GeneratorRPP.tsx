@@ -132,41 +132,74 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
     setCompLoading(true);
     try {
       const prompt = `
-        Buatkan (RPP) / MODUL AJAR yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar Kurikulum Merdeka.
+        Buatkan (RPP) atau MODUL AJAR yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka / Kurikulum Merdeka Belajar).
         
-        ${data.useLetterhead ? "WAJIB: Tambahkan KOP SURAT PROFESIONAL di bagian paling atas (Nama Sekolah: ${data.school.toUpperCase()})." : ""}
+        WAJIB IKUTI STRUKTUR MODUL AJAR RESMI:
 
-        STRUKTUR DOKUMEN WAJIB:
+        ${data.useLetterhead ? `
+        # KOP SURAT RESMI SEKOLAH
+        **DINAS PENDIDIKAN DAN KEBUDAYAAN**
+        **${data.school.toUpperCase()}**
+        *Alamat: [Masukkan Alamat Sekolah] | Email: [Email Sekolah]*
+        ---` : ""}
 
-        1. IDENTITAS MODUL (Tabel Markdown Formal):
-           | Informasi | Detail |
-           |-----------|--------|
+        1. INFORMASI UMUM (WAJIB TABEL):
+           | Komponen | Detail Informasi |
+           |----------|------------------|
            | Nama Penyusun | ${data.name} |
-           | Sekolah | ${data.school} |
-           | Fase / Kelas | ${data.phaseGrade} |
-           | Semester | ${data.semester} |
+           | NIP | ${data.nip || "-"} |
+           | Nama Sekolah | ${data.school} |
+           | Tahun Pelajaran | ${data.schoolYear} |
+           | Jenjang / Kelas | ${data.phaseGrade} |
+           | Mata Pelajaran | ${data.subject} |
            | Alokasi Waktu | ${data.timeAllocation} |
-        
-        2. KOMPONEN INTI:
-           - Tujuan Pembelajaran (Sajikan dalam Tabel)
-           - Pemahaman Bermakna & Pertanyaan Pemantik
+           | Target Peserta Didik | Reguler / Tipikal |
+           | Model Pembelajaran | ${data.learningModel} |
+           | Sarana & Prasarana | [Identifikasi sarana pendukung] |
 
-        3. KEGIATAN PEMBELAJARAN (TABEL PROFESIONAL):
-           Sajikan langkah-langkah dalam tabel: [No, Tahapan, Deskripsi Kegiatan, Estimasi Waktu].
-           Integrasikan 6C dan HOTS secara eksplisit.
+        2. KOMPONEN INTI (WAJIB TABEL):
+           | Aspek | Deskripsi / Uraian |
+           |---|---|
+           | **Tujuan Pembelajaran** | Jabarkan berdasarkan CP (Capaian Pembelajaran) |
+           | **Pemahaman Bermakna** | Manfaat materi dalam kehidupan nyata |
+           | **Pertanyaan Pemantik** | Pertanyaan untuk memicu kognitif siswa |
+           | **Profil Pelajar Pancasila** | Beriman, Bertakwa, Mandiri, Bernalar Kritis, Kreatif, Bergotong Royong, Berkebinekaan Global (Pilih yang relevan) |
 
-        4. ASESMEN & RUBRIK (TABEL):
-           - Tabel Instrumen Asesmen.
-           - Tabel Rubrik Penilaian detail.
+        3. LANGKAH-LANGKAH PEMBELAJARAN (TABEL):
+           Buat alur pembelajaran (Skenario) yang detail:
+           | Tahapan | Uraian Kegiatan Pembelajaran (Integrasi 4C: Collaboration, Communication, Critical Thinking, Creativity) | Alokasi Waktu |
+           |---|---|---|
+           | **Pendahuluan** | 1. Orientasi (Salam, Doa, Presensi)<br>2. Apersepsi (Kaitan materi sebelumnya)<br>3. Motivasi & Tujuan | ... Menit |
+           | **Kegiatan Inti** | Implementasi Model **${data.learningModel}**: <br> [Langkah-langkah detail sesuai sintaks model pembelajaran tersebut] | ... Menit |
+           | **Penutup** | 1. Refleksi Peserta Didik & Guru<br>2. Simpulan<br>3. Evaluasi/Post-test<br>4. Doa & Salam | ... Menit |
 
-        5. LAMPIRAN (LKPD, Ringkasan Materi, Glosarium).
+        4. ASESMEN & EVALUASI (TABEL):
+           | Bentuk Asesmen | Teknik | Instrumen |
+           |---|---|---|
+           | Asesmen Diagnostik | Kognitif/Non-Kognitif | Tes Lisan / Angket |
+           | Asesmen Formatif | Observasi / Performa | Lembar Pengamatan / Checklist |
+           | Asesmen Sumatif | Tes Tertulis | Pilihan Ganda / Uraian |
 
-        ${data.useValidationPage ? "WAJIB: Sertakan Lembar Pengesahan dengan box tanda tangan Guru dan Kepala Sekolah." : ""}
+        5. LAMPIRAN (FORMAT RESMI):
+           - **LKPD (Lembar Kerja Peserta Didik)**: Berikan instruksi kerja siswa yang sistematis.
+           - **Bahan Bacaan Guru & Siswa**: Ringkasan materi yang mendalam.
+           - **Glosarium**: Daftar istilah penting.
+           - **Daftar Pustaka**: Referensi Buku/Jurnal.
+
+        ${data.useValidationPage ? `
+        ---
+        **PENGESAHAN DOKUMEN**
+        | Mengetahui, Kepala Sekolah | Guru Mata Pelajaran |
+        |:---:|:---:|
+        | <br><br><br> | <br><br><br> |
+        | **(..........................)** | **(${data.name})** |
+        | NIP. ....................... | ${data.nip ? `NIP. ${data.nip}` : "NIP. ......................."} |
+        ` : ""}
 
         INSTRUKSI TEKNIS:
-        - Bahasa Indonesia Baku.
-        - Gunakan pembatas (---) antar section.
-        - Layout harus rapi dan berwibawa sebagai dokumen resmi sekolah.
+        - Gunakan Bahasa Indonesia Baku & Formal (Pedoman Ejaan Bahasa Indonesia).
+        - Pastikan Header Tabel menggunakan Bold dan Background Shading (via Markdown syntax).
+        - Dokumen harus terlihat sangat kredibel dan profesional sesuai standar kedinasan.
       `;
 
       const result = await generateEducationContent(prompt);

@@ -122,42 +122,50 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
     setCompLoading(true);
     try {
       const prompt = `
-        Susunlah MATERI AJAR DIGITAL yang SANGAT PROFESIONAL, LENGKAP, dan SIAP CETAK sebagai referensi belajar utama di sekolah.
+        Susunlah MATERI AJAR (BAHAN AJAR) yang sangat PROFESIONAL, MENDALAM, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
+        
+        PENTING: Materi harus menggunakan pendekatan **Deep Learning** (Pemahaman Mendalam) dan kontekstual sesuai kehidupan nyata peserta didik.
 
-        STRUKTUR DOKUMEN:
+        STRUKTUR DOKUMEN RESMI:
 
-        1. HEADER MATERI:
-           [Placeholder Logo Mata Pelajaran]
-           MATERI AJAR DIGITAL: ${data.subject.toUpperCase()}
-           SEKOLAH: ${data.school.toUpperCase()}
+        1. HEADER & IDENTITAS (Center):
+           # BAHAN AJAR DIGITAL
+           **MATA PELAJARAN: ${data.subject.toUpperCase()}**
+           **${data.school.toUpperCase()}**
            ----------------------------------------------------------------------------------
 
-        2. IDENTITAS MATERI (Tabel):
-           | Bagian | Detail |
-           |--------|--------|
+        2. KOMPONEN ADMINISTRASI (WAJIB TABEL):
+           | Komponen | Keterangan |
+           |----------|------------|
            | Fase / Kelas | ${data.phaseGrade} |
-           | Topik Utama | ${data.topics.join(", ")} |
-           | Kedalaman | ${data.depthLevel.toUpperCase()} |
+           | Topik / Bab | ${data.topics.join(", ")} |
+           | Level Kedalaman | ${data.depthLevel.toUpperCase()} |
+           | Fokus Pembelajaran | ${data.targetFocus || "General Analysis"} |
 
-        3. TUJUAN PEMBELAJARAN (Tabel rapi).
+        3. TUJUAN PEMBELAJARAN (Tabel rapi berdasarkan Capaian Pembelajaran).
         
-        4. ISI MATERI (Mendalam & HOTS):
-           - Konsep Dasar (Penjelasan fundamental)
-           - Analisis Mendalam (Deep Learning aspek "Why" dan "How")
-           ${data.includeAnalogy ? "- Analogi Konstektual (Memudahkan pemahaman)" : ""}
-           ${data.includeIllustration ? "- Panduan Visual (Deskripsi gambar/grafik pendukung)" : ""}
+        4. PEMBAHASAN MATERI (STRUKTUR DEEP LEARNING):
+           - **Konsep Dasar (Essential Question)**: Awali dengan pertanyaan besar yang memicu rasa ingin tahu.
+           - **Paparan Materi (Content)**: Penjelasan yang sistematis, logis, and mendalam.
+           ${data.includeAnalogy ? "- **Analogi Kontekstual**: Gunakan perumpamaan dunia nyata untuk mempermudah konsep abstrak." : ""}
+           ${data.includeIllustration ? "- **Pojok Visual**: Deskripsi gambar/infografis pendukung yang harus dibayangkan atau dicari siswa." : ""}
+           - **Koneksi Antar Materi**: Hubungkan dengan topik lain atau kehidupan sehari-hari.
         
-        5. PENERAPAN NYATA (Studi kasus atau implementasi).
+        5. PENERAPAN & STUDI KASUS:
+           Berikan contoh nyata atau dilema yang melatih penalaran kritis (Critical Thinking).
 
-        6. RANGKUMAN & CEK PEMAHAMAN:
-           - Tabel Rangkuman Intisari.
-           ${data.includeQuiz ? "- Kuis Mini Self-Assessment" : ""}
+        6. RANGKUMAN & REFLEKSI (WAJIB TABEL):
+           | Intisari Materi | Refleksi Mandiri |
+           |-----------------|------------------|
+           | [Point-point Penting] | [Pertanyaan Reflektif untuk Siswa] |
+
+        ${data.includeQuiz ? "7. UJI PEMAHAMAN (Format HOTS): Berikan 3-5 soal asesmen formatif kategori tinggi." : ""}
 
         INSTRUKSI TEKNIS:
-        - Bahasa Indonesia Baku.
-        - Gunakan Tabel Markdown untuk data terstruktur.
-        - Layout harus terlihat profesional dan bersih.
-        - Gunakan pembatas (---) antar section.
+        - Bahasa Indonesia Formal & Akademik (PUEBI).
+        - Gunakan Tabel Markdown untuk penyajian data agar terlihat seperti modul resmi Kemdikbud.
+        - Layout bersih (clean), profesional, and inspiratif.
+        - Gunakan pembatas (---) antar bagian besar.
       `;
 
       const result = await generateEducationContent(prompt);

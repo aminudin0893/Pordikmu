@@ -88,7 +88,7 @@ export default function App() {
         <Card className="w-full max-w-md border-none shadow-2xl overflow-hidden rounded-2xl md:rounded-3xl">
           <CardHeader className="bg-indigo-600 text-white p-6 md:p-8 text-center">
             <GraduationCap className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-2" />
-            <CardTitle className="text-xl md:text-2xl font-black">LOGIN PESERTA</CardTitle>
+            <CardTitle className="text-xl md:text-2xl font-black">LOGIN PENGGUNA</CardTitle>
             <CardDescription className="text-indigo-100 text-xs md:text-sm">Masukkan Kode Akses PIN Anda</CardDescription>
           </CardHeader>
           <CardContent className="p-6 md:p-8">
