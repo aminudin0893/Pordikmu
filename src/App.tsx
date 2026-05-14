@@ -12,6 +12,8 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Toaster, toast } from 'sonner';
 
@@ -21,13 +23,25 @@ import GeneratorSoal from './components/GeneratorSoal';
 import GeneratorMateri from './components/GeneratorMateri';
 import ResultView from './components/ResultView';
 
-type ViewMode = 'dashboard' | 'rpp' | 'materi' | 'soal' | 'result';
+type ViewMode = 'login' | 'dashboard' | 'rpp' | 'materi' | 'soal' | 'result';
 
 export default function App() {
-  const [view, setView] = useState<ViewMode>('dashboard');
+  const [view, setView] = useState<ViewMode>('login');
+  const [pin, setPin] = useState('');
+  const [userApiKey, setUserApiKey] = useState('');
   const [generatedContent, setGeneratedContent] = useState<string>('');
   const [lastConfig, setLastConfig] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pin === '085227') {
+      setView('dashboard');
+      toast.success("Login Berhasil!");
+    } else {
+      toast.error("Kode PIN Salah!");
+    }
+  };
 
   const handleBack = () => setView('dashboard');
 
@@ -36,6 +50,39 @@ export default function App() {
     setLastConfig(config);
     setView('result');
   };
+
+  if (view === 'login') {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-4">
+        <Toaster position="top-center" richColors />
+        <Card className="w-full max-w-md border-none shadow-2xl">
+          <CardHeader className="bg-indigo-600 text-white rounded-t-xl text-center">
+            <GraduationCap className="w-12 h-12 mx-auto mb-2" />
+            <CardTitle className="text-2xl font-black">LOGIN PESERTA</CardTitle>
+            <CardDescription className="text-indigo-100">Masukkan Kode Akses Anda</CardDescription>
+          </CardHeader>
+          <CardContent className="p-8">
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="pin">Kode PIN</Label>
+                <Input 
+                  id="pin" 
+                  type="password" 
+                  placeholder="Masukkan 6 digit pin" 
+                  value={pin}
+                  onChange={(e) => setPin(e.target.value)}
+                  className="text-center text-2xl tracking-[1em] h-14"
+                />
+              </div>
+              <Button type="submit" className="w-full h-12 bg-indigo-600 font-bold text-lg">
+                Masuk ke Aplikasi
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
@@ -97,6 +144,26 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="md:col-span-3 border-none shadow-lg bg-indigo-50 p-6 flex flex-col sm:flex-row items-center gap-4">
+                  <div className="flex-grow space-y-2 w-full">
+                    <Label className="font-bold flex items-center gap-2">
+                      <Zap className="w-4 h-4 text-indigo-600" /> Masukkan API Key Gemini (Opsional)
+                    </Label>
+                    <Input 
+                      placeholder="AI_Studio_API_Key..." 
+                      className="bg-white" 
+                      value={userApiKey}
+                      onChange={(e) => {
+                        setUserApiKey(e.target.value);
+                        localStorage.setItem('user_gemini_key', e.target.value);
+                      }}
+                    />
+                    <p className="text-[10px] text-indigo-400 font-medium italic">Kosongkan jika ingin menggunakan key default sistem.</p>
+                  </div>
+                  <Button variant="outline" className="shrink-0" onClick={() => window.open('https://aistudio.google.com/app/apikey', '_blank')}>
+                    Dapatkan Key Baru
+                  </Button>
+                </Card>
                 {[
                   {
                     id: 'rpp',
@@ -152,10 +219,6 @@ export default function App() {
                 <div className="flex items-center gap-2 bg-indigo-50 border border-indigo-100 px-4 py-2 rounded-full shadow-sm">
                   <CheckCircle2 className="w-4 h-4 text-indigo-600" />
                   <span className="text-sm font-semibold text-indigo-900">Model: Gemini 3 Flash (Terbaru)</span>
-                </div>
-                <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 px-4 py-2 rounded-full shadow-sm">
-                  <AlertCircle className="w-4 h-4 text-amber-600" />
-                  <span className="text-sm font-semibold text-amber-900">Limit Generate: 0 / 3</span>
                 </div>
               </div>
             </motion.div>

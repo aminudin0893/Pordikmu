@@ -56,13 +56,19 @@ export default function GeneratorRPP({ onSuccess }: Props) {
   const form = useForm<RPPFormData>({
     resolver: zodResolver(rppSchema),
     defaultValues: {
+      name: "",
+      school: "",
+      subject: "",
+      phaseGrade: "",
+      topic: "",
+      timeAllocation: "",
       useLetterhead: false,
       useValidationPage: false,
       schoolYear: "2025/2026",
       semester: "Ganjil",
       learningModel: "Discovery Learning",
       meetingsCount: "1 Pertemuan"
-    }
+    } as any
   });
 
   const onSubmit = async (data: RPPFormData) => {
@@ -123,7 +129,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
       </CardHeader>
       
       <CardContent className="p-8">
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
              <div className="flex items-center justify-between col-span-full">
                 <div className="flex items-center gap-2">
@@ -139,7 +145,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                 </div>
                 <Switch 
                   checked={form.watch('useLetterhead')} 
-                  onCheckedChange={(val) => form.setValue('useLetterhead', val)} 
+                  onCheckedChange={(val: boolean) => form.setValue('useLetterhead', val)} 
                 />
              </div>
 
@@ -150,7 +156,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                 </div>
                 <Switch 
                   checked={form.watch('useValidationPage')} 
-                  onCheckedChange={(val) => form.setValue('useValidationPage', val)} 
+                  onCheckedChange={(val: boolean) => form.setValue('useValidationPage', val)} 
                 />
              </div>
           </div>
@@ -178,7 +184,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="subject" className="font-bold">Mata Pelajaran</Label>
-                  <Select onValueChange={(val) => form.setValue('subject', val)}>
+                  <Select onValueChange={(val: string) => form.setValue('subject', val)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih Mata Pelajaran" />
                     </SelectTrigger>
@@ -205,7 +211,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label className="font-bold">Fase / Kelas</Label>
-                  <Select onValueChange={(val) => form.setValue('phaseGrade', val)}>
+                  <Select onValueChange={(val: string) => form.setValue('phaseGrade', val)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih Fase/Kelas" />
                     </SelectTrigger>
@@ -221,7 +227,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                 </div>
                 <div className="space-y-2">
                   <Label className="font-bold">Semester</Label>
-                  <Select onValueChange={(val) => form.setValue('semester', val)} defaultValue="Ganjil">
+                  <Select onValueChange={(val: string) => form.setValue('semester', val)} defaultValue="Ganjil">
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih Semester" />
                     </SelectTrigger>
@@ -237,7 +243,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                 </div>
                 <div className="space-y-2">
                   <Label className="font-bold">Pendekatan / Model Pembelajaran</Label>
-                  <Select onValueChange={(val) => form.setValue('learningModel', val)} defaultValue="Discovery Learning">
+                  <Select onValueChange={(val: string) => form.setValue('learningModel', val)} defaultValue="Discovery Learning">
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih Model" />
                     </SelectTrigger>

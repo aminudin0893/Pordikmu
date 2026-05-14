@@ -25,13 +25,29 @@ async function startServer() {
   // API Route for Gemini
   app.post("/api/generate", async (req, res) => {
     try {
-      const { prompt, systemInstruction, model = "gemini-3-flash-preview" } = req.body;
+      const { prompt, systemInstruction, model = "gemini-3-flash-preview", apiKey: requestApiKey } = req.body;
 
       if (!prompt) {
         return res.status(400).json({ error: "Prompt is required" });
       }
 
-      const response = await ai.models.generateContent({
+      // Use request-specific key or fallback to environment key
+      const activeApiKey = requestApiKey || process.env.GEMINI_API_KEY;
+      
+      if (!activeApiKey) {
+        return res.status(401).json({ error: "No API Key provided. Please enter an API key on the dashboard." });
+      }
+
+      const dynamicAI = new GoogleGenAI({
+        apiKey: activeApiKey,
+        httpOptions: {
+          headers: {
+            'User-Agent': 'aistudio-build',
+          }
+        }
+      });
+
+      const response = await dynamicAI.models.generateContent({
         model: model,
         contents: prompt,
         config: {

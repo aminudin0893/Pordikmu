@@ -158,7 +158,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
       </CardHeader>
       
       <CardContent className="p-8">
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
+        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-10">
           <div className="space-y-6">
              <div className="flex items-center gap-2 border-b border-orange-100 pb-2">
                 <Brain className="w-5 h-5 text-orange-600" />
@@ -192,7 +192,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                 </div>
                 <div className="space-y-2">
                   <Label className="font-bold">Fase / Kelas</Label>
-                  <Select onValueChange={(val) => form.setValue('phaseGrade', val)}>
+                  <Select onValueChange={(val: string) => form.setValue('phaseGrade', val)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih Kelas" />
                     </SelectTrigger>
@@ -206,7 +206,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                 </div>
                 <div className="space-y-2">
                    <Label className="font-bold">Tahun Pelajaran</Label>
-                   <Select onValueChange={(val) => form.setValue('schoolYear', val)} defaultValue="2025/2026">
+                   <Select onValueChange={(val: string) => form.setValue('schoolYear', val)} defaultValue="2025/2026">
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>

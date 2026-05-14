@@ -50,10 +50,15 @@ export default function GeneratorMateri({ onSuccess }: Props) {
   const form = useForm<MateriFormData>({
     resolver: zodResolver(materiSchema),
     defaultValues: {
+      name: '',
+      school: '',
+      subject: '',
+      phaseGrade: '',
+      topic: '',
       depthLevel: 'intermediate',
       includeAnalogy: true,
       includeIllustration: true,
-    }
+    } as any
   });
 
   const onSubmit = async (data: MateriFormData) => {
@@ -107,7 +112,7 @@ export default function GeneratorMateri({ onSuccess }: Props) {
       </CardHeader>
       
       <CardContent className="p-8">
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
              <div className="space-y-2">
                 <Label className="font-bold">Nama Guru</Label>
