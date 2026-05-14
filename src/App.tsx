@@ -95,10 +95,12 @@ export default function App() {
           <CardContent className="p-6 md:p-8">
             <form onSubmit={handleLogin} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="pin" className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-wider">Kode PIN Akses</Label>
+                <Label htmlFor="login-pin" className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-wider">Kode PIN Akses</Label>
                 <Input 
-                  id="pin" 
+                  id="login-pin" 
+                  name="login-pin"
                   type="password" 
+                  autoComplete="current-password"
                   placeholder="••••••" 
                   value={pin}
                   onChange={(e) => setPin(e.target.value)}
@@ -187,7 +189,10 @@ export default function App() {
                     <div className="flex gap-2">
                       <div className="relative flex-grow">
                         <Input 
+                          id="gemini-api-key"
+                          name="gemini-api-key"
                           type={showApiKey ? "text" : "password"}
+                          autoComplete="new-password"
                           placeholder="AI_Studio_API_Key..." 
                           className="bg-white pr-10" 
                           value={userApiKey}
