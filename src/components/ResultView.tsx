@@ -18,7 +18,6 @@ import { Card, CardContent } from './ui/card';
 import { Textarea } from './ui/textarea';
 import { toast } from 'sonner';
 import { marked } from 'marked';
-import HTMLToDOCX from 'html-to-docx';
 
 interface Props {
   content: string;
@@ -47,53 +46,51 @@ export default function ResultView({ content: initialContent, config }: Props) {
 
   const handleDownloadWord = async () => {
     try {
+      const htmlBody = await marked.parse(displayContent);
+      
       const htmlContent = `
-        <!DOCTYPE html>
-        <html lang="id">
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
         <head>
           <meta charset="UTF-8">
           <style>
-            body { font-family: 'Times New Roman', serif; }
-            h1 { text-align: center; text-transform: uppercase; border-bottom: 2pt solid black; padding-bottom: 0.5rem; }
-            h2 { text-transform: uppercase; border-bottom: 1pt solid black; margin-top: 1.5cm; }
-            table { border-collapse: collapse; width: 100%; border: 1pt solid black; }
-            th, td { border: 1pt solid black; padding: 8pt; vertical-align: top; }
-            th { background-color: #f3f4f6; }
-            .header-info { text-align: center; border-bottom: 3pt double black; padding-bottom: 12pt; margin-bottom: 24pt; }
-            .header-info p { margin: 0; padding: 0; }
-            .doc-title { text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 20pt; text-decoration: underline; }
+            body { font-family: 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; }
+            h1 { text-align: center; text-transform: uppercase; border-bottom: 2pt solid black; padding-bottom: 5pt; font-size: 16pt; }
+            h2 { text-transform: uppercase; border-bottom: 1pt solid black; margin-top: 20pt; font-size: 14pt; }
+            table { border-collapse: collapse; width: 100%; border: 1pt solid black; margin-bottom: 10pt; }
+            th, td { border: 1pt solid black; padding: 6pt; vertical-align: top; font-size: 10pt; }
+            th { background-color: #f3f4f6; font-weight: bold; }
+            .header-info { text-align: center; border-bottom: 3pt double black; padding-bottom: 10pt; margin-bottom: 15pt; }
+            .doc-title { text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 15pt; text-decoration: underline; }
           </style>
         </head>
         <body>
           ${config.useLetterhead ? `
             <div class="header-info">
-              <p style="font-size: 10pt; font-weight: bold;">MAJELIS PENDIDIKAN DASAR MENENGAH DAN PENDIDIKAN NON FORMAL</p>
-              <p style="font-size: 11pt; font-weight: bold;">PIMPINAN DAERAH MUHAMMADIYAH KOTA PROBOLINGGO</p>
-              <p style="font-size: 16pt; font-weight: bold; margin-top: 5pt;">${config.school || "SMP MUHAMMADIYAH 1 KOTA PROBOLINGGO"}</p>
-              <p style="font-size: 10pt; font-weight: bold; font-style: italic;">TERAKREDITASI A</p>
-              <p style="font-size: 9pt;">Jl. Mayjend Panjaitan 73 Kota Probolinggo Email: smp_muh.prob@yahoo.co.id</p>
+              <div style="font-size: 10pt; font-weight: bold;">MAJELIS PENDIDIKAN DASAR MENENGAH DAN PENDIDIKAN NON FORMAL</div>
+              <div style="font-size: 11pt; font-weight: bold;">PIMPINAN DAERAH MUHAMMADIYAH KOTA PROBOLINGGO</div>
+              <div style="font-size: 16pt; font-weight: bold; margin-top: 5pt;">${config.school || "SMP MUHAMMADIYAH 1 KOTA PROBOLINGGO"}</div>
+              <div style="font-size: 10pt; font-weight: bold; font-style: italic;">TERAKREDITASI A</div>
+              <div style="font-size: 9pt;">Jl. Mayjend Panjaitan 73 Kota Probolinggo Email: smp_muh.prob@yahoo.co.id</div>
             </div>
           ` : ''}
           
           <div class="doc-title">${config.type === 'rpp' ? 'MODUL AJAR / RPP' : config.type === 'soal' ? 'NASKAH ASESMEN' : 'BAHAN AJAR DIGITAL'} - KURIKULUM MERDEKA</div>
           
           <div class="content">
-            ${await marked(displayContent)}
+            ${htmlBody}
           </div>
         </body>
         </html>
       `;
 
-      const blob = await HTMLToDOCX(htmlContent, null, {
-        table: { row: { cantSplit: true } },
-        footer: true,
-        pageNumber: true,
+      const blob = new Blob(['\ufeff', htmlContent], {
+        type: 'application/msword',
       });
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${config.type === 'rpp' ? 'RPP' : config.type === 'soal' ? 'Soal' : 'Materi'}_${config.subject}_${new Date().toLocaleDateString()}.docx`;
+      a.download = `${config.type === 'rpp' ? 'RPP' : config.type === 'soal' ? 'Soal' : 'Materi'}_${config.subject}_${new Date().toLocaleDateString()}.doc`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
