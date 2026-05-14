@@ -8,7 +8,9 @@ import {
   MapPin,
   Sparkles,
   Zap,
-  Target
+  Target,
+  Plus,
+  Trash2
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -31,7 +33,7 @@ const materiSchema = z.object({
   school: z.string().min(1, "Sekolah harus diisi"),
   subject: z.string().min(1, "Mata Pelajaran harus diisi"),
   phaseGrade: z.string().min(1, "Fase/Kelas harus diisi"),
-  topic: z.string().min(1, "Topik Materi harus diisi"),
+  topics: z.array(z.string()).min(1, "Minimal satu topik materi harus diisi"),
   depthLevel: z.enum(['basic', 'intermediate', 'advanced']),
   includeAnalogy: z.boolean(),
   includeIllustration: z.boolean(),
@@ -46,6 +48,7 @@ interface Props {
 
 export default function GeneratorMateri({ onSuccess }: Props) {
   const [loading, setLoading] = useState(false);
+  const [topics, setTopics] = useState([""]);
 
   const form = useForm<MateriFormData>({
     resolver: zodResolver(materiSchema),
@@ -54,12 +57,33 @@ export default function GeneratorMateri({ onSuccess }: Props) {
       school: '',
       subject: '',
       phaseGrade: '',
-      topic: '',
+      topics: [""],
       depthLevel: 'intermediate',
       includeAnalogy: true,
       includeIllustration: true,
     } as any
   });
+
+  const addTopic = () => {
+    const newTopics = [...topics, ""];
+    setTopics(newTopics);
+    form.setValue('topics', newTopics);
+  };
+
+  const removeTopic = (index: number) => {
+    if (topics.length > 1) {
+      const newTopics = topics.filter((_, i) => i !== index);
+      setTopics(newTopics);
+      form.setValue('topics', newTopics);
+    }
+  };
+
+  const updateTopic = (index: number, val: string) => {
+    const newTopics = [...topics];
+    newTopics[index] = val;
+    setTopics(newTopics);
+    form.setValue('topics', newTopics);
+  };
 
   const onSubmit = async (data: MateriFormData) => {
     setLoading(true);
@@ -70,7 +94,7 @@ export default function GeneratorMateri({ onSuccess }: Props) {
         DATA:
         - Subjek: ${data.subject}
         - Fase/Kelas: ${data.phaseGrade}
-        - Topik/Bab: ${data.topic}
+        - Topik / Materi Pembelajaran: ${data.topics.join(", ")}
         - Tingkat Kedalaman: ${data.depthLevel}
         - Fokus Utama: ${data.targetFocus || "Pemahaman Konsep Secara Holistik"}
         
@@ -130,11 +154,43 @@ export default function GeneratorMateri({ onSuccess }: Props) {
              </div>
              <div className="space-y-2">
                 <Label className="font-bold">Fase / Kelas</Label>
-                <Input placeholder="Contoh: Fase D / Kelas 7" {...form.register('phaseGrade')} />
+                <Select onValueChange={(val: string) => form.setValue('phaseGrade', val)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih Fase/Kelas" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Fase A (Kelas 1-2) SD">Fase A (Kelas 1-2) SD</SelectItem>
+                    <SelectItem value="Fase B (Kelas 3-4) SD">Fase B (Kelas 3-4) SD</SelectItem>
+                    <SelectItem value="Fase C (Kelas 5-6) SD">Fase C (Kelas 5-6) SD</SelectItem>
+                    <SelectItem value="Fase D (Kelas 7-9) SMP">Fase D (Kelas 7-9) SMP</SelectItem>
+                    <SelectItem value="Fase E (Kelas 10) SMA">Fase E (Kelas 10) SMA</SelectItem>
+                    <SelectItem value="Fase F (Kelas 11-12) SMA">Fase F (Kelas 11-12) SMA</SelectItem>
+                  </SelectContent>
+                </Select>
              </div>
-             <div className="col-span-full space-y-2">
-                <Label className="font-bold">Topik Materi</Label>
-                <Input placeholder="Contoh: Klasifikasi Makhluk Hidup" {...form.register('topic')} />
+             <div className="col-span-full space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label className="font-bold">Topik Materi / Bab (Dapat ditambahkan)</Label>
+                  <Button type="button" variant="outline" size="sm" onClick={addTopic} className="h-8 gap-1">
+                    <Plus className="w-3 h-3" /> Tambah Topik
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  {topics.map((t, idx) => (
+                    <div key={idx} className="flex gap-2">
+                      <Input 
+                        placeholder={`Topik Materi ${idx + 1}`} 
+                        value={t} 
+                        onChange={(e) => updateTopic(idx, e.target.value)}
+                      />
+                      {topics.length > 1 && (
+                        <Button type="button" variant="ghost" size="icon" onClick={() => removeTopic(idx)} className="text-red-500">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
              </div>
           </div>
 

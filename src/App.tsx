@@ -9,7 +9,10 @@ import {
   Zap, 
   ArrowLeft,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Eye,
+  EyeOff,
+  Save
 } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
@@ -28,7 +31,8 @@ type ViewMode = 'login' | 'dashboard' | 'rpp' | 'materi' | 'soal' | 'result';
 export default function App() {
   const [view, setView] = useState<ViewMode>('login');
   const [pin, setPin] = useState('');
-  const [userApiKey, setUserApiKey] = useState('');
+  const [userApiKey, setUserApiKey] = useState(localStorage.getItem('user_gemini_key') || '');
+  const [showApiKey, setShowApiKey] = useState(false);
   const [generatedContent, setGeneratedContent] = useState<string>('');
   const [lastConfig, setLastConfig] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -149,15 +153,33 @@ export default function App() {
                     <Label className="font-bold flex items-center gap-2">
                       <Zap className="w-4 h-4 text-indigo-600" /> Masukkan API Key Gemini (Opsional)
                     </Label>
-                    <Input 
-                      placeholder="AI_Studio_API_Key..." 
-                      className="bg-white" 
-                      value={userApiKey}
-                      onChange={(e) => {
-                        setUserApiKey(e.target.value);
-                        localStorage.setItem('user_gemini_key', e.target.value);
-                      }}
-                    />
+                    <div className="flex gap-2">
+                      <div className="relative flex-grow">
+                        <Input 
+                          type={showApiKey ? "text" : "password"}
+                          placeholder="AI_Studio_API_Key..." 
+                          className="bg-white pr-10" 
+                          value={userApiKey}
+                          onChange={(e) => setUserApiKey(e.target.value)}
+                        />
+                        <button 
+                          type="button"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-indigo-600 transition-colors"
+                          onClick={() => setShowApiKey(!showApiKey)}
+                        >
+                          {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                      <Button 
+                        onClick={() => {
+                          localStorage.setItem('user_gemini_key', userApiKey);
+                          toast.success("API Key Berhasil Disimpan!");
+                        }}
+                        className="bg-indigo-600 hover:bg-indigo-700"
+                      >
+                        <Save className="w-4 h-4 mr-2" /> Simpan
+                      </Button>
+                    </div>
                     <p className="text-[10px] text-indigo-400 font-medium italic">Kosongkan jika ingin menggunakan key default sistem.</p>
                   </div>
                   <Button variant="outline" className="shrink-0" onClick={() => window.open('https://aistudio.google.com/app/apikey', '_blank')}>

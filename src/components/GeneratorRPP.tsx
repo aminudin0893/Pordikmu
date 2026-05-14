@@ -9,7 +9,9 @@ import {
   Info,
   Calendar,
   Layers,
-  Settings
+  Settings,
+  Plus,
+  Trash2
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -34,7 +36,7 @@ const rppSchema = z.object({
   subject: z.string().min(1, "Mata Pelajaran harus diisi"),
   phaseGrade: z.string().min(1, "Fase/Kelas harus diisi"),
   semester: z.string().min(1, "Semester harus diisi"),
-  topic: z.string().min(1, "Materi Pokok harus diisi"),
+  topics: z.array(z.string()).min(1, "Minimal satu topik materi harus diisi"),
   learningModel: z.string().min(1, "Model Pembelajaran harus diisi"),
   timeAllocation: z.string().min(1, "Alokasi Waktu harus diisi"),
   meetingsCount: z.string().min(1, "Jumlah Pertemuan harus diisi"),
@@ -60,7 +62,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
       school: "",
       subject: "",
       phaseGrade: "",
-      topic: "",
+      topics: [""],
       timeAllocation: "",
       useLetterhead: false,
       useValidationPage: false,
@@ -70,6 +72,29 @@ export default function GeneratorRPP({ onSuccess }: Props) {
       meetingsCount: "1 Pertemuan"
     } as any
   });
+
+  const [topics, setTopics] = useState([""]);
+
+  const addTopic = () => {
+    const newTopics = [...topics, ""];
+    setTopics(newTopics);
+    form.setValue('topics', newTopics);
+  };
+
+  const removeTopic = (index: number) => {
+    if (topics.length > 1) {
+      const newTopics = topics.filter((_, i) => i !== index);
+      setTopics(newTopics);
+      form.setValue('topics', newTopics);
+    }
+  };
+
+  const updateTopic = (index: number, val: string) => {
+    const newTopics = [...topics];
+    newTopics[index] = val;
+    setTopics(newTopics);
+    form.setValue('topics', newTopics);
+  };
 
   const onSubmit = async (data: RPPFormData) => {
     setLoading(true);
@@ -84,7 +109,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
         - Mata Pelajaran: ${data.subject}
         - Fase/Kelas: ${data.phaseGrade}
         - Semester: ${data.semester}
-        - Materi Pokok: ${data.topic}
+        - Materi Pokok (Topik): ${data.topics.join(", ")}
         - Alokasi Waktu: ${data.timeAllocation}
         - Model Pembelajaran: ${data.learningModel}
         - Tahun Pelajaran: ${data.schoolYear}
@@ -185,20 +210,12 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="subject" className="font-bold">Mata Pelajaran</Label>
-                  <Select onValueChange={(val: string) => form.setValue('subject', val)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih Mata Pelajaran" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="IPA">Ilmu Pengetahuan Alam (IPA)</SelectItem>
-                      <SelectItem value="Bahasa Indonesia">Bahasa Indonesia</SelectItem>
-                      <SelectItem value="Matematika">Matematika</SelectItem>
-                      <SelectItem value="Informatika">Informatika</SelectItem>
-                      <SelectItem value="PJOK">PJOK</SelectItem>
-                      <SelectItem value="Seni Budaya">Seni Budaya</SelectItem>
-                      <SelectItem value="Lainnya">Lainnya (Tulis di Catatan)</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Input id="subject" placeholder="Contoh: Bahasa Indonesia" {...form.register('subject')} />
+                  {form.formState.errors.subject && <p className="text-xs text-red-500">{form.formState.errors.subject.message}</p>}
+                </div>
+                <div className="space-y-2">
+                   <Label className="font-bold">Tahun Pelajaran</Label>
+                   <Input placeholder="2025/2026" {...form.register('schoolYear')} />
                 </div>
              </div>
           </div>
@@ -238,9 +255,29 @@ export default function GeneratorRPP({ onSuccess }: Props) {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="col-span-full space-y-2">
-                  <Label htmlFor="topic" className="font-bold">Materi Pokok / Bab</Label>
-                  <Input id="topic" placeholder="Contoh: Sel Hewan dan Tumbuhan / Ekosistem" {...form.register('topic')} />
+                <div className="col-span-full space-y-4">
+                   <div className="flex items-center justify-between">
+                     <Label className="font-bold">Materi Pokok / Bab (Dapat ditambahkan)</Label>
+                     <Button type="button" variant="outline" size="sm" onClick={addTopic} className="h-8 gap-1">
+                       <Plus className="w-3 h-3" /> Tambah Topik
+                     </Button>
+                   </div>
+                   <div className="space-y-2">
+                     {topics.map((t, idx) => (
+                       <div key={idx} className="flex gap-2">
+                         <Input 
+                           placeholder={`Topik/Materi ${idx + 1}`} 
+                           value={t} 
+                           onChange={(e) => updateTopic(idx, e.target.value)}
+                         />
+                         {topics.length > 1 && (
+                           <Button type="button" variant="ghost" size="icon" onClick={() => removeTopic(idx)} className="text-red-500">
+                             <Trash2 className="w-4 h-4" />
+                           </Button>
+                         )}
+                       </div>
+                     ))}
+                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label className="font-bold">Pendekatan / Model Pembelajaran</Label>

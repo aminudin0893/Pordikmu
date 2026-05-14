@@ -10,7 +10,9 @@ import {
   Gauge,
   Image as ImageIcon,
   Zap,
-  Settings
+  Settings,
+  Plus,
+  Trash2
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -36,7 +38,7 @@ const soalSchema = z.object({
   subject: z.string().min(1, "Mata Pelajaran harus diisi"),
   phaseGrade: z.string().min(1, "Fase/Kelas harus diisi"),
   schoolYear: z.string().min(1, "Tahun Pelajaran harus diisi"),
-  topic: z.string().min(1, "Topik harus diisi"),
+  topics: z.array(z.string()).min(1, "Minimal satu topik materi harus diisi"),
   assessmentType: z.string().min(1, "Jenis Asesmen harus diisi"),
   optionsCount: z.string().min(1, "Jumlah Opsi harus diisi"),
   cognitiveLevels: z.array(z.string()).min(1, "Pilih minimal satu level kognitif"),
@@ -73,6 +75,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
       mediumPerc: 50,
       hardPerc: 20,
       mcqCount: 10,
+      topics: [""],
       multiResponseCount: 0,
       trueFalseCount: 0,
       shortAnswerCount: 0,
@@ -80,6 +83,66 @@ export default function GeneratorSoal({ onSuccess }: Props) {
       matchTableCount: 0,
     }
   });
+
+  const handleDifficultyChange = (type: 'easy' | 'medium' | 'hard', newVal: number) => {
+    const current = {
+      easy: form.getValues('easyPerc'),
+      medium: form.getValues('mediumPerc'),
+      hard: form.getValues('hardPerc')
+    };
+
+    if (type === 'easy') {
+      const diff = newVal - current.easy;
+      const part = diff / 2;
+      form.setValue('easyPerc', newVal);
+      form.setValue('mediumPerc', Math.max(0, current.medium - part));
+      form.setValue('hardPerc', Math.max(0, current.hard - part));
+    } else if (type === 'medium') {
+      const diff = newVal - current.medium;
+      const part = diff / 2;
+      form.setValue('mediumPerc', newVal);
+      form.setValue('easyPerc', Math.max(0, current.easy - part));
+      form.setValue('hardPerc', Math.max(0, current.hard - part));
+    } else {
+      const diff = newVal - current.hard;
+      const part = diff / 2;
+      form.setValue('hardPerc', newVal);
+      form.setValue('easyPerc', Math.max(0, current.easy - part));
+      form.setValue('mediumPerc', Math.max(0, current.medium - part));
+    }
+    
+    // Normalize to 100
+    const total = form.getValues('easyPerc') + form.getValues('mediumPerc') + form.getValues('hardPerc');
+    if (total !== 100) {
+      const factor = 100 / total;
+      form.setValue('easyPerc', Math.round(form.getValues('easyPerc') * factor));
+      form.setValue('mediumPerc', Math.round(form.getValues('mediumPerc') * factor));
+      form.setValue('hardPerc', 100 - (Math.round(form.getValues('easyPerc') * factor) + Math.round(form.getValues('mediumPerc') * factor)));
+    }
+  };
+
+  const [topics, setTopics] = useState(form.getValues('topics') || [""]);
+
+  const addTopic = () => {
+    const newTopics = [...topics, ""];
+    setTopics(newTopics);
+    form.setValue('topics', newTopics);
+  };
+
+  const removeTopic = (index: number) => {
+    if (topics.length > 1) {
+      const newTopics = topics.filter((_, i) => i !== index);
+      setTopics(newTopics);
+      form.setValue('topics', newTopics);
+    }
+  };
+
+  const updateTopic = (index: number, val: string) => {
+    const newTopics = [...topics];
+    newTopics[index] = val;
+    setTopics(newTopics);
+    form.setValue('topics', newTopics);
+  };
 
   const onSubmit = async (data: SoalFormData) => {
     setLoading(true);
@@ -98,7 +161,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
         - Sekolah: ${data.school}
         - Mata Pelajaran: ${data.subject}
         - Fase/Kelas: ${data.phaseGrade}
-        - Topik/Materi: ${data.topic}
+        - Topik / Materi Utama: ${data.topics.join(", ")}
         - Jenis Asesmen: ${data.assessmentType}
         - Tahun Pelajaran: ${data.schoolYear}
         
@@ -210,19 +273,31 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                 </div>
                 <div className="space-y-2">
                    <Label className="font-bold">Tahun Pelajaran</Label>
-                   <Select onValueChange={(val: string) => form.setValue('schoolYear', val)} defaultValue="2025/2026">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                       <SelectItem value="2024/2025">2024/2025</SelectItem>
-                       <SelectItem value="2025/2026">2025/2026</SelectItem>
-                    </SelectContent>
-                  </Select>
+                   <Input placeholder="2025/2026" {...form.register('schoolYear')} />
                 </div>
-                <div className="col-span-full space-y-2">
-                   <Label htmlFor="topic" className="font-bold italic">Topik / Materi Utama Ujian</Label>
-                   <Input id="topic" placeholder="Contoh: Fotosintesis, Ekosistem, Pantun" {...form.register('topic')} />
+                <div className="col-span-full space-y-4">
+                   <div className="flex items-center justify-between">
+                     <Label className="font-bold italic">Topik / Materi Utama Ujian (Dapat ditambahkan lebih dari satu)</Label>
+                     <Button type="button" variant="outline" size="sm" onClick={addTopic} className="h-8 gap-1">
+                       <Plus className="w-3 h-3" /> Tambah Topik
+                     </Button>
+                   </div>
+                   <div className="space-y-2">
+                     {topics.map((t, idx) => (
+                       <div key={idx} className="flex gap-2">
+                         <Input 
+                           placeholder={`Topik ${idx + 1}`} 
+                           value={t} 
+                           onChange={(e) => updateTopic(idx, e.target.value)}
+                         />
+                         {topics.length > 1 && (
+                           <Button type="button" variant="ghost" size="icon" onClick={() => removeTopic(idx)} className="text-red-500">
+                             <Trash2 className="w-4 h-4" />
+                           </Button>
+                         )}
+                       </div>
+                     ))}
+                   </div>
                 </div>
              </div>
           </div>
@@ -294,7 +369,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                         </div>
                         <Slider 
                            value={[form.watch('easyPerc') || 30]} 
-                           onValueChange={(val) => form.setValue('easyPerc', val[0])}
+                           onValueChange={(val) => handleDifficultyChange('easy', val[0])}
                            max={100} step={5} 
                            className="bg-emerald-100"
                         />
@@ -306,7 +381,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                         </div>
                         <Slider 
                            value={[form.watch('mediumPerc') || 50]} 
-                           onValueChange={(val) => form.setValue('mediumPerc', val[0])}
+                           onValueChange={(val) => handleDifficultyChange('medium', val[0])}
                            max={100} step={5} 
                         />
                       </div>
@@ -317,7 +392,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                         </div>
                         <Slider 
                            value={[form.watch('hardPerc') || 20]} 
-                           onValueChange={(val) => form.setValue('hardPerc', val[0])}
+                           onValueChange={(val) => handleDifficultyChange('hard', val[0])}
                            max={100} step={5} 
                         />
                       </div>
