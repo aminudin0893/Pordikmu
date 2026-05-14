@@ -105,7 +105,7 @@ export default function ResultView({ content: initialContent, config }: Props) {
                 />
               </div>
             ) : (
-              <div className="prose prose-indigo max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-li:leading-relaxed prose-table:border prose-table:border-slate-200 prose-th:bg-slate-50 prose-th:p-4 prose-td:p-4 prose-th:border prose-td:border prose-th:text-slate-900 prose-td:text-slate-700">
+              <div className="prose prose-indigo max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-li:leading-relaxed prose-table:border prose-table:border-slate-200 prose-table:w-full prose-table:my-6 prose-th:bg-slate-50 prose-th:p-4 prose-td:p-4 prose-th:border prose-td:border prose-th:text-slate-900 prose-td:text-slate-700">
                 <ReactMarkdown>{content}</ReactMarkdown>
               </div>
             )}

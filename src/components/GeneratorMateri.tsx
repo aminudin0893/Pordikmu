@@ -112,7 +112,8 @@ export default function GeneratorMateri({ onSuccess }: Props) {
         
         INSTRUKSI FORMAT:
         - Gunakan Bahasa Indonesia formal dan edukatif.
-        - Wajib menggunakan Tabel Markdown untuk bagian Tujuan dan Rangkuman.
+        - Wajib menggunakan Tabel Markdown yang sangat rapi dan profesional untuk bagian Tujuan dan Rangkuman.
+        - Pastikan tabel mudah dibaca dengan kolom yang terstruktur.
         - Terapkan prinsip "Deep Learning" agar siswa tidak hanya menghafal, tapi memahami "why" and "how".
         - Format tulisan harus sangat rapi dengan Markdown yang profesional.
       `;
@@ -251,7 +252,7 @@ export default function GeneratorMateri({ onSuccess }: Props) {
 
           <Button 
             type="submit" 
-            className="w-full h-14 md:h-16 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-lg md:text-xl rounded-xl md:rounded-2xl shadow-xl shadow-emerald-100 transition-all active:scale-[0.98]"
+            className="w-full h-14 md:h-16 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base md:text-lg rounded-xl md:rounded-2xl shadow-xl shadow-emerald-100 transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading ? (

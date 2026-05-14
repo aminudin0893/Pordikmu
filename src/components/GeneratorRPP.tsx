@@ -126,7 +126,8 @@ export default function GeneratorRPP({ onSuccess }: Props) {
         
         INSTRUKSI KHUSUS:
         - Gunakan Bahasa Indonesia yang formal dan edukatif.
-        - Tampilkan data dalam tabel Markdown yang rapi untuk bagian Kegiatan Pembelajaran dan Asesmen.
+        - Tampilkan data dalam tabel Markdown yang rapi dan profesional untuk bagian Kegiatan Pembelajaran dan Asesmen.
+        - Pastikan tabel memiliki border Markdown yang lengkap (|---|---|).
         - Pastikan modul ini mendukung "Deep Learning" (pemahaman mendalam) dan "Kurikulum Merdeka".
       `;
 
@@ -318,7 +319,7 @@ export default function GeneratorRPP({ onSuccess }: Props) {
 
           <Button 
             type="submit" 
-            className="w-full h-14 md:h-16 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-base md:text-lg rounded-xl md:rounded-2xl shadow-xl shadow-indigo-200 transition-all active:scale-[0.98]"
+            className="w-full h-14 md:h-16 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm md:text-base rounded-xl md:rounded-2xl shadow-xl shadow-indigo-200 transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading ? (

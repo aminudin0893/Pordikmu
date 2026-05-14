@@ -176,9 +176,10 @@ export default function GeneratorSoal({ onSuccess }: Props) {
         
         INSTRUKSI KHUSUS:
         - Gunakan Bahasa Indonesia formal.
-        - Wajib menggunakan Tabel Markdown untuk Kisi-kisi, Rubrik, dan Soal Menjodohkan.
+        - Wajib menggunakan Tabel Markdown yang sangat rapi untuk Kisi-kisi, Rubrik, dan Soal Menjodohkan.
+        - Pastikan tabel memiliki header yang jelas dan kolom yang sejajar secara visual dalam format Markdown.
         - Pastikan soal memiliki "Stem" atau stimulus yang kontekstual dan relevan dengan kehidupan sehari-hari (Prinsip Kurikulum Merdeka).
-        - Format tulisan harus sangat rapi dengan pemisah section yang jelas.
+        - Format tulisan harus sangat rapi dengan pemisah section yang jelas menggunakan divider (---).
       `;
 
       const result = await generateEducationContent(prompt);
@@ -487,7 +488,7 @@ export default function GeneratorSoal({ onSuccess }: Props) {
 
           <Button 
             type="submit" 
-            className="w-full h-14 md:h-16 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-lg md:text-xl rounded-xl md:rounded-2xl shadow-xl shadow-indigo-100 transition-all active:scale-[0.98]"
+            className="w-full h-14 md:h-16 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-base md:text-lg rounded-xl md:rounded-2xl shadow-xl shadow-indigo-100 transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading ? (
