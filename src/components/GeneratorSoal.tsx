@@ -180,6 +180,8 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         Ciptakan BANK SOAL UJIAN (NASKAH ASESMEN) yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
         WAJIB IKUTI STRUKTUR NASKAH ASESMEN RESMI (WAJIB GUNAKAN TABEL MARKDOWN STANDAR):
+        PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>. Gunakan baris baru Markdown (double space di akhir baris atau baris kosong) jika diperlukan.
+        
         Contoh Format Tabel:
         | Header 1 | Header 2 |
         |---|---|
@@ -235,6 +237,7 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         6. KUNCI JAWABAN & PEDOMAN PENSKORAN (Tabel Detail dengan skor maksimal per nomor).
 
         INSTRUKSI TEKNIS:
+        - DILARANG menggunakan tag HTML (<br>, <div>, <span>, dll).
         - Bahasa Indonesia Baku & Formal (PUEBI).
         - Layout rapi, profesional, dan mencerminkan naskah resmi lembaga pendidikan negeri/swasta ternama.
         - Gunakan garis pembatas (---) antar bagian.

@@ -53,9 +53,22 @@ export default function ResultView({ content: initialContent, config }: Props) {
     setIsEditing(false);
   };
 
+  // Clean content of common AI-generated HTML artifacts
+  const cleanMarkdown = (text: string) => {
+    return text
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<div[^>]*>/gi, '')
+      .replace(/<\/div>/gi, '')
+      .replace(/<span[^>]*>/gi, '')
+      .replace(/<\/span>/gi, '');
+  };
+
+  const displayContent = cleanMarkdown(content);
+  const displayEditedContent = cleanMarkdown(editedContent);
+
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-100">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-100 no-print">
         <div>
           <div className="flex items-center gap-2 text-indigo-600 font-bold text-sm uppercase tracking-wider mb-1">
             <CheckCircle2 className="w-4 h-4" /> Dokumen Selesai Disusun
@@ -64,7 +77,7 @@ export default function ResultView({ content: initialContent, config }: Props) {
             {config.type === 'rpp' ? 'Modul Ajar / RPP' : 
              config.type === 'soal' ? 'Bank Soal Ujian' : 'Materi Ajar Digital'}
           </h2>
-          <p className="text-slate-500 font-medium">{config.topic} • {config.subject}</p>
+          <p className="text-slate-500 font-medium">{config.topic || (Array.isArray(config.topics) ? config.topics[0] : "")} • {config.subject}</p>
         </div>
         
         <div className="flex flex-wrap gap-2">
@@ -92,7 +105,7 @@ export default function ResultView({ content: initialContent, config }: Props) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <Card className="lg:col-span-3 border-none shadow-inner bg-slate-100/50 p-4 md:p-10 rounded-3xl overflow-auto max-h-[85vh]">
+        <Card className="lg:col-span-3 border-none shadow-inner bg-slate-100/50 p-4 md:p-10 rounded-3xl overflow-auto max-h-[85vh] print:p-0 print:bg-white print:shadow-none print:max-h-none print:overflow-visible">
           {isEditing ? (
             <div className="h-full min-h-[600px] flex flex-col space-y-4 p-4 bg-white rounded-2xl shadow-xl">
               <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg text-amber-800 text-xs font-medium">
@@ -106,14 +119,14 @@ export default function ResultView({ content: initialContent, config }: Props) {
             </div>
           ) : (
             <div className="bg-white shadow-2xl mx-auto rounded-none min-h-[1100px] w-full max-w-[850px] p-12 md:p-20 paper-content">
-              <div className="prose prose-indigo max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-li:leading-relaxed prose-table:border prose-table:border-slate-300 prose-table:w-full prose-table:my-6 prose-th:bg-slate-50 prose-th:p-3 prose-td:p-3 prose-th:border prose-td:border prose-th:text-slate-900 prose-td:text-slate-700 prose-hr:border-slate-400 prose-hr:border-t-2">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+              <div className="prose max-w-none">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayContent}</ReactMarkdown>
               </div>
             </div>
           )}
         </Card>
 
-        <div className="space-y-6">
+        <div className="space-y-6 no-print">
            <Card className="border-none shadow-xl shadow-slate-100 bg-white p-6">
               <h3 className="font-bold text-sm uppercase tracking-widest text-slate-400 mb-4">Metadata Dokumen</h3>
               <div className="space-y-4">

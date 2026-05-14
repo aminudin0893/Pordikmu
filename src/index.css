@@ -15,59 +15,59 @@
   }
 }
 
-/* Typography polish */
-.prose h1 { @apply text-3xl font-black mb-6 tracking-tight text-slate-900 border-b pb-2 border-slate-100; }
-.prose h2 { @apply text-2xl font-bold mt-10 mb-4 tracking-tight text-slate-800 flex items-center gap-2; }
-.prose h3 { @apply text-xl font-bold mt-8 mb-3 text-slate-800; }
-.prose p { @apply text-slate-600 mb-4 leading-relaxed; }
-.prose ul { @apply list-disc list-inside mb-6 space-y-2 text-slate-600; }
-.prose ol { @apply list-decimal list-inside mb-6 space-y-2 text-slate-600; }
-.prose blockquote { @apply border-l-4 border-indigo-500 pl-4 py-2 bg-indigo-50/50 rounded-r-lg italic my-6 text-indigo-900; }
-.prose strong { @apply font-bold text-slate-900; }
-.prose code { @apply bg-slate-100 px-1 py-0.5 rounded text-indigo-600 font-mono text-sm; }
-.prose hr { @apply my-10 border-slate-100; }
+/* Typography polish for official look */
+.prose h1 { @apply text-center text-xl font-bold mb-4 uppercase border-b-0; }
+.prose h2 { @apply text-lg font-bold mt-8 mb-3 border-b-2 border-slate-900 pb-1 uppercase flex items-center gap-2; }
+.prose h3 { @apply text-base font-bold mt-6 mb-2; }
+.prose p { @apply text-justify mb-4 leading-relaxed text-slate-800; }
+.prose ul { @apply list-disc list-inside mb-4 space-y-1 text-slate-800; }
+.prose ol { @apply list-decimal list-inside mb-4 space-y-1 text-slate-800; }
+.prose blockquote { @apply border-l-4 border-slate-400 pl-4 py-2 bg-slate-50 rounded-r-lg italic my-6 text-slate-900; }
+.prose strong { @apply font-bold text-black; }
+.prose hr { @apply my-8 border-slate-900 border-t-2; }
 
 /* Table Styles for Kurikulum Merdeka professionalism - Enhanced for Official Look */
 .prose table { 
-  @apply w-full border-collapse my-8 text-[13px] leading-relaxed;
+  @apply w-full border-collapse my-8 text-[12px] leading-tight;
   border: 1.5pt solid #000000 !important;
   table-layout: auto;
 }
 
 .prose thead { 
-  @apply bg-slate-100 border-b-2 border-slate-900;
+  @apply bg-slate-100 border-b-2 border-black;
 }
 
 .prose th { 
-  @apply p-3 text-left font-bold text-black uppercase tracking-tight;
+  @apply p-2 text-left font-bold text-black uppercase tracking-tight;
   border: 1pt solid #000000 !important;
   background-color: #f1f5f9 !important;
   vertical-align: middle;
 }
 
 .prose td { 
-  @apply p-3 text-slate-900 leading-normal;
+  @apply p-2 text-black leading-normal;
   border: 1pt solid #000000 !important;
   vertical-align: top;
   word-break: break-word;
 }
 
 .prose tr:nth-child(even) { 
-  @apply bg-slate-50/50;
+  @apply bg-slate-50/30;
 }
 
 .prose tr:hover { 
-  @apply bg-indigo-50/30 transition-colors;
+  @apply bg-indigo-50/10 transition-colors;
 }
 
 /* Formal Document Layout Adjustments */
 .paper-content {
-  font-family: 'Geist Variable', 'Plus Jakarta Sans', sans-serif;
-  line-height: 1.6;
+  font-family: "Times New Roman", "Inter", serif;
+  line-height: 1.5;
+  color: black;
 }
 
 .prose hr {
-  border-top: 3.5px double #334155 !important;
+  border-top: 1.5pt solid #000000 !important;
   @apply my-8 opacity-100;
 }
 

@@ -135,6 +135,8 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         Buatkan (RPP) atau MODUL AJAR yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka / Kurikulum Merdeka Belajar).
         
         WAJIB IKUTI STRUKTUR MODUL AJAR RESMI (GUNAKAN FORMAT TABEL MARKDOWN STANDAR):
+        PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>. Gunakan baris baru Markdown (double space di akhir baris atau baris kosong) jika diperlukan.
+        
         Contoh Format Tabel:
         | Header 1 | Header 2 |
         |---|---|
@@ -170,12 +172,12 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
            | **Profil Pelajar Pancasila** | Beriman, Bertakwa, Mandiri, Bernalar Kritis, Kreatif, Bergotong Royong, Berkebinekaan Global (Pilih yang relevan) |
 
         3. LANGKAH-LANGKAH PEMBELAJARAN (TABEL):
-           Buat alur pembelajaran (Skenario) yang detail:
+           Buat alur pembelajaran (Skenario) yang detail. Gunakan penomoran di dalam sel tabel (1., 2., 3.) untuk memisahkan baris tanpa menggunakan tag <br>.
            | Tahapan | Uraian Kegiatan Pembelajaran (Integrasi 4C: Collaboration, Communication, Critical Thinking, Creativity) | Alokasi Waktu |
            |---|---|---|
-           | **Pendahuluan** | 1. Orientasi (Salam, Doa, Presensi)<br>2. Apersepsi (Kaitan materi sebelumnya)<br>3. Motivasi & Tujuan | ... Menit |
-           | **Kegiatan Inti** | Implementasi Model **${data.learningModel}**: <br> [Langkah-langkah detail sesuai sintaks model pembelajaran tersebut] | ... Menit |
-           | **Penutup** | 1. Refleksi Peserta Didik & Guru<br>2. Simpulan<br>3. Evaluasi/Post-test<br>4. Doa & Salam | ... Menit |
+           | **Pendahuluan** | 1. Orientasi (Salam, Doa, Presensi). 2. Apersepsi (Kaitan materi sebelumnya). 3. Motivasi & Tujuan. | ... Menit |
+           | **Kegiatan Inti** | Implementasi Model **${data.learningModel}**: Jabarkan langkah-langkah detail sesuai sintaks model pembelajaran tersebut secara naratif atau list. | ... Menit |
+           | **Penutup** | 1. Refleksi Peserta Didik & Guru. 2. Simpulan. 3. Evaluasi/Post-test. 4. Doa & Salam. | ... Menit |
 
         4. ASESMEN & EVALUASI (TABEL):
            | Bentuk Asesmen | Teknik | Instrumen |
@@ -195,15 +197,17 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         **PENGESAHAN DOKUMEN**
         | Mengetahui, Kepala Sekolah | Guru Mata Pelajaran |
         |:---:|:---:|
-        | <br><br><br> | <br><br><br> |
+        | | |
+        | | |
         | **(..........................)** | **(${data.name})** |
         | NIP. ....................... | ${data.nip ? `NIP. ${data.nip}` : "NIP. ......................."} |
         ` : ""}
 
         INSTRUKSI TEKNIS:
+        - DILARANG menggunakan tag HTML (<br>, <div>, <span>, dll).
         - Gunakan Bahasa Indonesia Baku & Formal (Pedoman Ejaan Bahasa Indonesia).
-        - Pastikan Header Tabel menggunakan Bold dan Background Shading (via Markdown syntax).
-        - Dokumen harus terlihat sangat kredibel dan profesional sesuai standar kedinasan.
+        - Pastikan Header Tabel menggunakan Bold.
+        - Dokumen harus terlihat sangat kredibel dan profesional sesuai standar kedinasan kementerian pendidikan.
       `;
 
       const result = await generateEducationContent(prompt);

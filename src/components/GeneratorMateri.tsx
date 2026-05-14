@@ -124,7 +124,9 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
       const prompt = `
         Susunlah MATERI AJAR (BAHAN AJAR) yang sangat PROFESIONAL, MENDALAM, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
-        PENTING: Seluruh data identitas dan rangkuman WAJIB disajikan dalam bentuk TABEL MARKDOWN STANDAR.
+        WAJIB IKUTI STRUKTUR MODUL RESMI (WAJIB GUNAKAN TABEL MARKDOWN STANDAR):
+        PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>. Gunakan baris baru Markdown (double space di akhir baris atau baris kosong) jika diperlukan.
+        
         Contoh Format Tabel:
         | Header 1 | Header 2 |
         |---|---|
@@ -168,6 +170,7 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
         ${data.includeQuiz ? "7. UJI PEMAHAMAN (Format HOTS): Berikan 3-5 soal asesmen formatif kategori tinggi." : ""}
 
         INSTRUKSI TEKNIS:
+        - DILARANG menggunakan tag HTML (<br>, <div>, <span>, dll).
         - Bahasa Indonesia Formal & Akademik (PUEBI).
         - Gunakan Tabel Markdown untuk penyajian data agar terlihat seperti modul resmi Kemdikbud.
         - Layout bersih (clean), profesional, and inspiratif.
