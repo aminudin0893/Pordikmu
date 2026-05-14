@@ -131,7 +131,7 @@ export default function App() {
         <div className="absolute bottom-[-10%] left-[-5%] w-[40%] h-[40%] bg-blue-50 rounded-full blur-3xl opacity-50" />
       </div>
 
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 no-print">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div 
             className="flex items-center gap-2 cursor-pointer" 

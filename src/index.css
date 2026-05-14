@@ -71,6 +71,57 @@
   @apply my-8 opacity-100;
 }
 
+@media print {
+  @page {
+    size: A4;
+    margin: 2cm;
+  }
+  
+  body {
+    background: white !important;
+    font-size: 11pt !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .paper-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .prose {
+    max-width: none !important;
+  }
+
+  /* Prevent page breaks inside elements */
+  .prose table, .prose blockquote, .prose pre {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .prose tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .prose h1, .prose h2, .prose h3 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Force display of tables */
+  .prose table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
