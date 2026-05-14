@@ -124,57 +124,48 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
       const prompt = `
         Susunlah MATERI AJAR (BAHAN AJAR) yang sangat PROFESIONAL, MENDALAM, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
-        WAJIB IKUTI STRUKTUR MODUL RESMI (WAJIB GUNAKAN TABEL MARKDOWN STANDAR):
-        PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>. Gunakan baris baru Markdown (double space di akhir baris atau baris kosong) jika diperlukan.
+        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN DAN FORMAT TABEL MARKDOWN STANDAR.
+        PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>.
         
-        Contoh Format Tabel:
-        | Header 1 | Header 2 |
-        |---|---|
-        | Data 1 | Data 2 |
+        STRUKTUR MODUL RESMI:
 
-        Materi harus menggunakan pendekatan **Deep Learning** (Pemahaman Mendalam) dan kontekstual sesuai kehidupan nyata peserta didik.
-
-        STRUKTUR DOKUMEN RESMI:
-
-        1. HEADER & IDENTITAS (Center):
+        1. HEADER & IDENTITAS:
            # BAHAN AJAR DIGITAL
            **MATA PELAJARAN: ${data.subject.toUpperCase()}**
            **${data.school.toUpperCase()}**
-           ----------------------------------------------------------------------------------
+           ---
 
-        2. KOMPONEN ADMINISTRASI (WAJIB TABEL):
-           | Komponen | Keterangan |
-           |----------|------------|
-           | Fase / Kelas | ${data.phaseGrade} |
-           | Topik / Bab | ${data.topics.join(", ")} |
-           | Level Kedalaman | ${data.depthLevel.toUpperCase()} |
-           | Fokus Pembelajaran | ${data.targetFocus || "General Analysis"} |
+        ## A. Pendahuluan
+        | Komponen | Keterangan |
+        |----------|------------|
+        | Fase / Kelas | ${data.phaseGrade} |
+        | Topik Utama | ${data.topics.join(", ")} |
+        | Kedalaman | ${data.depthLevel.toUpperCase()} |
+        | Fokus | ${data.targetFocus || "Pemahaman Konsep"} |
 
-        3. TUJUAN PEMBELAJARAN (Tabel rapi berdasarkan Capaian Pembelajaran).
-        
-        4. PEMBAHASAN MATERI (STRUKTUR DEEP LEARNING):
-           - **Konsep Dasar (Essential Question)**: Awali dengan pertanyaan besar yang memicu rasa ingin tahu.
-           - **Paparan Materi (Content)**: Penjelasan yang sistematis, logis, and mendalam.
-           ${data.includeAnalogy ? "- **Analogi Kontekstual**: Gunakan perumpamaan dunia nyata untuk mempermudah konsep abstrak." : ""}
-           ${data.includeIllustration ? "- **Pojok Visual**: Deskripsi gambar/infografis pendukung yang harus dibayangkan atau dicari siswa." : ""}
-           - **Koneksi Antar Materi**: Hubungkan dengan topik lain atau kehidupan sehari-hari.
-        
-        5. PENERAPAN & STUDI KASUS:
-           Berikan contoh nyata atau dilema yang melatih penalaran kritis (Critical Thinking).
+        ## B. Tujuan Pembelajaran
+        Sajikan target kompetensi yang ingin dicapai dalam tabel/list rapi.
 
-        6. RANGKUMAN & REFLEKSI (WAJIB TABEL):
-           | Intisari Materi | Refleksi Mandiri |
-           |-----------------|------------------|
-           | [Point-point Penting] | [Pertanyaan Reflektif untuk Siswa] |
+        ## C. Pembahasan Utama (Deep Learning)
+        Gunakan pendekatan mendalam:
+        - **Essential Questions**: Pertanyaan pemantik.
+        - **Konsep Inti**: Penjelasan logis dan sistematis.
+        ${data.includeAnalogy ? "- **Analogi Kontekstual**: Perumpamaan dunia nyata." : ""}
+        ${data.includeIllustration ? "- **Visualisasi**: Deskripsi grafis pendukung." : ""}
 
-        ${data.includeQuiz ? "7. UJI PEMAHAMAN (Format HOTS): Berikan 3-5 soal asesmen formatif kategori tinggi." : ""}
+        ## D. Contoh Penerapan & Studi Kasus
+        Berikan situasi nyata untuk melatih nalar kritis siswa.
+
+        ## E. Rangkuman & Refleksi
+        | Intisari | Refleksi Siswa |
+        |---|---|
+        | [Rangkuman Poin Materi] | [Pertanyaan Kontemplatif] |
+
+        ${data.includeQuiz ? "## F. Uji Kompetensi (Format HOTS)\nBerikan 3-5 soal tantangan." : ""}
 
         INSTRUKSI TEKNIS:
-        - DILARANG menggunakan tag HTML (<br>, <div>, <span>, dll).
-        - Bahasa Indonesia Formal & Akademik (PUEBI).
-        - Gunakan Tabel Markdown untuk penyajian data agar terlihat seperti modul resmi Kemdikbud.
-        - Layout bersih (clean), profesional, and inspiratif.
-        - Gunakan pembatas (---) antar bagian besar.
+        - Bahasa Indonesia Formal.
+        - Gunakan pembatas (---) jika diperlukan.
       `;
 
       const result = await generateEducationContent(prompt);
