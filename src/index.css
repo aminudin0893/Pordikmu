@@ -27,13 +27,46 @@
 .prose code { @apply bg-slate-100 px-1 py-0.5 rounded text-indigo-600 font-mono text-sm; }
 .prose hr { @apply my-10 border-slate-100; }
 
-/* Table Styles for Kurikulum Merdeka professionalism */
-.prose table { @apply w-full border-collapse border border-slate-200 my-8 rounded-lg overflow-hidden text-sm; }
-.prose thead { @apply bg-slate-50 border-b border-slate-200; }
-.prose th { @apply p-4 text-left font-black text-slate-900 border border-slate-200 uppercase tracking-wider text-[11px]; }
-.prose td { @apply p-4 text-slate-700 border border-slate-200 leading-relaxed; }
-.prose tr:nth-child(even) { @apply bg-slate-50/50; }
-.prose tr:hover { @apply bg-indigo-50/30 transition-colors; }
+/* Table Styles for Kurikulum Merdeka professionalism - Enhanced for Official Look */
+.prose table { 
+  @apply w-full border-collapse my-8 overflow-hidden text-[13px] leading-relaxed;
+  border: 2px solid #334155 !important;
+}
+
+.prose thead { 
+  @apply bg-slate-100 border-b-2 border-slate-700;
+}
+
+.prose th { 
+  @apply p-3 text-left font-black text-slate-900 uppercase tracking-tighter;
+  border: 1px solid #475569 !important;
+  background-color: #f1f5f9 !important;
+}
+
+.prose td { 
+  @apply p-3 text-slate-800 leading-normal;
+  border: 1px solid #94a3b8 !important;
+  vertical-align: top;
+}
+
+.prose tr:nth-child(even) { 
+  @apply bg-slate-50/80;
+}
+
+.prose tr:hover { 
+  @apply bg-indigo-50/50 transition-colors;
+}
+
+/* Formal Document Layout Adjustments */
+.paper-content {
+  font-family: 'Geist Variable', 'Plus Jakarta Sans', sans-serif;
+  line-height: 1.6;
+}
+
+.prose hr {
+  border-top: 3.5px double #334155 !important;
+  @apply my-8 opacity-100;
+}
 
 @custom-variant dark (&:is(.dark *));
 
