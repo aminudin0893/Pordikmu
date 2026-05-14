@@ -8,6 +8,7 @@ import {
   Brain,
   ListTodo,
   Gauge,
+  Info,
   Image as ImageIcon,
   Zap,
   Settings,
@@ -84,22 +85,14 @@ export default function GeneratorSoal({ onSuccess }: Props) {
   });
 
   const handleDifficultyChange = (type: 'easy' | 'medium' | 'hard', newVal: number) => {
-    const vals = {
-      easy: form.getValues('easyPerc'),
-      medium: form.getValues('mediumPerc'),
-      hard: form.getValues('hardPerc')
-    };
-    
-    vals[type] = newVal;
-    
-    // Simple normalization to keep total 100
-    const total = vals.easy + vals.medium + vals.hard;
-    const factor = 100 / (total || 1);
-    
-    form.setValue('easyPerc', Math.round(vals.easy * factor));
-    form.setValue('mediumPerc', Math.round(vals.medium * factor));
-    form.setValue('hardPerc', 100 - (Math.round(vals.easy * factor) + Math.round(vals.medium * factor)));
+    form.setValue(type === 'easy' ? 'easyPerc' : type === 'medium' ? 'mediumPerc' : 'hardPerc', newVal);
   };
+
+  const currentEasy = form.watch('easyPerc') || 0;
+  const currentMedium = form.watch('mediumPerc') || 0;
+  const currentHard = form.watch('hardPerc') || 0;
+  const totalPerc = currentEasy + currentMedium + currentHard;
+  const isTotalCorrect = totalPerc === 100;
 
   const [topics, setTopics] = useState(form.getValues('topics') || [""]);
 
@@ -130,6 +123,14 @@ export default function GeneratorSoal({ onSuccess }: Props) {
       const totalSoal = data.mcqCount + data.multiResponseCount + data.trueFalseCount + data.shortAnswerCount + data.essayCount + data.matchTableCount;
       if (totalSoal === 0) {
         toast.error("Tentukan jumlah soal yang akan di-generate!");
+        setLoading(false);
+        return;
+      }
+
+      const currentTotalPerc = data.easyPerc + data.mediumPerc + data.hardPerc;
+      if (currentTotalPerc !== 100) {
+        toast.error(`Total proporsi harus 100% (saat ini ${currentTotalPerc}%)`);
+        setLoading(false);
         return;
       }
 
@@ -388,8 +389,15 @@ export default function GeneratorSoal({ onSuccess }: Props) {
                            max={100} step={5} 
                         />
                       </div>
-                      <div className="pt-2 bg-emerald-50 p-2 rounded-lg text-center">
-                         <span className="text-xs font-black text-emerald-800">Total: 100% (Harus 100%)</span>
+                      <div className={`pt-3 p-3 rounded-2xl text-center transition-all duration-300 ${isTotalCorrect ? "bg-emerald-500 text-white shadow-lg scale-[1.02]" : "bg-red-50 text-red-600 border border-red-100"}`}>
+                         <span className="text-sm font-black flex items-center justify-center gap-2">
+                           {isTotalCorrect ? (
+                             <Zap className="w-4 h-4 fill-white animate-pulse" />
+                           ) : (
+                             <Info className="w-4 h-4" />
+                           )}
+                           TOTAL PROPORSI: {totalPerc}% {isTotalCorrect ? "(PAS 100%)" : `(HARUS 100%)`}
+                         </span>
                       </div>
                    </div>
                 </div>
