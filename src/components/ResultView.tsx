@@ -53,14 +53,21 @@ export default function ResultView({ content: initialContent, config }: Props) {
         <head>
           <meta charset="UTF-8">
           <style>
-            body { font-family: 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; }
-            h1 { text-align: center; text-transform: uppercase; border-bottom: 2pt solid black; padding-bottom: 5pt; font-size: 16pt; }
-            h2 { text-transform: uppercase; border-bottom: 1pt solid black; margin-top: 20pt; font-size: 14pt; }
-            table { border-collapse: collapse; width: 100%; border: 1pt solid black; margin-bottom: 10pt; }
-            th, td { border: 1pt solid black; padding: 6pt; vertical-align: top; font-size: 10pt; }
-            th { background-color: #f3f4f6; font-weight: bold; }
-            .header-info { text-align: center; border-bottom: 3pt double black; padding-bottom: 10pt; margin-bottom: 15pt; }
-            .doc-title { text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 15pt; text-decoration: underline; }
+            @page {
+              size: 21cm 29.7cm;
+              margin: 2.54cm 2.54cm 2.54cm 2.54cm;
+            }
+            body { font-family: 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; color: #000; }
+            h1 { text-align: center; text-transform: uppercase; border-bottom: 2pt solid black; padding-bottom: 5pt; font-size: 16pt; font-weight: bold; margin-bottom: 20pt; }
+            h2 { text-transform: uppercase; border-bottom: 1pt solid black; margin-top: 24pt; margin-bottom: 12pt; font-size: 13pt; font-weight: bold; }
+            h3 { font-size: 11pt; font-weight: bold; margin-top: 18pt; margin-bottom: 9pt; }
+            p { text-align: justify; margin-bottom: 10pt; }
+            table { border-collapse: collapse; width: 100%; border: 1pt solid black; margin-bottom: 15pt; }
+            th, td { border: 1pt solid black; padding: 6pt; vertical-align: top; font-size: 10.5pt; }
+            th { background-color: #f3f4f6; font-weight: bold; text-align: center; }
+            .header-info { text-align: center; border-bottom: 4.5pt double black; padding-bottom: 10pt; margin-bottom: 20pt; }
+            .header-info div { line-height: 1.2; }
+            .doc-title { text-align: center; font-weight: bold; font-size: 14pt; margin-top: 20pt; margin-bottom: 30pt; text-transform: uppercase; }
           </style>
         </head>
         <body>
@@ -68,13 +75,19 @@ export default function ResultView({ content: initialContent, config }: Props) {
             <div class="header-info">
               <div style="font-size: 10pt; font-weight: bold;">MAJELIS PENDIDIKAN DASAR MENENGAH DAN PENDIDIKAN NON FORMAL</div>
               <div style="font-size: 11pt; font-weight: bold;">PIMPINAN DAERAH MUHAMMADIYAH KOTA PROBOLINGGO</div>
-              <div style="font-size: 16pt; font-weight: bold; margin-top: 5pt;">${config.school || "SMP MUHAMMADIYAH 1 KOTA PROBOLINGGO"}</div>
-              <div style="font-size: 10pt; font-weight: bold; font-style: italic;">TERAKREDITASI A</div>
+              <div style="font-size: 18pt; font-weight: 900; margin-top: 5pt; margin-bottom: 2pt;">${config.school || "SMP MUHAMMADIYAH 1 KOTA PROBOLINGGO"}</div>
+              <div style="font-size: 10pt; font-weight: bold; font-style: italic; margin-bottom: 3pt;">TERAKREDITASI A</div>
               <div style="font-size: 9pt;">Jl. Mayjend Panjaitan 73 Kota Probolinggo Email: smp_muh.prob@yahoo.co.id</div>
+              <div style="font-size: 9pt;">Telp/fax. 0335-422307 Website: smpmusapro.sch.id</div>
             </div>
           ` : ''}
           
-          <div class="doc-title">${config.type === 'rpp' ? 'MODUL AJAR / RPP' : config.type === 'soal' ? 'NASKAH ASESMEN' : 'BAHAN AJAR DIGITAL'} - KURIKULUM MERDEKA</div>
+          <div class="doc-title">
+            <div style="text-decoration: underline; border-bottom: 1.5pt solid black; display: inline-block; padding-bottom: 2pt;">
+              ${config.type === 'rpp' ? 'MODUL AJAR / RPP' : config.type === 'soal' ? 'NASKAH ASESMEN' : 'BAHAN AJAR DIGITAL'}
+            </div>
+            <div style="font-size: 11pt; margin-top: 5pt;">KURIKULUM MERDEKA</div>
+          </div>
           
           <div class="content">
             ${htmlBody}
@@ -188,25 +201,25 @@ export default function ResultView({ content: initialContent, config }: Props) {
           ) : (
             <div className="bg-white border border-slate-100 mx-auto rounded-none min-h-[1100px] w-full max-w-[850px] p-8 md:p-16 paper-content">
               {config.useLetterhead && (
-                <div className="mb-8 border-b-[3px] border-double border-black pb-4 text-center relative">
-                  <div className="flex items-center gap-6 text-black">
+                <div className="mb-8 border-b-[4.5pt] border-double border-black pb-5 text-center relative">
+                  <div className="flex items-center gap-8 text-black">
                     {config.logo && (
-                      <div className="shrink-0 w-[100px] h-[100px] flex items-center justify-center">
+                      <div className="shrink-0 w-[110px] h-[110px] flex items-center justify-center">
                         <img referrerPolicy="no-referrer" src={config.logo} alt="Logo" className="w-full h-full object-contain" />
                       </div>
                     )}
-                    <div className="flex-1 text-center pr-[100px]">
-                      <p className="text-[10px] font-bold leading-tight uppercase tracking-tight">MAJELIS PENDIDIKAN DASAR MENENGAH DAN PENDIDIKAN NON FORMAL</p>
-                      <p className="text-[11px] font-bold leading-tight uppercase">PIMPINAN DAERAH MUHAMMADIYAH KOTA PROBOLINGGO</p>
-                      <p className="text-lg font-black leading-tight uppercase mt-1 mb-1 tracking-tighter">
+                    <div className={`flex-1 text-center ${config.logo ? 'pr-[110px]' : ''}`}>
+                      <p className="text-[11px] font-bold leading-tight uppercase tracking-tight">MAJELIS PENDIDIKAN DASAR MENENGAH DAN PENDIDIKAN NON FORMAL</p>
+                      <p className="text-[12px] font-bold leading-tight uppercase">PIMPINAN DAERAH MUHAMMADIYAH KOTA PROBOLINGGO</p>
+                      <p className="text-2xl font-black leading-tight uppercase mt-1 mb-1 tracking-tighter">
                         {config.school || "SMP MUHAMMADIYAH 1 KOTA PROBOLINGGO"}
                       </p>
-                      <p className="text-[10px] font-bold uppercase tracking-widest mb-1 italic">TERAKREDITASI A</p>
-                      <p className="text-[9px] leading-tight">
-                        Jl. Mayjend Panjaitan 73 Kota Probolinggo Email: <span className="text-blue-600 underline font-medium">smp_muh.prob@yahoo.co.id</span>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.2em] mb-1 italic">TERAKREDITASI A</p>
+                      <p className="text-[10px] leading-tight font-medium">
+                        Jl. Mayjend Panjaitan 73 Kota Probolinggo Email: <span className="text-blue-700 underline">smp_muh.prob@yahoo.co.id</span>
                       </p>
-                      <p className="text-[9px] leading-tight">
-                        Telp/fax. 0335-422307 Website: <span className="text-blue-600 underline font-medium">smpmusapro.sch.id</span>
+                      <p className="text-[10px] leading-tight font-medium">
+                        Telp/fax. 0335-422307 Website: <span className="text-blue-700 underline">smpmusapro.sch.id</span>
                       </p>
                     </div>
                   </div>

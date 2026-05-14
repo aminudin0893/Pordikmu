@@ -141,11 +141,12 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
       const prompt = `
         Susunlah MATERI AJAR (BAHAN AJAR) yang sangat EKSKLUSIF, MENDALAM, PROFESIONAL, dan SIAP CETAK sesuai standar Kurikulum Merdeka.
         
-        ANDA ADALAH SEORANG PENULIS BUKU TEKS PENDIDIKAN PROFESIONAL. TUGAS ANDA ADALAH:
-        1. Menguraikan materi secara SANGAT KOMPREHENSIF (Deep Learning).
-        2. Gunakan narasi yang inspiratif, padat informasi, dan mengalir secara logis.
-        3. Hubungkan setiap bab dengan konteks nyata dan tantangan masa depan.
-        4. Jangan biarkan ada bagian yang kosong; kembangkan materi secara kreatif dan ilmiah berdasarkan topik yang diberikan.
+        ANDA ADALAH SEORANG PENULIS BUKU TEKS PENDIDIKAN PROFESIONAL KRITERIA NASIONAL. TUGAS ANDA ADALAH:
+        1. Menguraikan materi secara SANGAT KOMPREHENSIF (Deep Learning) dengan bahasa yang mudah dipahami namun berbobot ilmiah.
+        2. Gunakan narasi yang inspiratif, padat informasi, dan mengalir secara logis antar sub-bab.
+        3. Hubungkan setiap bab dengan konteks nyata, kearifan lokal, dan tantangan masa depan (Visi Masa Depan).
+        4. Jangan biarkan ada bagian yang kosong; kembangkan materi secara kreatif, ilmiah, dan detail berdasarkan topik yang diberikan.
+        5. Sertakan rangkuman dan refleksi di akhir materi.
 
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
         PENTING: DILARANG KERAS menggunakan tag HTML.

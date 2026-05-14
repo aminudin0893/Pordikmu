@@ -196,13 +196,14 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
       }
 
       const prompt = `
-        Ciptakan BANK SOAL UJIAN (NASKAH ASESMEN) yang sangat EKSKLUSIF, LENGKAP, PROFESIONAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
+        Ciptakan BANK SOAL UJIAN (NASKAH ASESMEN) yang sangat EKSKLUSIF, LENGKAP, PROFESIONAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK.
         
         ANDA ADALAH SEORANG AHLI EVALUASI PENDIDIKAN PROFESIONAL. TUGAS ANDA ADALAH:
-        1. Menyusun instrumen penilaian yang mencakup naskah soal, kisi-kisi, dan kunci jawaban secara mendalam.
-        2. Gunakan soal-soal HOTS (Higher Order Thinking Skills) level C4-C6.
-        3. Pastikan setiap soal memiliki stimulus nyata (kasus/teks) yang relevan.
-        4. Jangan biarkan ada bagian yang kosong; gunakan keahlian pedagogik Anda untuk mengisi narasi secara detail dan akademis.
+        1. Menyusun instrumen penilaian yang mencakup naskah soal, kisi-kisi, dan kunci jawaban secara sangat mendalam.
+        2. Gunakan soal-soal HOTS (Higher Order Thinking Skills) level C4-C6 yang menantang nalar siswa.
+        3. Pastikan setiap soal memiliki stimulus nyata (kasus, teks literasi, infografis) yang relevan dan terbaru.
+        4. Jangan biarkan ada bagian yang kosong; gunakan keahlian pedagogik Anda untuk mengisi narasi secara detail, akademis, dan terstruktur.
+        5. Sertakan pedoman penskoran yang jelas untuk soal esai.
 
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
         PENTING: DILARANG KERAS menggunakan tag HTML.

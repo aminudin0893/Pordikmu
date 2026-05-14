@@ -142,13 +142,14 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
       const prompt = `
         Buatkan (RPP) atau MODUL AJAR yang sangat EKSKLUSIF, LENGKAP, PROFESIONAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
-        ANDA ADALAH SEORANG AHLI KURIKULUM PROFESIONAL. TUGAS ANDA ADALAH:
-        1. Menguraikan setiap bagian secara SANGAT MENDALAM (Deep Learning).
-        2. Jangan hanya memberikan poin-poin singkat; berikan narasi kependidikan yang berbobot tinggi.
-        3. Gunakan wawasan pedagogik luas untuk mengisi deskripsi tujuan, langkah-langkah, dan asesmen jika data spesifik tidak ada.
-        4. Pastikan struktur dokumen mengikuti format resmi Indonesia.
+        ANDA ADALAH SEORANG AHLI KURIKULUM PROFESIONAL DENGAN PENGALAMAN 20 TAHUN. TUGAS ANDA ADALAH:
+        1. Menguraikan setiap bagian secara SANGAT MENDALAM (Deep Learning) dengan narasi akademik yang kuat.
+        2. Masukkan elemen Profil Pelajar Pancasila, 4C (Critical Thinking, Creativity, Collaboration, Communication), dan Literasi/Numerasi secara eksplisit.
+        3. Pastikan langkah pembelajaran sangat detail, bukan sekadar poin-poin. Sertakan estimasi waktu per langkah.
+        4. Gunakan wawasan pedagogik luas untuk mengisi deskripsi tujuan, langkah-langkah, dan asesmen jika data spesifik tidak ada.
+        5. Pastikan struktur dokumen mengikuti format resmi Indonesia dengan penomoran yang rapi.
 
-        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
+        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR UNTUK DATA IDENTitas.
         PENTING: DILARANG KERAS menggunakan tag HTML.
         
         STRUKTUR MODUL AJAR RESMI (WAJIB LENGKAP):
