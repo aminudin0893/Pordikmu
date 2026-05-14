@@ -170,21 +170,21 @@
   }
 
   .prose h1 { 
-    @apply text-center text-xl font-bold mb-6 text-black uppercase; 
+    @apply text-center text-xl font-bold mb-4 text-black uppercase; 
     border-bottom: 2pt solid black !important; 
     padding-bottom: 0.5rem; 
     page-break-after: avoid; 
   }
   
   .prose h2 { 
-    @apply text-lg font-bold mt-10 mb-4 text-black uppercase; 
+    @apply text-lg font-bold mt-6 mb-3 text-black uppercase; 
     border-bottom: 1pt solid black !important; 
-    padding-bottom: 0.2rem; 
+    padding-bottom: 0.1rem; 
     page-break-after: avoid; 
   }
   
   .prose h2:not(:first-of-type) {
-    page-break-before: always;
+    page-break-before: auto;
   }
 
   .prose h3 { 

@@ -55,19 +55,19 @@ export default function ResultView({ content: initialContent, config }: Props) {
           <style>
             @page {
               size: 21cm 29.7cm;
-              margin: 2.54cm 2.54cm 2.54cm 2.54cm;
+              margin: 2cm 2cm 2cm 2cm;
             }
             body { font-family: 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; color: #000; }
-            h1 { text-align: center; text-transform: uppercase; border-bottom: 2pt solid black; padding-bottom: 5pt; font-size: 16pt; font-weight: bold; margin-bottom: 20pt; }
-            h2 { text-transform: uppercase; border-bottom: 1pt solid black; margin-top: 24pt; margin-bottom: 12pt; font-size: 13pt; font-weight: bold; }
-            h3 { font-size: 11pt; font-weight: bold; margin-top: 18pt; margin-bottom: 9pt; }
-            p { text-align: justify; margin-bottom: 10pt; }
-            table { border-collapse: collapse; width: 100%; border: 1pt solid black; margin-bottom: 15pt; }
-            th, td { border: 1pt solid black; padding: 6pt; vertical-align: top; font-size: 10.5pt; }
+            h1 { text-align: center; text-transform: uppercase; border-bottom: 2pt solid black; padding-bottom: 5pt; font-size: 14pt; font-weight: bold; margin-bottom: 10pt; }
+            h2 { text-transform: uppercase; border-bottom: 1pt solid black; margin-top: 18pt; margin-bottom: 8pt; font-size: 12pt; font-weight: bold; }
+            h3 { font-size: 11pt; font-weight: bold; margin-top: 14pt; margin-bottom: 6pt; }
+            p { text-align: justify; margin-bottom: 8pt; }
+            table { border-collapse: collapse; width: 100%; border: 1pt solid black; margin-bottom: 12pt; }
+            th, td { border: 1pt solid black; padding: 5pt; vertical-align: top; font-size: 10pt; }
             th { background-color: #f3f4f6; font-weight: bold; text-align: center; }
-            .header-info { text-align: center; border-bottom: 4.5pt double black; padding-bottom: 10pt; margin-bottom: 20pt; }
-            .header-info div { line-height: 1.2; }
-            .doc-title { text-align: center; font-weight: bold; font-size: 14pt; margin-top: 20pt; margin-bottom: 30pt; text-transform: uppercase; }
+            .header-info { text-align: center; border-bottom: 3.5pt double black; padding-bottom: 8pt; margin-bottom: 15pt; }
+            .header-info div { line-height: 1.1; }
+            .doc-title { text-align: center; font-weight: bold; font-size: 12pt; margin-top: 15pt; margin-bottom: 20pt; text-transform: uppercase; }
           </style>
         </head>
         <body>
@@ -134,6 +134,7 @@ export default function ResultView({ content: initialContent, config }: Props) {
       .replace(/# HEADER & IDENTITAS[\s\S]*?---/, '')
       .replace(/# BAHAN AJAR DIGITAL ESENSIAL[\s\S]*?---/, '')
       .replace(/1\. KOP SURAT[\s\S]*?---/, '')
+      .replace(/MENTERI PENDIDIKAN[\s\S]*?KEPUTUSAN/gi, '') // Remove ministerial headers if any
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<div[^>]*>/gi, '')
       .replace(/<\/div>/gi, '')
@@ -201,25 +202,22 @@ export default function ResultView({ content: initialContent, config }: Props) {
           ) : (
             <div className="bg-white border border-slate-100 mx-auto rounded-none min-h-[1100px] w-full max-w-[850px] p-8 md:p-16 paper-content">
               {config.useLetterhead && (
-                <div className="mb-8 border-b-[4.5pt] border-double border-black pb-5 text-center relative">
-                  <div className="flex items-center gap-8 text-black">
+                <div className="mb-6 border-b-[4.5pt] border-double border-black pb-4 text-center relative">
+                  <div className="flex items-center gap-6 text-black">
                     {config.logo && (
-                      <div className="shrink-0 w-[110px] h-[110px] flex items-center justify-center">
+                      <div className="shrink-0 w-[100px] h-[100px] flex items-center justify-center">
                         <img referrerPolicy="no-referrer" src={config.logo} alt="Logo" className="w-full h-full object-contain" />
                       </div>
                     )}
-                    <div className={`flex-1 text-center ${config.logo ? 'pr-[110px]' : ''}`}>
-                      <p className="text-[11px] font-bold leading-tight uppercase tracking-tight">MAJELIS PENDIDIKAN DASAR MENENGAH DAN PENDIDIKAN NON FORMAL</p>
-                      <p className="text-[12px] font-bold leading-tight uppercase">PIMPINAN DAERAH MUHAMMADIYAH KOTA PROBOLINGGO</p>
-                      <p className="text-2xl font-black leading-tight uppercase mt-1 mb-1 tracking-tighter">
+                    <div className={`flex-1 text-center ${config.logo ? 'pr-[100px]' : ''}`}>
+                      <p className="text-[10px] font-bold leading-tight uppercase tracking-tight">MAJELIS PENDIDIKAN DASAR MENENGAH DAN PENDIDIKAN NON FORMAL</p>
+                      <p className="text-[11px] font-bold leading-tight uppercase">PIMPINAN DAERAH MUHAMMADIYAH KOTA PROBOLINGGO</p>
+                      <p className="text-xl font-black leading-tight uppercase mt-1 mb-1 tracking-tighter">
                         {config.school || "SMP MUHAMMADIYAH 1 KOTA PROBOLINGGO"}
                       </p>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.2em] mb-1 italic">TERAKREDITASI A</p>
-                      <p className="text-[10px] leading-tight font-medium">
-                        Jl. Mayjend Panjaitan 73 Kota Probolinggo Email: <span className="text-blue-700 underline">smp_muh.prob@yahoo.co.id</span>
-                      </p>
-                      <p className="text-[10px] leading-tight font-medium">
-                        Telp/fax. 0335-422307 Website: <span className="text-blue-700 underline">smpmusapro.sch.id</span>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1 italic">TERAKREDITASI A</p>
+                      <p className="text-[9px] leading-tight font-medium">
+                        Jl. Mayjend Panjaitan 73 Probolinggo | Email: <span className="text-blue-700 underline">smp_muh.prob@yahoo.co.id</span>
                       </p>
                     </div>
                   </div>
@@ -227,11 +225,11 @@ export default function ResultView({ content: initialContent, config }: Props) {
               )}
 
               {/* Document Title Header */}
-              <div className="mb-10 text-center uppercase">
-                <h1 className="text-2xl font-black border-b-2 border-black inline-block px-4 pb-1 mb-2 tracking-widest text-black">
+              <div className="mb-8 text-center uppercase">
+                <h1 className="text-xl font-black border-b-2 border-black inline-block px-6 pb-0.5 mb-1 tracking-widest text-black">
                   {config.type === 'rpp' ? 'MODUL AJAR / RPP' : config.type === 'soal' ? 'NASKAH ASESMEN' : 'BAHAN AJAR DIGITAL'}
                 </h1>
-                <p className="text-sm font-bold text-slate-800">KURIKULUM MERDEKA</p>
+                <p className="text-[11px] font-bold text-black tracking-widest italic">KURIKULUM MERDEKA</p>
               </div>
 
               <div className="prose max-w-none print:text-black">
