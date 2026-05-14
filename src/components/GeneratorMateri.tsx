@@ -32,8 +32,13 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { generateEducationContent } from '../lib/gemini';
 import { toast } from 'sonner';
+import { Switch } from './ui/switch';
 
 const materiSchema = z.object({
+  name: z.string().min(1, "Nama harus diisi"),
+  nip: z.string().optional(),
+  principalName: z.string().min(1, "Nama Kepala Sekolah harus diisi"),
+  principalNip: z.string().optional(),
   school: z.string().min(1, "Sekolah harus diisi"),
   subject: z.string().min(1, "Mata Pelajaran harus diisi"),
   phaseGrade: z.string().min(1, "Fase/Kelas harus diisi"),
@@ -43,6 +48,8 @@ const materiSchema = z.object({
   includeIllustration: z.boolean(),
   includeQuiz: z.boolean(),
   targetFocus: z.string().optional(),
+  useLetterhead: z.boolean(),
+  useValidationPage: z.boolean(),
 });
 
 type MateriFormData = z.infer<typeof materiSchema>;
@@ -65,6 +72,10 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
   const form = useForm<MateriFormData>({
     resolver: zodResolver(materiSchema),
     defaultValues: {
+      name: "Aminudin, S.Pd",
+      nip: "1640634",
+      principalName: "Rachmawati Fitriyah, S.H,. S.Pd.",
+      principalNip: "1640634",
       school: "SMP Muhammadiyah 1 Probolinggo",
       subject: "Pendidikan Agama Islam",
       phaseGrade: "Fase D (Kelas 7) SMP/MTs",
@@ -73,7 +84,9 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
       includeAnalogy: true,
       includeIllustration: true,
       includeQuiz: true,
-    }
+      useLetterhead: true,
+      useValidationPage: true,
+    } as any
   });
 
   const addTopic = () => {
@@ -122,12 +135,14 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
     setCompLoading(true);
     try {
       const prompt = `
-        Susunlah MATERI AJAR (BAHAN AJAR) yang sangat PROFESIONAL, MENDALAM, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
+        Susunlah MATERI AJAR (BAHAN AJAR) yang sangat LENGKAP, PROFESIONAL, MENDALAM, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
-        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN DAN FORMAT TABEL MARKDOWN STANDAR.
+        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
+        TIDAK BOLEH ADA POIN YANG KOSONG.
+        
         PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>.
         
-        STRUKTUR MODUL RESMI:
+        STRUKTUR MODUL RESMI (HARUS LENGKAP):
 
         1. HEADER & IDENTITAS:
            # BAHAN AJAR DIGITAL
@@ -141,33 +156,46 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
         | Satuan Pendidikan | ${data.school} |
         | Mata Pelajaran | ${data.subject.toUpperCase()} |
         | Jenjang / Fase / Kelas | ${data.phaseGrade} |
-        | Semester | [Ganjil/Genap] |
+        | Semester | Ganjil/Genap |
+        | Disusun Oleh | ${data.name} |
         | Topik Utama | ${data.topics.join(", ")} |
         | Target Kedalaman | ${data.depthLevel.toUpperCase()} |
 
         ## B. Capaian & Tujuan Pembelajaran
-        Sajikan target kompetensi yang harus dikuasai peserta didik dalam bentuk poin-poin yang jelas dan terukur.
+        Sajikan target kompetensi yang harus dikuasai peserta didik dalam bentuk poin-poin yang jelas, terukur, dan menantang.
 
         ## C. Pembahasan Materi (Deep Learning Approach)
         Gunakan pendekatan mendalam (High-Logic explanation):
-        1. **Essential Questions**: Pertanyaan pemantik rasa ingin tahu.
-        2. **Konsep Inti**: Penjelasan logis, sistematis, dan komprehensif.
-        ${data.includeAnalogy ? "3. **Analogi Dunia Nyata**: Hubungkan konsep abstrak dengan fenomena sehari-hari agar lebih mudah dipahami." : ""}
-        ${data.includeIllustration ? "4. **Visualisasi Konsep**: Deskripsikan ilustrasi/gambar pendukung yang memperjelas materi." : ""}
+        1. **Essential Questions**: Minimal 3 pertanyaan pemantik rasa ingin tahu.
+        2. **Konsep Inti**: Penjelasan logis, sistematis, mendalam dan komprehensif (minimal 5 paragraf detail).
+        ${data.includeAnalogy ? "3. **Analogi Dunia Nyata**: Hubungkan konsep abstrak dengan fenomena sehari-hari agar lebih mudah dipahami secara intuitif." : ""}
+        ${data.includeIllustration ? "4. **Visualisasi Konsep**: Deskripsikan secara detail ilustrasi/gambar/infografis pendukung yang memperjelas materi." : ""}
 
         ## D. Contoh Penerapan & Studi Kasus
-        Berikan situasi nyata atau dilema yang melatih penalaran kritis (Critical Thinking) peserta didik terkait materi tersebut.
+        Berikan situasi nyata atau dilema yang melatih penalaran kritis (Critical Thinking) peserta didik terkait materi tersebut secara spesifik.
 
         ## E. Rangkuman & Refleksi Mandiri
         | Intisari Materi (Rangkuman) | Pertanyaan Refleksi Peserta Didik |
         |---|---|
-        | [Jabarkan poin-poin penting] | [Pertanyaan kontemplatif untuk mengukur pemahaman] |
+        | [Jabarkan minimal 5 poin penting] | [Minimal 3 pertanyaan kontemplatif untuk mengukur pemahaman] |
 
-        ${data.includeQuiz ? "## F. Uji Pemahaman (Format HOTS)\nBerikan 3-5 soal asesmen formatif dengan tingkat kesulitan tinggi." : ""}
+        ${data.includeQuiz ? "## F. Uji Pemahaman (Format HOTS)\nBerikan 5 soal pilihan ganda atau esai dengan tingkat kesulitan tinggi (C4-C6)." : ""}
+
+        ---
+        ## Pengesahan
+        | Mengetahui, Kepala Sekolah | Penulis / Guru |
+        |---|---|
+        | | |
+        | | |
+        | **(${data.principalName})** | **(${data.name})** |
+        | NIP/NBM. ${data.principalNip || "......................."} | NBM. ${data.nip || "......................."} |
+
+        Instruksi Tambahan: ${data.targetFocus || "Tidak ada."}
 
         INSTRUKSI TEKNIS:
-        - Bahasa Indonesia Formal.
+        - Bahasa Indonesia Formal & Akademik.
         - Gunakan pembatas (---) jika diperlukan.
+        - Pastikan narasi mengalir dan sangat informatif.
       `;
 
       const result = await generateEducationContent(prompt);
@@ -229,6 +257,37 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
                className="space-y-6"
             >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50 rounded-xl md:rounded-2xl border border-slate-100">
+                <div className="flex items-center justify-between col-span-full">
+                    <div className="flex items-center gap-2">
+                      <Settings className="w-3 h-3 md:w-4 md:h-4 text-emerald-600" />
+                      <span className="font-bold text-[10px] md:text-xs uppercase tracking-wider text-slate-500">Pengaturan Dokumen</span>
+                    </div>
+                </div>
+                
+                <div className="flex items-center justify-between p-3 md:p-4 bg-white rounded-xl border border-slate-200">
+                    <div className="space-y-0.5">
+                      <Label className="text-xs md:text-sm font-bold">Kop Surat (Opsional)</Label>
+                      <p className="text-[10px] md:text-xs text-slate-500">Gunakan format kop instansi resmi.</p>
+                    </div>
+                    <Switch 
+                      checked={form.watch('useLetterhead')} 
+                      onCheckedChange={(val: boolean) => form.setValue('useLetterhead', val)} 
+                    />
+                </div>
+
+                <div className="flex items-center justify-between p-3 md:p-4 bg-white rounded-xl border border-slate-200">
+                    <div className="space-y-0.5">
+                      <Label className="text-xs md:text-sm font-bold">Pengesahan</Label>
+                      <p className="text-[10px] md:text-xs text-slate-500">Tambahkan tanda tangan kurikulum/kepsek.</p>
+                    </div>
+                    <Switch 
+                      checked={form.watch('useValidationPage')} 
+                      onCheckedChange={(val: boolean) => form.setValue('useValidationPage', val)} 
+                    />
+                </div>
+              </div>
+
               <div className="flex items-center gap-2 border-b border-emerald-100 pb-2">
                   <Layout className="w-4 h-4 md:w-5 md:h-5 text-emerald-600" />
                   <h3 className="font-bold text-base md:text-lg italic text-slate-700">Satuan Pendidikan & Kurikulum</h3>
@@ -240,6 +299,37 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
                     <Input placeholder="Misal: SMP Negeri 1 Jakarta" {...form.register('school')} className="h-10 md:h-12" />
                     {form.formState.errors.school && <p className="text-xs text-red-500">{form.formState.errors.school.message}</p>}
                 </div>
+
+                <div className="space-y-4 col-span-full pt-2 border-t border-slate-100">
+                    <Label className="text-xs font-black uppercase text-emerald-500 tracking-wider">Identitas Penulis</Label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-1.5 md:space-y-2">
+                        <Label htmlFor="name" className="font-bold text-sm">Nama Lengkap Penulis</Label>
+                        <Input id="name" placeholder="Aminudin, S.Pd" {...form.register('name')} className="h-10 md:h-12" />
+                        {form.formState.errors.name && <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>}
+                      </div>
+                      <div className="space-y-1.5 md:space-y-2">
+                        <Label htmlFor="nip" className="font-bold text-sm">NBM / NIP Penulis</Label>
+                        <Input id="nip" placeholder="Contoh: 1640634" {...form.register('nip')} className="h-10 md:h-12" />
+                      </div>
+                    </div>
+                </div>
+
+                <div className="space-y-4 col-span-full pt-2 border-t border-slate-100">
+                    <Label className="text-xs font-black uppercase text-emerald-500 tracking-wider">Identitas Kepala Sekolah</Label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-1.5 md:space-y-2">
+                        <Label htmlFor="principalName" className="font-bold text-sm">Nama Kepala Sekolah</Label>
+                        <Input id="principalName" placeholder="Contoh: Rachmawati Fitriyah, S.H,. S.Pd." {...form.register('principalName')} className="h-10 md:h-12" />
+                        {form.formState.errors.principalName && <p className="text-xs text-red-500">{form.formState.errors.principalName.message}</p>}
+                      </div>
+                      <div className="space-y-1.5 md:space-y-2">
+                        <Label htmlFor="principalNip" className="font-bold text-sm">NBM / NIP Kepala Sekolah</Label>
+                        <Input id="principalNip" placeholder="Contoh: 1640634" {...form.register('principalNip')} className="h-10 md:h-12" />
+                      </div>
+                    </div>
+                </div>
+
                 <div className="space-y-1.5 md:space-y-2">
                     <Label className="font-bold text-sm">Mata Pelajaran</Label>
                     <Input placeholder="IPA / Biologi / Sejarah" {...form.register('subject')} className="h-10 md:h-12" />

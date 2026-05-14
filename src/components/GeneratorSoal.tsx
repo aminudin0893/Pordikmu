@@ -23,6 +23,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
+import { Switch } from './ui/switch';
 import { Badge } from './ui/badge';
 import {
   Select,
@@ -37,6 +38,9 @@ import { toast } from 'sonner';
 
 const soalSchema = z.object({
   name: z.string().min(1, "Nama harus diisi"),
+  nip: z.string().optional(),
+  principalName: z.string().min(1, "Nama Kepala Sekolah harus diisi"),
+  principalNip: z.string().optional(),
   school: z.string().min(1, "Sekolah harus diisi"),
   subject: z.string().min(1, "Mata Pelajaran harus diisi"),
   phaseGrade: z.string().min(1, "Fase/Kelas harus diisi"),
@@ -55,6 +59,8 @@ const soalSchema = z.object({
   essayCount: z.number().min(0),
   matchTableCount: z.number().min(0),
   specialInstructions: z.string().optional(),
+  useLetterhead: z.boolean(),
+  useValidationPage: z.boolean(),
 });
 
 type SoalFormData = z.infer<typeof soalSchema>;
@@ -77,6 +83,9 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
     resolver: zodResolver(soalSchema),
     defaultValues: {
       name: "Aminudin, S.Pd",
+      nip: "1640634",
+      principalName: "Rachmawati Fitriyah, S.H,. S.Pd.",
+      principalNip: "1640634",
       school: "SMP Muhammadiyah 1 Probolinggo",
       subject: "Pendidikan Agama Islam",
       phaseGrade: "Fase D (Kelas 7) SMP/MTs",
@@ -94,7 +103,9 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
       shortAnswerCount: 0,
       essayCount: 2,
       matchTableCount: 0,
-    }
+      useLetterhead: true,
+      useValidationPage: true,
+    } as any
   });
 
   const handleDifficultyChange = (type: 'easy' | 'medium' | 'hard', newVal: number) => {
@@ -181,19 +192,20 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
       }
 
       const prompt = `
-        Ciptakan BANK SOAL UJIAN (NASKAH ASESMEN) yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
+        Ciptakan BANK SOAL UJIAN (NASKAH ASESMEN) yang sangat LENGKAP, PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
-        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN DAN FORMAT TABEL MARKDOWN STANDAR.
+        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
         PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>.
         
-        STRUKTUR NASKAH ASESMEN RESMI:
+        STRUKTUR NASKAH ASESMEN RESMI (HARUS LENGKAP):
 
-        1. KOP SURAT (Center):
+        1. KOP SURAT (Diletakkan di bagian atas):
+           ${data.useLetterhead ? `
            # KOP SURAT RESMI SEKOLAH
            **DINAS PENDIDIKAN DAN KEBUDAYAAN**
            **${data.school.toUpperCase()}**
            *ALAMAT SEKOLAH / ALAMAT INSTANSI TERKAIT*
-           ----------------------------------------------------------------------------------
+           ----------------------------------------------------------------------------------` : ""}
 
         ## A. Identitas Asesmen
         | Data Administrasi | Keterangan Informasi |
@@ -201,10 +213,10 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         | Mata Pelajaran | ${data.subject.toUpperCase()} |
         | Jenis Asesmen | ${data.assessmentType.toUpperCase()} |
         | Jenjang / Fase / Kelas | ${data.phaseGrade} |
-        | Semester | [Ganjil/Genap] |
+        | Semester | Ganjil/Genap |
         | Tahun Pelajaran | ${data.schoolYear} |
         | Nama Guru | ${data.name} |
-        | Waktu Pengerjaan | [Alokasi Waktu] |
+        | Alokasi Waktu | [Alokasi Waktu yang Relevan] |
 
         ## B. Data Peserta Didik
         | Nama Peserta Didik | Kelas | No. Absen | Nilai |
@@ -219,21 +231,36 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         5. Periksa kembali pekerjaan Anda sebelum dikumpulkan.
 
         ## D. Naskah Asesmen (Butir Soal)
-        Sajikan soal dengan stimulus (teks/gambar/grafik) yang kontekstual.
-        1. **Pilihan Ganda** (Jumlah: ${data.mcqCount}).
-        2. **PG Kompleks** (Jumlah: ${data.multiResponseCount}).
-        3. **Benar / Salah** (Jumlah: ${data.trueFalseCount}).
-        4. **Isian & Essay** (Jumlah: ${data.shortAnswerCount + data.essayCount}).
-        5. **Menjodohkan** (Jumlah: ${data.matchTableCount}).
+        Sajikan soal dengan stimulus (teks/gambar/grafik) yang kontekstual dan berorientasi HOTS (Higher Order Thinking Skills).
+        ${data.mcqCount > 0 ? `1. **Pilihan Ganda** (Jumlah: ${data.mcqCount} soal dengan ${data.optionsCount}).` : ""}
+        ${data.multiResponseCount > 0 ? `2. **PG Kompleks / Multi-Response** (Jumlah: ${data.multiResponseCount} soal).` : ""}
+        ${data.trueFalseCount > 0 ? `3. **Benar / Salah** (Jumlah: ${data.trueFalseCount} soal).` : ""}
+        ${data.matchTableCount > 0 ? `4. **Menjodohkan** (Jumlah: ${data.matchTableCount} soal).` : ""}
+        ${data.shortAnswerCount > 0 ? `5. **Isian Singkat** (Jumlah: ${data.shortAnswerCount} soal).` : ""}
+        ${data.essayCount > 0 ? `6. **Uraian / Essay** (Jumlah: ${data.essayCount} soal).` : ""}
 
-        ## E. Kunci Jawaban & Kisi-Kisi
+        ## E. Kisi-Kisi & Kunci Jawaban
         | No | Materi | Indikator Soal | Level | Kunci / Pedoman Skor |
         |---|---|---|---|---|
         | 1 | ... | ... | ... | ... |
 
+        ${data.useValidationPage ? `
+        ---
+        ## Lembar Pengesahan
+        | Mengetahui, Kepala Sekolah | Guru Mata Pelajaran |
+        |---|---|
+        | | |
+        | | |
+        | **(${data.principalName})** | **(${data.name})** |
+        | NIP/NBM. ${data.principalNip || "......................."} | NBM. ${data.nip || "......................."} |
+        ` : ""}
+
+        Catatan/Instruksi Khusus: ${data.specialInstructions || "Tidak ada."}
+
         INSTRUKSI TEKNIS:
         - Bahasa Indonesia Baku & Formal.
         - Gunakan pembatas (---) jika diperlukan.
+        - Pastikan format soal rapi dan mudah dibaca.
       `;
 
       const result = await generateEducationContent(prompt);
@@ -304,6 +331,37 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
               initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
               className="space-y-6"
             >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50 rounded-xl md:rounded-2xl border border-slate-100">
+                <div className="flex items-center justify-between col-span-full">
+                    <div className="flex items-center gap-2">
+                      <Settings className="w-3 h-3 md:w-4 md:h-4 text-orange-600" />
+                      <span className="font-bold text-[10px] md:text-xs uppercase tracking-wider text-slate-500">Pengaturan Dokumen</span>
+                    </div>
+                </div>
+                
+                <div className="flex items-center justify-between p-3 md:p-4 bg-white rounded-xl border border-slate-200">
+                    <div className="space-y-0.5">
+                      <Label className="text-xs md:text-sm font-bold">Kop Surat (Opsional)</Label>
+                      <p className="text-[10px] md:text-xs text-slate-500">Gunakan format kop instansi resmi.</p>
+                    </div>
+                    <Switch 
+                      checked={form.watch('useLetterhead')} 
+                      onCheckedChange={(val: boolean) => form.setValue('useLetterhead', val)} 
+                    />
+                </div>
+
+                <div className="flex items-center justify-between p-3 md:p-4 bg-white rounded-xl border border-slate-200">
+                    <div className="space-y-0.5">
+                      <Label className="text-xs md:text-sm font-bold">Lembar Pengesahan</Label>
+                      <p className="text-[10px] md:text-xs text-slate-500">Tambahkan tanda tangan kepala sekolah.</p>
+                    </div>
+                    <Switch 
+                      checked={form.watch('useValidationPage')} 
+                      onCheckedChange={(val: boolean) => form.setValue('useValidationPage', val)} 
+                    />
+                </div>
+              </div>
+
               <div className="flex items-center gap-2 border-b border-orange-100 pb-2">
                   <Layout className="w-4 h-4 md:w-5 md:h-5 text-orange-600" />
                   <h3 className="font-bold text-base md:text-lg italic">Identitas Asesmen & Satuan Pendidikan</h3>
@@ -315,11 +373,37 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
                     <Input id="school" placeholder="Nama Sekolah..." {...form.register('school')} className="h-10 md:h-12" />
                     {form.formState.errors.school && <p className="text-xs text-red-500">{form.formState.errors.school.message}</p>}
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="name" className="font-bold text-sm">Nama Lengkap Guru</Label>
-                    <Input id="name" placeholder="Aminudin, S.Pd" {...form.register('name')} className="h-10 md:h-12" />
-                    {form.formState.errors.name && <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>}
+
+                  <div className="space-y-4 col-span-full pt-2 border-t border-slate-100">
+                      <Label className="text-xs font-black uppercase text-orange-500 tracking-wider">Identitas Guru</Label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="name" className="font-bold text-sm">Nama Lengkap Guru</Label>
+                          <Input id="name" placeholder="Aminudin, S.Pd" {...form.register('name')} className="h-10 md:h-12" />
+                          {form.formState.errors.name && <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>}
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="nip" className="font-bold text-sm">NBM / NIP Guru</Label>
+                          <Input id="nip" placeholder="Contoh: 1640634" {...form.register('nip')} className="h-10 md:h-12" />
+                        </div>
+                      </div>
                   </div>
+
+                  <div className="space-y-4 col-span-full pt-2 border-t border-slate-100">
+                      <Label className="text-xs font-black uppercase text-orange-500 tracking-wider">Identitas Kepala Sekolah</Label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="principalName" className="font-bold text-sm">Nama Kepala Sekolah</Label>
+                          <Input id="principalName" placeholder="Contoh: Rachmawati Fitriyah, S.H,. S.Pd." {...form.register('principalName')} className="h-10 md:h-12" />
+                          {form.formState.errors.principalName && <p className="text-xs text-red-500">{form.formState.errors.principalName.message}</p>}
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="principalNip" className="font-bold text-sm">NBM / NIP Kepala Sekolah</Label>
+                          <Input id="principalNip" placeholder="Contoh: 1640634" {...form.register('principalNip')} className="h-10 md:h-12" />
+                        </div>
+                      </div>
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="subject" className="font-bold text-sm">Mata Pelajaran</Label>
                     <Input id="subject" placeholder="Bahasa Indonesia" {...form.register('subject')} className="h-10 md:h-12" />

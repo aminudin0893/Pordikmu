@@ -101,11 +101,26 @@
   transition: all 0.3s ease;
   transform-origin: top center;
   border: 1px solid #f1f5f9;
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (min-width: 1024px) {
   .paper-content {
-    padding: 1.5rem !important;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 2.5cm !important;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .paper-content {
+    padding: 2rem 1.5rem !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
   }
 }
 
@@ -238,8 +253,19 @@
 @layer base {
   * {
     @apply border-slate-200 outline-none;
-    }
+  }
   body {
-    @apply bg-slate-50 text-slate-900;
-    }
+    @apply bg-slate-50 text-slate-900 overflow-x-hidden;
+  }
+  
+  /* Fix Shadcn/Radix Dropdown Transparency on Mobile */
+  [data-radix-popper-content-wrapper] {
+    z-index: 100 !important;
+  }
+  
+  [role="listbox"], [role="menu"], [data-radix-select-viewport] {
+    @apply bg-white shadow-xl border border-slate-200 rounded-lg;
+    background-color: white !important;
+    opacity: 1 !important;
+  }
 }

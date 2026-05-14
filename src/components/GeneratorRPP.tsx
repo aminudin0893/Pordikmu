@@ -33,6 +33,8 @@ import { toast } from 'sonner';
 const rppSchema = z.object({
   name: z.string().min(1, "Nama harus diisi"),
   nip: z.string().optional(),
+  principalName: z.string().min(1, "Nama Kepala Sekolah harus diisi"),
+  principalNip: z.string().optional(),
   school: z.string().min(1, "Sekolah harus diisi"),
   subject: z.string().min(1, "Mata Pelajaran harus diisi"),
   phaseGrade: z.string().min(1, "Fase/Kelas harus diisi"),
@@ -68,6 +70,8 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
     defaultValues: {
       name: "Aminudin, S.Pd",
       nip: "1640634",
+      principalName: "Rachmawati Fitriyah, S.H,. S.Pd.",
+      principalNip: "1640634",
       school: "SMP Muhammadiyah 1 Probolinggo",
       subject: "Pendidikan Agama Islam",
       phaseGrade: "Fase D (Kelas 7) SMP/MTs",
@@ -132,12 +136,14 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
     setCompLoading(true);
     try {
       const prompt = `
-        Buatkan (RPP) atau MODUL AJAR yang sangat PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
+        Buatkan (RPP) atau MODUL AJAR yang sangat LENGKAP, PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
-        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN DAN FORMAT TABEL MARKDOWN STANDAR.
+        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
+        TIDAK BOLEH ADA POIN YANG KOSONG. Jika data tidak tersedia, gunakan penalaran pedagogik yang relevan untuk Mengisi secara profesional.
+        
         PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>.
         
-        STRUKTUR MODUL AJAR RESMI:
+        STRUKTUR MODUL AJAR RESMI (HARUS LENGKAP):
 
         ${data.useLetterhead ? `
         # KOP SURAT RESMI SEKOLAH
@@ -152,47 +158,55 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         | Aspek Identitas | Keterangan Informasi |
         |---|---|
         | Nama Penyusun | ${data.name} |
-        | NBM / NIP | ${data.nip || "-"} |
+        | NBM / NIP Guru | ${data.nip || "-"} |
         | Satuan Pendidikan | ${data.school} |
         | Tahun Pelajaran | ${data.schoolYear} |
         | Semester | ${data.semester} |
         | Jenjang / Fase / Kelas | ${data.phaseGrade} |
         | Mata Pelajaran | ${data.subject} |
+        | Materi Pokok | ${data.topics.join(", ")} |
         | Alokasi Waktu | ${data.timeAllocation} |
         | Model Pembelajaran | ${data.learningModel} |
 
-        ## B. Kompetensi Inti
-        | Komponen | Deskripsi Capaian / Uraian |
-        |---|---|
-        | **Tujuan Pembelajaran** | Jabarkan secara detail poin-poin tujuan sesuai CP |
-        | **Pemahaman Bermakna** | Manfaat nyata bagi peserta didik |
-        | **Pertanyaan Pemantik** | Pertanyaan kritis pemicu kognitif |
-        | **Profil Pelajar Pancasila** | Karakter yang ingin dikembangkan |
+        ## B. Kompetensi Inti (Wajib Diisi Lengkap)
+        1. **Tujuan Pembelajaran**: Jabarkan minimal 3-4 poin tujuan operasional yang spesifik (ABCD: Audience, Behavior, Condition, Degree).
+        2. **Capaian Pembelajaran (CP)**: Sesuaikan dengan fase ${data.phaseGrade} dan materi ${data.topics[0]}.
+        3. **Pemahaman Bermakna**: Manfaat nyata jangka panjang bagi peserta didik.
+        4. **Pertanyaan Pemantik**: Minimal 3 pertanyaan kritis pemicu kognitif.
+        5. **Profil Pelajar Pancasila**: Sebutkan minimal 3 dimensi yang relevan (misal: Beriman, Mandiri, Bernalar Kritis).
+        6. **Target Peserta Didik**: Reguler/Tipikal/Pencapaian Tinggi.
+        7. **Sarana & Prasarana**: Laptop, Proyektor, Internet, Buku Paket, dll.
 
         ## C. Langkah-Langkah Pembelajaran
-        Sajikan langkah pembelajaran dengan sintaks model **${data.learningModel}**:
+        Sajikan langkah pembelajaran mendalam dengan sintaks model **${data.learningModel}**:
         | Tahap Pembelajaran | Uraian Kegiatan (Deep Learning: 4C & Literasi) | Alokasi Waktu |
         |---|---|---|
-        | **Pendahuluan** | 1. Orientasi (Salam, Doa, Presensi). 2. Apersepsi. 3. Motivasi. 4. Penyampaian Tujuan & Cakupan Materi. | ... Menit |
-        | **Kegiatan Inti** | **Sintaks Model ${data.learningModel}**: [Detailkan langkah per langkah secara naratif atau penomoran rapi]. Fokus pada interaksi aktif peserta didik. | ... Menit |
-        | **Penutup** | 1. Refleksi Peserta Didik & Guru. 2. Umpan Balik. 3. Kesimpulan. 4. Tindak Lanjut. 5. Doa Penutup. | ... Menit |
+        | **Pendahuluan** | 1. Orientasi (Salam, Doa, Presensi). 2. Apersepsi (Kaitan materi lalu & sekarang). 3. Motivasi. 4. Penyampaian Tujuan. | ... Menit |
+        | **Kegiatan Inti** | **Sintaks Model ${data.learningModel}**: 
+        - [Langkah 1]: ...
+        - [Langkah 2]: ...
+        - [Langkah 3]: ...
+        - [Langkah 4]: ...
+        - [Langkah 5]: ...
+        (Pastikan integrasi Literasi, Numerasi, dan 4C: Critical Thinking, Communication, Collaboration, Creativity) | ... Menit |
+        | **Penutup** | 1. Refleksi Guru & Peserta Didik. 2. Umpan Balik. 3. Kesimpulan. 4. Penugasan/Tindak Lanjut. 5. Doa Penutup. | ... Menit |
 
-        ## D. Asesmen & Penilaian
-        | Jenis Asesmen | Bentuk / Instrumen | Teknik |
-        |---|---|---|
-        | Asesmen Diagnostik | Tes Lisan / Angket | Kognitif/Non-Kognitif |
-        | Asesmen Formatif | Observasi / Produk / Performa | Lembar Pengamatan |
-        | Asesmen Sumatif | Tes Tertulis (PG/Uraian) | Skor/Rubrik |
+        ## D. Asesmen & Penilaian (Harus Detail)
+        1. **Asesmen Diagnostik**: (Non-Kognitif & Kognitif).
+        2. **Asesmen Formatif**: (Observasi Sikap, Performa Diskusi, Presentasi).
+        3. **Asesmen Sumatif**: (Tes Tertulis/Produk Akhir).
+        *Sertakan deskripsi kriteria penilaian/rubrik singkat.*
 
-        ## E. Media & Sumber Belajar
-        - **Media**: [Cantumkan media digital/fisik yang digunakan].
-        - **Bahan Ajar**: [Cantumkan buku/modul/link berita].
-        - **Sarana**: [Alat pendukung belajar].
+        ## E. Media, Alat & Sumber Belajar
+        - **Media**: Powerpoint, Video Pembelajaran, YouTube.
+        - **Alat**: Papan Tulis, Spidol, Laptop.
+        - **Bahan Ajar**: Buku Guru & Siswa, Handout, E-Modul.
 
-        ## F. Lampiran (LKPD & Ringkasan)
-        - **Ringkasan Materi**: Sajikan materi esensial secara mendalam (Deep Learning).
-        - **LKPD (Lembar Kerja Peserta Didik)**: Berikan tugas mandiri/kelompok yang menantang.
-        - **Glosarium & Daftar Pustaka**.
+        ## F. Lampiran (Materi Lengkap & LKPD)
+        1. **Ringkasan Materi**: Jabarkan materi esensial minimal 3 paragraf.
+        2. **Lembar Kerja Peserta Didik (LKPD)**: Berikan 1 tugas diskusi/mandiri yang menantang.
+        3. **Glosarium**: Minimal 5 istilah teknis.
+        4. **Daftar Pustaka**: Format APA atau standar Indonesia.
 
         ${data.useValidationPage ? `
         ---
@@ -201,13 +215,15 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         |---|---|
         | | |
         | | |
-        | **(..........................)** | **(${data.name})** |
-        | NIP. ....................... | ${data.nip ? `NBM. ${data.nip}` : "NBM. ......................."} |
+        | **(${data.principalName})** | **(${data.name})** |
+        | NIP/NBM. ${data.principalNip || "......................."} | NBM. ${data.nip || "......................."} |
         ` : ""}
+
+        Catatan Tambahan: ${data.additionalNotes || "Tidak ada."}
 
         INSTRUKSI TEKNIS:
         - Gunakan Bahasa Indonesia Baku & Formal.
-        - Dokumen harus terlihat sangat kredibel dan profesional.
+        - Dokumen harus terlihat sangat kredibel, padat isi, dan profesional.
         - Pastikan Header Tabel menggunakan Bold.
       `;
 
@@ -314,16 +330,38 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
                       <Input id="school" placeholder="Nama Sekolah" {...form.register('school')} className="h-10 md:h-12" />
                       {form.formState.errors.school && <p className="text-xs text-red-500">{form.formState.errors.school.message}</p>}
                     </div>
-                    <div className="space-y-1.5 md:space-y-2">
-                      <Label htmlFor="name" className="font-bold text-sm">Nama Lengkap Guru</Label>
-                      <Input id="name" placeholder="Contoh: Hery Purwanto, S.Pd" {...form.register('name')} className="h-10 md:h-12" />
-                      {form.formState.errors.name && <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>}
+
+                    <div className="space-y-4 col-span-full pt-2 border-t border-slate-100">
+                      <Label className="text-xs font-black uppercase text-indigo-500 tracking-wider">Identitas Guru</Label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5 md:space-y-2">
+                          <Label htmlFor="name" className="font-bold text-sm">Nama Lengkap Guru</Label>
+                          <Input id="name" placeholder="Contoh: Hery Purwanto, S.Pd" {...form.register('name')} className="h-10 md:h-12" />
+                          {form.formState.errors.name && <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>}
+                        </div>
+                        <div className="space-y-1.5 md:space-y-2">
+                          <Label htmlFor="nip" className="font-bold text-sm">NBM / NIP Guru</Label>
+                          <Input id="nip" placeholder="Contoh: 1640634" {...form.register('nip')} className="h-10 md:h-12" />
+                        </div>
+                      </div>
                     </div>
-                    <div className="space-y-1.5 md:space-y-2">
-                      <Label htmlFor="nip" className="font-bold text-sm">NBM / NIP Guru</Label>
-                      <Input id="nip" placeholder="Contoh: 1640634" {...form.register('nip')} className="h-10 md:h-12" />
+
+                    <div className="space-y-4 col-span-full pt-2 border-t border-slate-100">
+                      <Label className="text-xs font-black uppercase text-indigo-500 tracking-wider">Identitas Kepala Sekolah</Label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5 md:space-y-2">
+                          <Label htmlFor="principalName" className="font-bold text-sm">Nama Kepala Sekolah</Label>
+                          <Input id="principalName" placeholder="Contoh: Rachmawati Fitriyah, S.H,. S.Pd." {...form.register('principalName')} className="h-10 md:h-12" />
+                          {form.formState.errors.principalName && <p className="text-xs text-red-500">{form.formState.errors.principalName.message}</p>}
+                        </div>
+                        <div className="space-y-1.5 md:space-y-2">
+                          <Label htmlFor="principalNip" className="font-bold text-sm">NBM / NIP Kepala Sekolah</Label>
+                          <Input id="principalNip" placeholder="Contoh: 1640634" {...form.register('principalNip')} className="h-10 md:h-12" />
+                        </div>
+                      </div>
                     </div>
-                    <div className="space-y-1.5 md:space-y-2">
+
+                    <div className="space-y-1.5 md:space-y-2 col-span-full pt-2 border-t border-slate-100">
                       <Label className="font-bold text-sm">Tahun Pelajaran</Label>
                       <Input placeholder="2025/2026" {...form.register('schoolYear')} className="h-10 md:h-12" />
                       {form.formState.errors.schoolYear && <p className="text-xs text-red-500">{form.formState.errors.schoolYear.message}</p>}
