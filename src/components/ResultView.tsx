@@ -118,7 +118,7 @@ export default function ResultView({ content: initialContent, config }: Props) {
               />
             </div>
           ) : (
-            <div className="bg-white shadow-2xl mx-auto rounded-none min-h-[1100px] w-full max-w-[850px] p-12 md:p-20 paper-content">
+            <div className="bg-white border border-slate-100 mx-auto rounded-none min-h-[1100px] w-full max-w-[850px] p-12 md:p-20 paper-content">
               <div className="prose max-w-none">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayContent}</ReactMarkdown>
               </div>
