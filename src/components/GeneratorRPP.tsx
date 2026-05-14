@@ -140,12 +140,16 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
     setCompLoading(true);
     try {
       const prompt = `
-        Buatkan (RPP) atau MODUL AJAR yang sangat LENGKAP, PROFESIONAL, FORMAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
+        Buatkan (RPP) atau MODUL AJAR yang sangat EKSKLUSIF, LENGKAP, PROFESIONAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
+        ANDA ADALAH SEORANG AHLI KURIKULUM PROFESIONAL. TUGAS ANDA ADALAH:
+        1. Menguraikan setiap bagian secara SANGAT MENDALAM (Deep Learning).
+        2. Jangan hanya memberikan poin-poin singkat; berikan narasi kependidikan yang berbobot tinggi.
+        3. Gunakan wawasan pedagogik luas untuk mengisi deskripsi tujuan, langkah-langkah, dan asesmen jika data spesifik tidak ada.
+        4. Pastikan struktur dokumen mengikuti format resmi Indonesia.
+
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
-        TIDAK BOLEH ADA POIN YANG KOSONG. Jika data tidak tersedia, gunakan penalaran pedagogik yang sangat mendalam untuk mengisi deskripsinya secara profesional.
-        
-        PENTING: DILARANG KERAS menggunakan tag HTML seperti <br>, <div>, atau <span>.
+        PENTING: DILARANG KERAS menggunakan tag HTML.
         
         STRUKTUR MODUL AJAR RESMI (WAJIB LENGKAP):
 

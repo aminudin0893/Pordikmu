@@ -10,12 +10,15 @@ import {
   CheckCircle2,
   Edit3,
   Save,
-  X
+  X,
+  FileText
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Textarea } from './ui/textarea';
 import { toast } from 'sonner';
+import { marked } from 'marked';
+import HTMLToDOCX from 'html-to-docx';
 
 interface Props {
   content: string;
@@ -40,6 +43,67 @@ export default function ResultView({ content: initialContent, config }: Props) {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleDownloadWord = async () => {
+    try {
+      const htmlContent = `
+        <!DOCTYPE html>
+        <html lang="id">
+        <head>
+          <meta charset="UTF-8">
+          <style>
+            body { font-family: 'Times New Roman', serif; }
+            h1 { text-align: center; text-transform: uppercase; border-bottom: 2pt solid black; padding-bottom: 0.5rem; }
+            h2 { text-transform: uppercase; border-bottom: 1pt solid black; margin-top: 1.5cm; }
+            table { border-collapse: collapse; width: 100%; border: 1pt solid black; }
+            th, td { border: 1pt solid black; padding: 8pt; vertical-align: top; }
+            th { background-color: #f3f4f6; }
+            .header-info { text-align: center; border-bottom: 3pt double black; padding-bottom: 12pt; margin-bottom: 24pt; }
+            .header-info p { margin: 0; padding: 0; }
+            .doc-title { text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 20pt; text-decoration: underline; }
+          </style>
+        </head>
+        <body>
+          ${config.useLetterhead ? `
+            <div class="header-info">
+              <p style="font-size: 10pt; font-weight: bold;">MAJELIS PENDIDIKAN DASAR MENENGAH DAN PENDIDIKAN NON FORMAL</p>
+              <p style="font-size: 11pt; font-weight: bold;">PIMPINAN DAERAH MUHAMMADIYAH KOTA PROBOLINGGO</p>
+              <p style="font-size: 16pt; font-weight: bold; margin-top: 5pt;">${config.school || "SMP MUHAMMADIYAH 1 KOTA PROBOLINGGO"}</p>
+              <p style="font-size: 10pt; font-weight: bold; font-style: italic;">TERAKREDITASI A</p>
+              <p style="font-size: 9pt;">Jl. Mayjend Panjaitan 73 Kota Probolinggo Email: smp_muh.prob@yahoo.co.id</p>
+            </div>
+          ` : ''}
+          
+          <div class="doc-title">${config.type === 'rpp' ? 'MODUL AJAR / RPP' : config.type === 'soal' ? 'NASKAH ASESMEN' : 'BAHAN AJAR DIGITAL'} - KURIKULUM MERDEKA</div>
+          
+          <div class="content">
+            ${await marked(displayContent)}
+          </div>
+        </body>
+        </html>
+      `;
+
+      const blob = await HTMLToDOCX(htmlContent, null, {
+        table: { row: { cantSplit: true } },
+        footer: true,
+        pageNumber: true,
+      });
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${config.type === 'rpp' ? 'RPP' : config.type === 'soal' ? 'Soal' : 'Materi'}_${config.subject}_${new Date().toLocaleDateString()}.docx`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+      toast.success("Dokumen Word berhasil dibuat!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Gagal membuat dokumen Word");
+    }
   };
 
   const handleSaveEdit = () => {
@@ -105,6 +169,9 @@ export default function ResultView({ content: initialContent, config }: Props) {
           <Button variant="outline" onClick={handlePrint} className="gap-2">
             <Printer className="w-4 h-4" /> Cetak / PDF
           </Button>
+          <Button onClick={handleDownloadWord} className="gap-2 bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-200">
+            <FileText className="w-4 h-4" /> Download Word
+          </Button>
         </div>
       </div>
 
@@ -148,7 +215,16 @@ export default function ResultView({ content: initialContent, config }: Props) {
                   </div>
                 </div>
               )}
-              <div className="prose max-w-none">
+
+              {/* Document Title Header */}
+              <div className="mb-10 text-center uppercase">
+                <h1 className="text-2xl font-black border-b-2 border-black inline-block px-4 pb-1 mb-2 tracking-widest text-black">
+                  {config.type === 'rpp' ? 'MODUL AJAR / RPP' : config.type === 'soal' ? 'NASKAH ASESMEN' : 'BAHAN AJAR DIGITAL'}
+                </h1>
+                <p className="text-sm font-bold text-slate-800">KURIKULUM MERDEKA</p>
+              </div>
+
+              <div className="prose max-w-none print:text-black">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayContent}</ReactMarkdown>
               </div>
             </div>

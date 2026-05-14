@@ -148,16 +148,11 @@
     font-size: 11pt !important;
     height: auto !important;
     overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
-  .no-print, 
-  button, 
-  nav,
-  .sticky,
-  aside,
-  [role="alert"],
-  header,
-  footer {
+  .no-print, button, nav, .sticky, aside, [role="alert"], header, footer, .bg-indigo-600 {
     display: none !important;
   }
 
@@ -179,19 +174,39 @@
     color: black !important;
   }
 
-  .prose h1 { @apply text-center text-2xl font-bold mb-6 text-black uppercase; border-bottom: 2pt solid black !important; padding-bottom: 0.5rem; page-break-after: avoid; }
-  .prose h2 { @apply text-lg font-bold mt-10 mb-4 text-black uppercase; border-bottom: 1pt solid black !important; padding-bottom: 0.2rem; page-break-after: avoid; page-break-before: always; }
-  .prose h2:first-of-type { page-break-before: auto; }
-  .prose h3 { @apply text-base font-bold mt-6 mb-2 text-black; border-left: none !important; padding-left: 0 !important; page-break-after: avoid; }
+  .prose h1 { 
+    @apply text-center text-xl font-bold mb-6 text-black uppercase; 
+    border-bottom: 2pt solid black !important; 
+    padding-bottom: 0.5rem; 
+    page-break-after: avoid; 
+  }
   
-  /* Kop Surat Print Fix */
+  .prose h2 { 
+    @apply text-lg font-bold mt-10 mb-4 text-black uppercase; 
+    border-bottom: 1pt solid black !important; 
+    padding-bottom: 0.2rem; 
+    page-break-after: avoid; 
+  }
+  
+  .prose h2:not(:first-of-type) {
+    page-break-before: always;
+  }
+
+  .prose h3 { 
+    @apply text-base font-bold mt-6 mb-2 text-black; 
+    border-left: none !important; 
+    padding-left: 0 !important;
+    page-break-after: avoid; 
+  }
+  
   .border-double {
     border-bottom-style: double !important;
     border-bottom-width: 4px !important;
+    border-color: black !important;
   }
   
-  .prose p { @apply text-justify text-black mb-4; }
-  .prose li { @apply mb-2; }
+  .prose p { @apply text-justify text-black mb-4; page-break-inside: avoid; }
+  .prose li { @apply mb-2; page-break-inside: avoid; }
   
   .prose table { 
     border-collapse: collapse !important; 
@@ -201,14 +216,19 @@
     page-break-inside: auto;
   }
   
+  .prose thead {
+    display: table-header-group;
+  }
+
   .prose th, .prose td { 
     border: 1pt solid black !important; 
     padding: 8pt !important;
     color: black !important;
+    page-break-inside: avoid;
   }
-  
+
   .prose th { 
-    background-color: #f8fafc !important; 
+    background-color: #f3f4f6 !important; 
     font-weight: bold !important;
   }
 
@@ -216,14 +236,9 @@
     page-break-inside: avoid;
   }
 
-  .prose table, .prose blockquote, .prose p, .prose h1, .prose h2, .prose h3 {
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  img {
+    max-width: 100% !important;
+    height: auto !important;
   }
 }
 
