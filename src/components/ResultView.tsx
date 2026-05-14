@@ -1,0 +1,101 @@
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import { 
+  Download, 
+  Copy, 
+  Printer, 
+  FileCheck,
+  Share2,
+  CheckCircle2
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { toast } from 'sonner';
+
+interface Props {
+  content: string;
+  config: any;
+}
+
+export default function ResultView({ content, config }: Props) {
+  const handleCopy = () => {
+    navigator.clipboard.writeText(content);
+    toast.success("Berhasil disalin ke papan klip!");
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-100">
+        <div>
+          <div className="flex items-center gap-2 text-indigo-600 font-bold text-sm uppercase tracking-wider mb-1">
+            <CheckCircle2 className="w-4 h-4" /> Dokumen Selesai Disusun
+          </div>
+          <h2 className="text-2xl font-black text-slate-900">
+            {config.type === 'rpp' ? 'Modul Ajar / RPP' : 
+             config.type === 'soal' ? 'Bank Soal Ujian' : 'Materi Ajar Digital'}
+          </h2>
+          <p className="text-slate-500 font-medium">{config.topic} • {config.subject}</p>
+        </div>
+        
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={handleCopy} className="gap-2">
+            <Copy className="w-4 h-4" /> Salin
+          </Button>
+          <Button variant="outline" onClick={handlePrint} className="gap-2">
+            <Printer className="w-4 h-4" /> Cetak / PDF
+          </Button>
+          <Button className="bg-indigo-600 hover:bg-indigo-700 gap-2">
+            <Download className="w-4 h-4" /> Download DOCX
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <Card className="lg:col-span-3 border-none shadow-2xl shadow-slate-200 bg-white overflow-hidden">
+          <CardContent className="p-10">
+            <div className="prose prose-indigo max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-li:leading-relaxed">
+              <ReactMarkdown>{content}</ReactMarkdown>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="space-y-6">
+           <Card className="border-none shadow-xl shadow-slate-100 bg-white p-6">
+              <h3 className="font-bold text-sm uppercase tracking-widest text-slate-400 mb-4">Metadata Dokumen</h3>
+              <div className="space-y-4">
+                 {[
+                   { label: 'Penyusun', value: config.name },
+                   { label: 'Sekolah', value: config.school },
+                   { label: 'Kelas', value: config.phaseGrade },
+                   { label: 'Model', value: config.learningModel || (config.type === 'soal' ? 'HOTS' : 'Kontekstual') },
+                   { label: 'Tahun', value: config.schoolYear },
+                 ].map((item, i) => (
+                   <div key={i} className="pb-3 border-b border-slate-50 last:border-0">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">{item.label}</p>
+                      <p className="text-sm font-bold text-slate-800">{item.value}</p>
+                   </div>
+                 ))}
+              </div>
+           </Card>
+
+           <div className="p-6 bg-indigo-600 rounded-3xl text-white space-y-4">
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                 <FileCheck className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-lg leading-tight">Siap digunakan di kelas!</h3>
+              <p className="text-indigo-100 text-sm leading-relaxed">
+                Dokumen ini telah disesuaikan dengan prinsip Kurikulum Merdeka dan pedagogi Deep Learning.
+              </p>
+              <Button variant="secondary" className="w-full gap-2 text-indigo-900 font-bold">
+                 <Share2 className="w-4 h-4" /> Share Dokumen
+              </Button>
+           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
