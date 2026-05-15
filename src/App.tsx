@@ -163,11 +163,11 @@ export default function App() {
             onClick={() => setView('dashboard')}
           >
             <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
-              <GraduationCap className="text-white w-6 h-6" />
+              <Zap className="text-white w-6 h-6 fill-white" />
             </div>
             <div>
-              <h1 className="font-bold text-lg leading-tight tracking-tight">AI Pendidikan</h1>
-              <p className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Kurikulum Merdeka</p>
+              <h1 className="font-bold text-lg leading-tight tracking-tight">RPM AI</h1>
+              <p className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold text-center">Portal Ekosistem</p>
             </div>
           </div>
 
@@ -198,45 +198,55 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-12"
+              className="space-y-16"
             >
-              <div className="text-center space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-2">
-                  <Zap className="w-3 h-3 fill-indigo-500" /> Powered by Gemini AI
-                </div>
-                <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-                  APLIKASI GENERATOR <span className="text-indigo-600 dark:text-indigo-400">AI PENDIDIKAN</span>
+              <div className="text-center space-y-6 max-w-4xl mx-auto pt-10">
+                <motion.div 
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/10 to-blue-500/10 border border-indigo-100 dark:border-indigo-900/50 text-indigo-700 dark:text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4"
+                >
+                  <Globe className="w-3.5 h-3.5 animate-spin-slow" /> Indonesia's Most Advanced AI Edu Ecosystem
+                </motion.div>
+                <h2 className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tighter leading-[0.95]">
+                  RPM AI <span className="text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400">PORTAL</span>
                 </h2>
-                <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed">
-                  Pilih menu aplikasi di bawah ini untuk menyusun perangkat ajar Anda secara otomatis. 
-                  <span className="block font-bold mt-1 text-indigo-500 dark:text-indigo-400">Support Kurikulum Merdeka dan Pembelajaran Mendalam.</span>
+                <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-base sm:text-lg md:text-xl leading-relaxed font-medium">
+                  Transformasi ekosistem pendidikan dengan kecerdasan buatan. Susun perangkat ajar berstandar <span className="text-indigo-600 dark:text-indigo-400 font-bold">Kurikulum Merdeka</span> & <span className="text-indigo-600 dark:text-indigo-400 font-bold">Deep Learning</span> dalam hitungan detik.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="md:col-span-3 border-none shadow-lg bg-indigo-50 dark:bg-indigo-900/20 p-6 flex flex-col sm:flex-row items-center gap-4">
-                  <div className="flex-grow space-y-2 w-full">
-                    <Label className="font-bold flex items-center gap-2">
-                      <Zap className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> Masukkan API Key Gemini (Opsional)
-                    </Label>
-                    <div className="flex gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <Card className="md:col-span-3 border-none shadow-2xl glass-effect p-8 flex flex-col md:flex-row items-center gap-8 rounded-[2.5rem] relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/5 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-indigo-600/10 transition-all duration-700" />
+                  <div className="shrink-0 w-24 h-24 bg-gradient-to-br from-indigo-600 to-blue-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-indigo-200 relative z-10 animate-bounce-slow">
+                    <Brain className="w-12 h-12 text-white" />
+                  </div>
+                  <div className="flex-grow space-y-4 w-full relative z-10">
+                    <div className="space-y-1">
+                      <Label className="text-xs font-black uppercase tracking-widest text-indigo-500 flex items-center gap-2">
+                        <Zap className="w-3 h-3 fill-current" /> Personalized Intelligence
+                      </Label>
+                      <h3 className="text-2xl font-black text-slate-900 dark:text-white">Aktivasi AI Engine Personal</h3>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <div className="relative flex-grow">
                         <Input 
                           id="gemini-api-key"
                           name="gemini-api-key"
                           type={showApiKey ? "text" : "password"}
-                          autoComplete="new-password"
-                          placeholder="AI_Studio_API_Key..." 
-                          className="bg-white dark:bg-slate-950 pr-10 border-indigo-100 dark:border-indigo-900/50" 
+                          placeholder="Masukkan Google Gemini API Key Anda..." 
+                          className="bg-white/50 backdrop-blur-sm dark:bg-slate-950/50 pr-10 border-slate-200 dark:border-slate-800 h-13 rounded-2xl focus:ring-2 focus:ring-indigo-500 transition-all" 
                           value={userApiKey}
                           onChange={(e) => setUserApiKey(e.target.value)}
                         />
                         <button 
                           type="button"
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-indigo-600 transition-colors"
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-indigo-600 transition-colors"
                           onClick={() => setShowApiKey(!showApiKey)}
                         >
-                          {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                          {showApiKey ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                         </button>
                       </div>
                       <div className="flex gap-2">
@@ -245,32 +255,18 @@ export default function App() {
                             const trimmedKey = userApiKey.trim();
                             setUserApiKey(trimmedKey);
                             localStorage.setItem('user_gemini_key', trimmedKey);
-                            toast.success("API Key Berhasil Disimpan!");
+                            toast.success("AI Engine Diaktifkan!");
                           }}
-                          className="bg-indigo-600 hover:bg-indigo-700"
+                          className="bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 dark:text-slate-950 h-13 px-8 font-black text-sm uppercase tracking-widest rounded-2xl shadow-xl transition-all"
                         >
-                          <Save className="w-4 h-4 mr-2" /> Simpan
+                          Aktifkan
                         </Button>
-                        {userApiKey && (
-                          <Button 
-                            variant="outline"
-                            onClick={() => {
-                              setUserApiKey('');
-                              localStorage.removeItem('user_gemini_key');
-                              toast.info("API Key Berhasil Dihapus");
-                            }}
-                            className="text-red-500 border-red-100 hover:bg-red-50 hover:text-red-600"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        )}
                       </div>
                     </div>
-                    <p className="text-[10px] text-indigo-400 font-medium italic">Kosongkan jika ingin menggunakan key default sistem.</p>
+                    <p className="text-[10px] text-slate-400 font-bold italic flex items-center gap-1.5 underline-offset-4 decoration-indigo-500/30">
+                      * RPM AI akan menggunakan AI Global jika API Key tidak diisi.
+                    </p>
                   </div>
-                  <Button variant="outline" className="shrink-0" onClick={() => window.open('https://aistudio.google.com/app/apikey', '_blank')}>
-                    Dapatkan Key Baru
-                  </Button>
                 </Card>
                 {[
                   {
@@ -300,34 +296,42 @@ export default function App() {
                 ].map((item, idx) => (
                   <motion.div
                     key={item.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0, transition: { delay: idx * 0.1 } }}
-                    whileHover={{ y: -5 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0, transition: { delay: 0.3 + (idx * 0.1) } }}
+                    whileHover={{ y: -10, scale: 1.02 }}
                     className="group"
                   >
                     <Card 
-                      className="h-full border-2 border-transparent hover:border-indigo-100 dark:hover:border-indigo-900 shadow-xl shadow-slate-100 dark:shadow-none hover:shadow-indigo-100 dark:hover:shadow-indigo-900/20 transition-all cursor-pointer overflow-hidden flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900"
+                      className="h-full border-none shadow-2xl shadow-indigo-100/50 dark:shadow-none transition-all cursor-pointer overflow-hidden flex flex-col items-center text-center p-8 bg-white dark:bg-slate-900 rounded-[2rem] border-b-4 border-transparent hover:border-indigo-600"
                       onClick={() => setView(item.id as ViewMode)}
                     >
-                      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110`} 
-                           style={{ backgroundColor: theme === 'dark' ? 'rgba(99, 102, 241, 0.1)' : `var(--${item.color}-50, #f8fafc)` }}>
-                        {item.icon}
+                      <div className={`w-20 h-20 rounded-3xl flex items-center justify-center mb-8 transition-transform group-hover:rotate-6 bg-indigo-50 dark:bg-indigo-950/30 ring-8 ring-indigo-50/50 dark:ring-indigo-900/10`}>
+                        {React.cloneElement(item.icon as React.ReactElement, { className: "w-10 h-10 " + (item.icon as React.ReactElement).props.className })}
                       </div>
-                      <h3 className="text-xl font-bold mb-3 dark:text-white">{item.title}</h3>
-                      <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">{item.description}</p>
-                      <Button variant="ghost" className={`text-${item.color}-600 dark:text-${item.color}-400 font-bold group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/30 transition-colors`}>
-                        {item.action} →
-                      </Button>
+                      <h3 className="text-2xl font-black mb-4 dark:text-white leading-tight">{item.title}</h3>
+                      <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8 flex-grow font-medium">{item.description}</p>
+                      <div className="w-full pt-4">
+                        <Button className="w-full bg-slate-50 dark:bg-slate-800 hover:bg-indigo-600 dark:hover:bg-indigo-600 text-slate-900 dark:text-white hover:text-white font-black text-xs uppercase tracking-widest h-12 rounded-xl transition-all shadow-sm">
+                          {item.action}
+                        </Button>
+                      </div>
                     </Card>
                   </motion.div>
                 ))}
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 py-8">
-                <div className="flex items-center gap-2 bg-indigo-50 border border-indigo-100 px-4 py-2 rounded-full shadow-sm">
-                  <CheckCircle2 className="w-4 h-4 text-indigo-600" />
-                  <span className="text-sm font-semibold text-indigo-900">Model: Gemini 3 Flash (Terbaru)</span>
-                </div>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 py-8 border-t border-slate-100 dark:border-slate-800 text-slate-400 text-xs font-bold uppercase tracking-widest">
+                <span className="flex items-center gap-2">
+                  <Globe className="w-4 h-4" /> Global Portal
+                </span>
+                <span className="hidden sm:block">•</span>
+                <span className="flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" /> Curriculum Merdeka
+                </span>
+                <span className="hidden sm:block">•</span>
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4" /> Verified AI
+                </span>
               </div>
             </motion.div>
           )}
@@ -419,12 +423,13 @@ export default function App() {
 
       <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-12 mt-20 relative z-10 transition-colors">
         <div className="max-w-7xl mx-auto px-4 text-center space-y-4">
-          <p className="text-slate-500 dark:text-slate-400 font-medium tracking-tight">AI Pendidikan - Platform Penyusunan Perangkat Ajar Otomatis</p>
-          <div className="flex items-center justify-center gap-6 text-sm text-slate-400 dark:text-slate-500">
-            <span>Kurikulum Merdeka</span>
-            <span>Pembelajaran Mendalam (Deep Learning)</span>
-            <span>HOTS Assessment</span>
+          <p className="text-slate-400 dark:text-slate-500 font-black text-[10px] uppercase tracking-[0.3em]">RPM AI - PORTAL EKOSISTEM PENDIDIKAN INDONESIA</p>
+          <div className="flex items-center justify-center gap-8 text-[10px] font-black uppercase tracking-widest text-slate-300 dark:text-slate-600">
+            <span className="hover:text-indigo-500 cursor-pointer transition-colors">Integrasi Pordik</span>
+            <span className="hover:text-indigo-500 cursor-pointer transition-colors">Portal Merdeka</span>
+            <span className="hover:text-indigo-500 cursor-pointer transition-colors">Deep Learning Labs</span>
           </div>
+          <p className="text-slate-300 dark:text-slate-700 text-[9px] pt-8">© 2024 Pordik Ecosystem. Seluruh Hak Cipta Dilindungi.</p>
         </div>
       </footer>
     </div>

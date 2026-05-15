@@ -1,6 +1,6 @@
 {
-  "name": "Generator AI Pendidikan",
-  "description": "Platform AI untuk menyusun perangkat ajar otomatis (RPP, Materi, Soal) dengan dukungan Kurikulum Merdeka dan Deep Learning.",
+  "name": "RPM AI - Portal Ekosistem Pendidikan",
+  "description": "Generator AI tercanggih untuk ekosistem pendidikan Indonesia. Susun Modul Ajar (RPP), Naskah Asesmen (HOTS), dan Bahan Ajar Digital berbasis Kurikulum Merdeka & Deep Learning.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

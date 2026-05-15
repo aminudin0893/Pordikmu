@@ -311,8 +311,8 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         <div className="flex items-center gap-3 md:gap-4 mb-2">
           <GraduationCap className="w-8 h-8 md:w-10 md:h-10" />
           <div>
-            <CardTitle className="text-xl md:text-2xl font-black leading-tight">BANK SOAL UJIAN AI</CardTitle>
-            <CardDescription className="text-orange-100 font-medium text-xs md:text-sm">Bank soal HOTS yang terstruktur dan rapi.</CardDescription>
+            <CardTitle className="text-xl md:text-2xl font-black leading-tight">GENERATOR BANK SOAL</CardTitle>
+            <CardDescription className="text-orange-100 font-medium text-xs md:text-sm">Bank soal HOTS berstandar RPM AI.</CardDescription>
           </div>
         </div>
       </CardHeader>

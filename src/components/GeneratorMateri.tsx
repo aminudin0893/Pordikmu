@@ -227,8 +227,8 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
         <div className="flex items-center gap-3 md:gap-4 mb-2">
           <BookOpen className="w-8 h-8 md:w-10 md:h-10" />
           <div>
-            <CardTitle className="text-xl md:text-2xl font-black">MATERI AJAR DIGITAL AI</CardTitle>
-            <CardDescription className="text-emerald-100 font-medium text-xs md:text-sm">Ubah topik sulit menjadi penjelasan yang mudah dipahami.</CardDescription>
+            <CardTitle className="text-xl md:text-2xl font-black">GENERATOR MATERI AJAR</CardTitle>
+            <CardDescription className="text-emerald-100 font-medium text-xs md:text-sm">Materi ajar komprehensif berstandar RPM AI.</CardDescription>
           </div>
         </div>
       </CardHeader>

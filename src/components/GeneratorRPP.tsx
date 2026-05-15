@@ -270,8 +270,8 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         <div className="flex items-center gap-3 md:gap-4 mb-2">
           <FileText className="w-8 h-8 md:w-10 md:h-10" />
           <div>
-            <CardTitle className="text-xl md:text-2xl font-black">Generator RPP / Modul Ajar</CardTitle>
-            <CardDescription className="text-indigo-100 font-medium text-xs md:text-sm">Susun rencana pembelajaran profesional dalam hitungan detik.</CardDescription>
+            <CardTitle className="text-xl md:text-2xl font-black">Generator RPM / Modul Ajar</CardTitle>
+            <CardDescription className="text-indigo-100 font-medium text-xs md:text-sm">Susun rencana pembelajaran profesional berstandar RPM AI.</CardDescription>
           </div>
         </div>
       </CardHeader>
