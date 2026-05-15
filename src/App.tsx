@@ -311,7 +311,7 @@ export default function App() {
                       <h3 className="text-2xl font-black mb-4 dark:text-white leading-tight">{item.title}</h3>
                       <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8 flex-grow font-medium">{item.description}</p>
                       <div className="w-full pt-4">
-                        <Button className="w-full bg-slate-50 dark:bg-slate-800 hover:bg-indigo-600 dark:hover:bg-indigo-600 text-slate-900 dark:text-white hover:text-white font-black text-xs uppercase tracking-widest h-12 rounded-xl transition-all shadow-sm">
+                        <Button className="w-full bg-indigo-600 hover:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-widest h-12 rounded-xl transition-all shadow-lg">
                           {item.action}
                         </Button>
                       </div>

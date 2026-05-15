@@ -67,7 +67,8 @@
 }
 
 .prose p { 
-  @apply text-justify mb-4 leading-normal text-black text-[11pt]; 
+  @apply text-justify mb-2 leading-relaxed text-black text-[11pt]; 
+  page-break-inside: avoid;
 }
 
 .prose ul, .prose ol { 
@@ -96,9 +97,10 @@
 
 /* Responsivitas Tabel di Mobile */
 .prose table { 
-  @apply w-full border-collapse my-6 text-[10pt] leading-normal border;
+  @apply w-full border-collapse my-4 text-[10pt] leading-tight border;
   border-color: black !important;
   table-layout: auto;
+  page-break-inside: avoid !important;
 }
 
 .prose thead { 
@@ -230,15 +232,16 @@
     border-color: black !important;
   }
   
-  .prose p { @apply text-justify text-black mb-4; page-break-inside: avoid; }
-  .prose li { @apply mb-2; page-break-inside: avoid; }
+  .prose p { @apply text-justify text-black mb-2; page-break-inside: avoid; }
+  .prose li { @apply mb-1; page-break-inside: avoid; }
   
   .prose table { 
     border-collapse: collapse !important; 
     border: 1.5pt solid black !important; 
     width: 100% !important;
-    margin: 1.5rem 0 !important;
-    page-break-inside: auto;
+    margin: 1rem 0 !important;
+    page-break-inside: avoid !important;
+    display: table;
   }
   
   .prose thead {

@@ -59,15 +59,15 @@ export default function ResultView({ content: initialContent, config }: Props) {
             }
             body { font-family: 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; color: #000; }
             h1 { text-align: center; text-transform: uppercase; border-bottom: 2pt solid black; padding-bottom: 5pt; font-size: 14pt; font-weight: bold; margin-bottom: 10pt; }
-            h2 { text-transform: uppercase; border-bottom: 1pt solid black; margin-top: 18pt; margin-bottom: 8pt; font-size: 12pt; font-weight: bold; }
-            h3 { font-size: 11pt; font-weight: bold; margin-top: 14pt; margin-bottom: 6pt; }
-            p { text-align: justify; margin-bottom: 8pt; }
-            table { border-collapse: collapse; width: 100%; border: 1pt solid black; margin-bottom: 12pt; }
-            th, td { border: 1pt solid black; padding: 5pt; vertical-align: top; font-size: 10pt; }
+            h2 { text-transform: uppercase; border-bottom: 1pt solid black; margin-top: 14pt; margin-bottom: 6pt; font-size: 12pt; font-weight: bold; page-break-after: avoid; }
+            h3 { font-size: 11pt; font-weight: bold; margin-top: 10pt; margin-bottom: 4pt; page-break-after: avoid; }
+            p { text-align: justify; margin-bottom: 6pt; }
+            table { border-collapse: collapse; width: 100%; border: 1pt solid black; margin-bottom: 10pt; page-break-inside: avoid; }
+            th, td { border: 1pt solid black; padding: 4pt; vertical-align: top; font-size: 10pt; }
             th { background-color: #f3f4f6; font-weight: bold; text-align: center; }
-            .header-info { text-align: center; border-bottom: 3.5pt double black; padding-bottom: 8pt; margin-bottom: 15pt; }
+            .header-info { text-align: center; border-bottom: 3.5pt double black; padding-bottom: 6pt; margin-bottom: 10pt; }
             .header-info div { line-height: 1.1; }
-            .doc-title { text-align: center; font-weight: bold; font-size: 12pt; margin-top: 15pt; margin-bottom: 20pt; text-transform: uppercase; }
+            .doc-title { text-align: center; font-weight: bold; font-size: 12pt; margin-top: 10pt; margin-bottom: 15pt; text-transform: uppercase; }
           </style>
         </head>
         <body>
