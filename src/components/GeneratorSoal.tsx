@@ -52,6 +52,7 @@ const soalSchema = z.object({
   assessmentType: z.string().min(1, "Jenis Asesmen harus diisi"),
   optionsCount: z.string().min(1, "Jumlah Opsi harus diisi"),
   cognitiveLevels: z.array(z.string()).min(1, "Pilih minimal satu level kognitif"),
+  timeAllocation: z.string().min(1, "Alokasi Waktu harus diisi"),
   easyPerc: z.number(),
   mediumPerc: z.number(),
   hardPerc: z.number(),
@@ -95,6 +96,7 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
       phaseGrade: "Fase D (Kelas 7) SMP/MTs",
       schoolYear: "2025/2026",
       assessmentType: "Asesmen Sumatif Akhir Semester",
+      timeAllocation: "90 Menit",
       optionsCount: "4 Opsi (A, B, C, D)",
       cognitiveLevels: ["C3", "C4"],
       easyPerc: 30,
@@ -161,7 +163,7 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
 
   const nextStep = async () => {
     let fieldsToValidate: any[] = [];
-    if (currentStep === 0) fieldsToValidate = ['name', 'school', 'subject', 'phaseGrade', 'schoolYear', 'assessmentType'];
+    if (currentStep === 0) fieldsToValidate = ['name', 'school', 'subject', 'phaseGrade', 'schoolYear', 'assessmentType', 'timeAllocation'];
     if (currentStep === 1) fieldsToValidate = ['topics', 'cognitiveLevels'];
     if (currentStep === 2) fieldsToValidate = ['easyPerc', 'mediumPerc', 'hardPerc', 'mcqCount', 'essayCount'];
 
@@ -199,17 +201,17 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         Ciptakan BANK SOAL UJIAN (NASKAH ASESMEN) yang sangat EKSKLUSIF, LENGKAP, PROFESIONAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
         ANDA ADALAH SEORANG AHLI EVALUASI PENDIDIKAN PROFESIONAL DENGAN PENGALAMAN 20 TAHUN. TUGAS ANDA ADALAH:
-        1. Menyusun instrumen penilaian yang mencakup naskah soal, kisi-kisi, dan kunci jawaban secara sangat mendalam.
-        2. Gunakan soal-soal HOTS (Higher Order Thinking Skills) level C4-C6 yang menantang nalar siswa.
-        3. Pastikan setiap soal memiliki stimulus nyata (kasus, teks literasi, infografis) yang relevan dan terbaru.
-        4. PRIORITASKAN KEDALAMAN DAN KELENGKAPAN ISI. Pastikan setiap butir soal dan stimulus disusun secara mendetail untuk memberikan pengalaman ujian yang komprehensif.
-        5. Sertakan pedoman penskoran yang sangat jelas dan terperinci untuk soal esai.
-        6. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar profesional.
+        1. Menyusun instrumen penilaian resmi yang mencakup naskah soal, kisi-kisi, dan kunci jawaban secara sangat mendalam dan komprehensif.
+        2. Gunakan soal-soal HOTS (Higher Order Thinking Skills) level C4-C6 yang menantang nalar siswa sesuai standar nasional. JANGAN ADA BAGIAN YANG KOSONG.
+        3. Pastikan setiap soal memiliki stimulus nyata (kasus, teks literasi, infografis) yang relevan, mutakhir, dan edukatif.
+        4. PRIORITASKAN KELENGKAPAN ISI DAN FORMAT RESMI. Dokumen harus siap digunakan sebagai arsip kedinasan.
+        5. Sertakan pedoman penskoran yang sangat jelas, objektif, dan terperinci untuk setiap butir soal.
+        6. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten instruksional murni dan profesional.
 
-        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
+        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA (A. Identitas Asesmen, B. Data Peserta Didik, C. Petunjuk Pengerjaan, D. Naskah Asesmen, E. Kisi-Kisi & Kunci Jawaban, F. Pedoman Penskoran).
         PENTING: DILARANG KERAS menggunakan tag HTML.
         
-        STRUKTUR NASKAH ASESMEN RESMI (HARUS LENGKAP):
+        STRUKTUR NASKAH ASESMEN RESMI (WAJIB LENGKAP & DETAIL):
 
         ${data.useLetterhead ? `
         # KOP SURAT RESMI SEKOLAH
@@ -224,10 +226,10 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         | Mata Pelajaran | ${data.subject.toUpperCase()} |
         | Jenis Asesmen | ${data.assessmentType.toUpperCase()} |
         | Jenjang / Fase / Kelas | ${data.phaseGrade} |
-        | Semester | [Ganjil/Genap - Sesuaikan dengan waktu sekarang] |
+        | Semester | [Isi Ganjil/Genap] |
         | Tahun Pelajaran | ${data.schoolYear} |
+        | **Alokasi Waktu** | **${data.timeAllocation}** |
         | Nama Guru | ${data.name} |
-        | Alokasi Waktu | [Isi alokasi waktu yang sesuai, misal: 90 Menit] |
 
         ## B. Data Peserta Didik
         | Nama Peserta Didik | Kelas | No. Absen | Nilai |
@@ -471,16 +473,21 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
                   </div>
                   <div className="space-y-2">
                       <Label className="font-bold text-sm">Jenis Asesmen / Ujian</Label>
-                      <Select onValueChange={(val) => form.setValue('assessmentType', val)} defaultValue="Sumatif Harian">
+                      <Select onValueChange={(val) => form.setValue('assessmentType', val)} defaultValue="Asesmen Sumatif Akhir Semester">
                         <SelectTrigger className="h-10 md:h-12">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="Sumatif Harian">Sumatif Harian</SelectItem>
                           <SelectItem value="Sumatif Tengah Semester">Sumatif Tengah Semester</SelectItem>
-                          <SelectItem value="Sumatif Akhir Semester">Sumatif Akhir Semester</SelectItem>
+                          <SelectItem value="Asesmen Sumatif Akhir Semester">Asesmen Sumatif Akhir Semester</SelectItem>
                         </SelectContent>
                       </Select>
+                   </div>
+                   <div className="space-y-2">
+                     <Label htmlFor="timeAllocation" className="font-bold text-sm">Alokasi Waktu</Label>
+                     <Input id="timeAllocation" placeholder="90 Menit" {...form.register('timeAllocation')} className="h-10 md:h-12" />
+                     {form.formState.errors.timeAllocation && <p className="text-xs text-red-500">{form.formState.errors.timeAllocation.message}</p>}
                    </div>
               </div>
             </motion.div>

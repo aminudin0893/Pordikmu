@@ -46,6 +46,7 @@ const materiSchema = z.object({
   subject: z.string().min(1, "Mata Pelajaran harus diisi"),
   phaseGrade: z.string().min(1, "Fase/Kelas harus diisi"),
   topics: z.array(z.string()).min(1, "Minimal satu topik materi harus diisi"),
+  timeAllocation: z.string().min(1, "Alokasi Waktu harus diisi"),
   depthLevel: z.enum(['basic', 'intermediate', 'advanced']),
   includeAnalogy: z.boolean(),
   includeIllustration: z.boolean(),
@@ -83,6 +84,7 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
       logo: "",
       subject: "Pendidikan Agama Islam",
       phaseGrade: "Fase D (Kelas 7) SMP/MTs",
+      timeAllocation: "2 X 40 Menit",
       topics: [""],
       depthLevel: 'advanced',
       includeAnalogy: true,
@@ -122,7 +124,7 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
 
   const nextStep = async () => {
     let fieldsToValidate: any[] = [];
-    if (currentStep === 0) fieldsToValidate = ['school', 'subject', 'phaseGrade'];
+    if (currentStep === 0) fieldsToValidate = ['school', 'subject', 'phaseGrade', 'timeAllocation'];
     if (currentStep === 1) fieldsToValidate = ['topics'];
 
     const isValid = await form.trigger(fieldsToValidate);
@@ -142,17 +144,17 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
         Susunlah MATERI AJAR (BAHAN AJAR) yang sangat EKSKLUSIF, MENDALAM, PROFESIONAL, dan SIAP CETAK sesuai standar Kurikulum Merdeka.
         
         ANDA ADALAH SEORANG PENULIS BUKU TEKS PENDIDIKAN PROFESIONAL KRITERIA NASIONAL DENGAN PENGALAMAN 20 TAHUN. TUGAS ANDA ADALAH:
-        1. Menguraikan materi secara SANGAT KOMPREHENSIF (Deep Learning) dengan bahasa yang mudah dipahami namun berbobot ilmiah.
+        1. Menguraikan materi secara SANGAT KOMPREHENSIF (Deep Learning) dengan bahasa yang mudah dipahami namun berbobot ilmiah. JANGAN ADA BAGIAN YANG KOSONG.
         2. Gunakan narasi yang inspiratif, padat informasi, dan mengalir secara logis antar sub-bab.
         3. Hubungkan setiap bab dengan konteks nyata, kearifan lokal, dan tantangan masa depan (Visi Masa Depan).
         4. PRIORITASKAN KELENGKAPAN DAN KEDALAMAN MATERI. Jangan meringkas konten; berikan penjelasan yang sangat kaya, komprehensif, dan mendalam untuk setiap sub-topik materi.
-        5. Sertakan Identitas Materi secara lengkap di awal dokumen.
-        6. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar profesional.
+        5. Sertakan Identitas Materi secara lengkap di awal dokumen (Tabel Identitas).
+        6. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten pedagogik murni yang berkualitas tinggi.
 
-        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
+        WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA (A. Pendahuluan & Identitas, B. Capaian & Tujuan Pembelajaran, C. Pembahasan Materi (Deep Learning), D. Contoh Penerapan & Studi Kasus, E. Rangkuman & Refleksi Mandiri, F. Uji Pemahaman).
         PENTING: DILARANG KERAS menggunakan tag HTML.
 
-        STRUKTUR MODUL RESMI (HARUS SANGAT LENGKAP):
+        STRUKTUR BAHAN AJAR RESMI (WAJIB LENGKAP & DETAIL):
 
         ${data.useLetterhead ? `
         # KOP SURAT RESMI SEKOLAH
@@ -169,7 +171,8 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
         | Satuan Pendidikan | ${data.school} |
         | Mata Pelajaran | ${data.subject.toUpperCase()} |
         | Jenjang / Fase / Kelas | ${data.phaseGrade} |
-        | Semester | [Ganjil/Genap - Sesuaikan] |
+        | Semester | [Ganjil/Genap] |
+        | **Alokasi Waktu** | **${data.timeAllocation}** |
         | Disusun Oleh | ${data.name} |
         | Topik Utama | ${data.topics.join(", ")} |
         | Target Kedalaman | ${data.depthLevel.toUpperCase()} |
@@ -380,6 +383,10 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
                         className="flex-grow h-10 md:h-12"
                       />
                     </div>
+                </div>
+                <div className="space-y-1.5 md:space-y-2">
+                    <Label htmlFor="timeAllocation" className="font-bold text-sm">Alokasi Waktu</Label>
+                    <Input id="timeAllocation" placeholder="2 x 40 Menit" {...form.register('timeAllocation')} className="h-10 md:h-12" />
                 </div>
               </div>
             </motion.div>

@@ -143,18 +143,32 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         Buatkan (RPP) atau MODUL AJAR yang sangat EKSKLUSIF, LENGKAP, PROFESIONAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
         ANDA ADALAH SEORANG AHLI KURIKULUM PROFESIONAL DENGAN PENGALAMAN 20 TAHUN. TUGAS ANDA ADALAH:
-        1. Menguraikan setiap bagian secara SANGAT MENDALAM (Deep Learning) dengan narasi akademik yang kuat dan komprehensif.
-        2. Masukkan elemen Profil Pelajar Pancasila, 4C (Critical Thinking, Creativity, Collaboration, Communication), dan Literasi/Numerasi secara eksplisit dan mendetail.
-        3. Pastikan langkah pembelajaran sangat detail dan naratif, bukan sekadar poin-poin. Sertakan estimasi waktu per langkah secara logis.
-        4. Gunakan wawasan pedagogik luas untuk mengisi deskripsi tujuan, langkah-langkah, dan asesmen secara lengkap sesuai standar pemerintah.
-        5. PENTING: KELENGKAPAN ISI ADALAH PRIORITAS UTAMA. Jangan meringkas konten; berikan penjelasan yang kaya dan bermutu tinggi untuk setiap sub-bab.
-        6. Sertakan Identitas Modul secara lengkap di awal dokumen.
-        7. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar profesional.
+        1. Menguraikan setiap bagian secara SANGAT MENDALAM (Deep Learning) dengan narasi akademik yang kuat, komprehensif, dan elegan.
+        2. Masukkan elemen Profil Pelajar Pancasila, 4C (Critical Thinking, Creativity, Collaboration, Communication), dan Literasi/Numerasi secara eksplisit dan mendetail pada setiap aktivitas.
+        3. Pastikan langkah pembelajaran sangat detail dan naratif, bukan sekadar poin-poin singkat. Sertakan estimasi waktu per langkah secara logis dan proporsional.
+        4. Gunakan wawasan pedagogik luas untuk mengisi deskripsi tujuan, langkah-langkah, dan asesmen secara lengkap sesuai standar baku kurikulum nasional.
+        5. PRIORITASKAN KELENGKAPAN ISI DAN FORMALITAS DOKUMEN. Berikan penjelasan yang kaya, bermutu tinggi, dan profesional untuk setiap sub-bab.
+        6. Sertakan Identitas Modul secara lengkap dan rapi di awal dokumen (Tabel Identitas).
+        7. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten pedagogik murni yang berkualitas tinggi.
 
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR UNTUK DATA IDENTITAS.
         DILARANG KERAS menggunakan tag HTML.
         
-        STRUKTUR MODUL AJAR RESMI (WAJIB LENGKAP):
+        STRUKTUR MODUL AJAR RESMI (WAJIB LENGKAP & DETAIL):
+        
+        A. Identitas Modul (Sertakan dalam tabel Markdown: Nama Penyusun, NIP, Satuan Pendidikan, Tahun Pelajaran, Jenjang/Fase/Kelas, Semester, Mata Pelajaran, Materi Pokok, Alokasi Waktu (Contoh: 3 x 40 Menit), Model Pembelajaran, Jumlah Pertemuan)
+        B. Kompetensi Awal
+        C. Profil Pelajar Pancasila
+        D. Sarana dan Prasarana
+        E. Target Peserta Didik
+        F. Tujuan Pembelajaran (Gunakan format ABCD: Audience, Behavior, Condition, Degree)
+        G. Pemahaman Bermakna
+        H. Pertanyaan Pemantik
+        I. Langkah-Langkah Pembelajaran (Sesuai Sintaks Model ${data.learningModel}, sangat detail dan naratif)
+        J. Asesmen (Diagnostik, Formatif, Sumatif)
+        K. Pengayaan dan Remedial
+        L. Refleksi Peserta Didik dan Guru
+        M. Lampiran (Ringkasan Materi Mendalam, LKPD, Glosarium, Daftar Pustaka)
 
         ${data.useLetterhead ? `
         # KOP SURAT RESMI SEKOLAH
@@ -166,7 +180,7 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         # MODUL AJAR / RENCANA PELAKSANAAN PEMBELAJARAN (RPP)
 
         ## A. Identitas Modul
-        | Aspek Identitas | Keterangan Informasi |
+        | Komponen | Keterangan |
         |---|---|
         | Nama Penyusun | ${data.name} |
         | NBM / NIP Guru | ${data.nip || "-"} |
@@ -176,7 +190,7 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         | Semester | ${data.semester} |
         | Mata Pelajaran | ${data.subject} |
         | Materi Pokok | ${data.topics.join(", ")} |
-        | Alokasi Waktu | ${data.timeAllocation} |
+        | **Alokasi Waktu** | **${data.timeAllocation}** |
         | Model Pembelajaran | ${data.learningModel} |
         | Jumlah Pertemuan | ${data.meetingsCount} |
 

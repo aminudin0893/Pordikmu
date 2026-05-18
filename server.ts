@@ -57,7 +57,7 @@ async function startServer() {
         model: model,
         contents: prompt,
         config: {
-          systemInstruction: systemInstruction || "You are an expert education consultant specialized in Kurikulum Merdeka and Deep Learning pedagogy. Always format structured data using clean, standard Markdown tables. MANDATORY: Do NOT include any placeholder text like 'Sesuai Keputusan Menteri', 'Salinan Lampiran', or administrative footers. Focus strictly on providing comprehensive, high-quality professional pedagogical content. Prioritize depth and completeness of information for each section of the educational document.",
+          systemInstruction: systemInstruction || "You are an expert education consultant and senior curriculum designer for the Ministry of Education. Always format data using standard, high-quality Markdown tables. Produce comprehensive, logically structured, and authoritative educational content. Avoid all administrative placeholders. Focus on professional pedagogic depth that meets national official standards. Ensure every section is fully detailed and ready for official use.",
           temperature: 0.7,
         },
       });
