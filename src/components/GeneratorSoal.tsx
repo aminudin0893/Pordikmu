@@ -202,9 +202,9 @@ export default function GeneratorSoal({ onSuccess, onLoading }: Props) {
         1. Menyusun instrumen penilaian yang mencakup naskah soal, kisi-kisi, dan kunci jawaban secara sangat mendalam.
         2. Gunakan soal-soal HOTS (Higher Order Thinking Skills) level C4-C6 yang menantang nalar siswa.
         3. Pastikan setiap soal memiliki stimulus nyata (kasus, teks literasi, infografis) yang relevan dan terbaru.
-        4. Susun konten secara PADAT dan EFISIEN. Pastikan naskah soal mengisi halaman secara optimal tanpa banyak ruang kosong yang sia-sia, namun tetap menjaga keterbacaan yang tinggi.
-        5. Sertakan pedoman penskoran yang jelas untuk soal esai.
-        6. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar.
+        4. PRIORITASKAN KEDALAMAN DAN KELENGKAPAN ISI. Pastikan setiap butir soal dan stimulus disusun secara mendetail untuk memberikan pengalaman ujian yang komprehensif.
+        5. Sertakan pedoman penskoran yang sangat jelas dan terperinci untuk soal esai.
+        6. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar profesional.
 
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
         PENTING: DILARANG KERAS menggunakan tag HTML.

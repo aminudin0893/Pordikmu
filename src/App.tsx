@@ -133,7 +133,7 @@ export default function App() {
                   maxLength={6}
                 />
               </div>
-              <Button type="submit" className="w-full h-11 md:h-12 bg-indigo-600 hover:bg-indigo-700 font-bold text-base md:text-lg shadow-lg shadow-indigo-100 transition-all active:scale-[0.98]">
+              <Button type="submit" className="w-full h-11 md:h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base md:text-lg shadow-lg shadow-indigo-100 transition-all active:scale-[0.98]">
                 Masuk ke Aplikasi
               </Button>
             </form>
@@ -257,7 +257,7 @@ export default function App() {
                             localStorage.setItem('user_gemini_key', trimmedKey);
                             toast.success("AI Engine Diaktifkan!");
                           }}
-                          className="bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 dark:text-slate-950 h-13 px-8 font-black text-sm uppercase tracking-widest rounded-2xl shadow-xl transition-all"
+                          className="bg-slate-900 hover:bg-black text-white dark:bg-white dark:hover:bg-slate-100 dark:text-slate-950 h-13 px-8 font-black text-sm uppercase tracking-widest rounded-2xl shadow-xl transition-all"
                         >
                           Aktifkan
                         </Button>

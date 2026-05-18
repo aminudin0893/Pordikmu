@@ -143,13 +143,13 @@ export default function GeneratorRPP({ onSuccess, onLoading }: Props) {
         Buatkan (RPP) atau MODUL AJAR yang sangat EKSKLUSIF, LENGKAP, PROFESIONAL, dan SIAP CETAK sesuai standar terbaru KEMENDIKBUDRISTEK (Kurikulum Merdeka).
         
         ANDA ADALAH SEORANG AHLI KURIKULUM PROFESIONAL DENGAN PENGALAMAN 20 TAHUN. TUGAS ANDA ADALAH:
-        1. Menguraikan setiap bagian secara SANGAT MENDALAM (Deep Learning) dengan narasi akademik yang kuat.
-        2. Masukkan elemen Profil Pelajar Pancasila, 4C (Critical Thinking, Creativity, Collaboration, Communication), dan Literasi/Numerasi secara eksplisit.
-        3. Pastikan langkah pembelajaran sangat detail, bukan sekadar poin-poin. Sertakan estimasi waktu per langkah.
-        4. Gunakan wawasan pedagogik luas untuk mengisi deskripsi tujuan, langkah-langkah, dan asesmen jika data spesifik tidak ada.
-        5. PENTING: Susun konten secara PADAT dan EFISIEN. Jangan biarkan satu halaman hanya berisi satu sub-poin pendek. Gabungkan sub-poin yang berkaitan agar konten mengisi halaman A4 secara proporsional namun tetap rapi.
-        6. Sertakan Identitas Modul langsung setelah Kop Surat (jika ada).
-        7. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar.
+        1. Menguraikan setiap bagian secara SANGAT MENDALAM (Deep Learning) dengan narasi akademik yang kuat dan komprehensif.
+        2. Masukkan elemen Profil Pelajar Pancasila, 4C (Critical Thinking, Creativity, Collaboration, Communication), dan Literasi/Numerasi secara eksplisit dan mendetail.
+        3. Pastikan langkah pembelajaran sangat detail dan naratif, bukan sekadar poin-poin. Sertakan estimasi waktu per langkah secara logis.
+        4. Gunakan wawasan pedagogik luas untuk mengisi deskripsi tujuan, langkah-langkah, dan asesmen secara lengkap sesuai standar pemerintah.
+        5. PENTING: KELENGKAPAN ISI ADALAH PRIORITAS UTAMA. Jangan meringkas konten; berikan penjelasan yang kaya dan bermutu tinggi untuk setiap sub-bab.
+        6. Sertakan Identitas Modul secara lengkap di awal dokumen.
+        7. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar profesional.
 
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR UNTUK DATA IDENTITAS.
         DILARANG KERAS menggunakan tag HTML.

@@ -100,7 +100,11 @@
   @apply w-full border-collapse my-4 text-[10pt] leading-tight border;
   border-color: black !important;
   table-layout: auto;
-  page-break-inside: avoid !important;
+  page-break-inside: auto;
+}
+
+.prose tr {
+  page-break-inside: avoid;
 }
 
 .prose thead { 
@@ -237,15 +241,19 @@
   
   .prose table { 
     border-collapse: collapse !important; 
-    border: 1.5pt solid black !important; 
+    border: 1pt solid black !important; 
     width: 100% !important;
     margin: 1rem 0 !important;
-    page-break-inside: avoid !important;
+    page-break-inside: auto;
     display: table;
   }
   
   .prose thead {
     display: table-header-group;
+  }
+
+  .prose tr {
+    page-break-inside: avoid;
   }
 
   .prose th, .prose td { 

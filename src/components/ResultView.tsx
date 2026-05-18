@@ -62,7 +62,8 @@ export default function ResultView({ content: initialContent, config }: Props) {
             h2 { text-transform: uppercase; border-bottom: 1pt solid black; margin-top: 14pt; margin-bottom: 6pt; font-size: 12pt; font-weight: bold; page-break-after: avoid; }
             h3 { font-size: 11pt; font-weight: bold; margin-top: 10pt; margin-bottom: 4pt; page-break-after: avoid; }
             p { text-align: justify; margin-bottom: 6pt; }
-            table { border-collapse: collapse; width: 100%; border: 1pt solid black; margin-bottom: 10pt; page-break-inside: avoid; }
+            table { border-collapse: collapse; width: 100%; border: 1pt solid black; margin-bottom: 10pt; page-break-inside: auto; }
+            tr { page-break-inside: avoid; }
             th, td { border: 1pt solid black; padding: 4pt; vertical-align: top; font-size: 10pt; }
             th { background-color: #f3f4f6; font-weight: bold; text-align: center; }
             .header-info { text-align: center; border-bottom: 3.5pt double black; padding-bottom: 6pt; margin-bottom: 10pt; }

@@ -145,9 +145,9 @@ export default function GeneratorMateri({ onSuccess, onLoading }: Props) {
         1. Menguraikan materi secara SANGAT KOMPREHENSIF (Deep Learning) dengan bahasa yang mudah dipahami namun berbobot ilmiah.
         2. Gunakan narasi yang inspiratif, padat informasi, dan mengalir secara logis antar sub-bab.
         3. Hubungkan setiap bab dengan konteks nyata, kearifan lokal, dan tantangan masa depan (Visi Masa Depan).
-        4. Susun konten secara PADAT dan EFISIEN. Pastikan materi mengisi setiap halaman A4 secara optimal tanpa banyak ruang kosong, namun tetap menjaga kerapian desain dokumen.
-        5. Sertakan Identitas Materi langsung setelah Kop Surat (jika ada).
-        6. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar.
+        4. PRIORITASKAN KELENGKAPAN DAN KEDALAMAN MATERI. Jangan meringkas konten; berikan penjelasan yang sangat kaya, komprehensif, dan mendalam untuk setiap sub-topik materi.
+        5. Sertakan Identitas Materi secara lengkap di awal dokumen.
+        6. Hilangkan teks-teks administratif yang tidak perlu seperti "Sesuai Keputusan Menteri...". Fokus langsung pada konten teknis perangkat ajar profesional.
 
         WAJIB GUNAKAN PENOMORAN ALFABET (A, B, C...) UNTUK SETIAP BAGIAN UTAMA DAN FORMAT TABEL MARKDOWN STANDAR.
         PENTING: DILARANG KERAS menggunakan tag HTML.
